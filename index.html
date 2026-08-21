@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
   <title>Desi Hub TV</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -14,50 +18,131 @@
       padding: 0;
     }
 
+    :root {
+      --bg: #07080c;
+      --card: #11131a;
+      --card2: #171922;
+      --border: rgba(255,255,255,.08);
+      --text: #fff;
+      --muted: #8d909d;
+      --pink: #ff3158;
+      --pink2: #ff5577;
+      --green: #31d17c;
+    }
+
+    html {
+      background: var(--bg);
+    }
+
     body {
-      background: #08090d;
-      color: #fff;
-      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(
+          circle at 50% -10%,
+          rgba(255,49,88,.13),
+          transparent 34%
+        ),
+        var(--bg);
+
+      color: var(--text);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
       min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
     }
 
     button,
     input {
-      font-family: inherit;
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
     }
 
     .app {
-      max-width: 650px;
+      width: 100%;
+      max-width: 680px;
       margin: auto;
-      padding: 18px 14px 100px;
+      padding:
+        16px
+        14px
+        calc(105px + env(safe-area-inset-bottom));
     }
 
+    /* HEADER */
+
     .header {
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 18px;
     }
 
-    .logo {
-      font-size: 23px;
-      font-weight: 800;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .logo span {
-      color: #ff3158;
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ff3158,
+          #ff1748
+        );
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 19px;
+      font-weight: 900;
+
+      box-shadow:
+        0 8px 25px rgba(255,49,88,.22);
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 850;
+      letter-spacing: -.5px;
+    }
+
+    .logo-text span {
+      color: var(--pink);
     }
 
     .avatar {
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      background: #ff3158;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ff3158,
+          #ff6b85
+        );
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       font-weight: 800;
       overflow: hidden;
+
+      border: 2px solid rgba(255,255,255,.12);
     }
 
     .avatar img {
@@ -66,41 +151,141 @@
       object-fit: cover;
     }
 
+    /* HERO */
+
     .hero {
-      padding: 24px;
-      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+
+      padding: 24px 21px;
+      border-radius: 25px;
       margin-bottom: 18px;
-      background: linear-gradient(135deg, #27121c, #151720);
-      border: 1px solid #2b2d38;
+
+      background:
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(255,49,88,.25),
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #241019,
+          #11131b 70%
+        );
+
+      border: 1px solid var(--border);
+
+      box-shadow:
+        0 15px 45px rgba(0,0,0,.25);
+    }
+
+    .hero:after {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      right: -50px;
+      bottom: -60px;
+      border-radius: 50%;
+      background: rgba(255,49,88,.12);
+      filter: blur(10px);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      padding: 6px 10px;
+      border-radius: 30px;
+
+      background: rgba(255,49,88,.11);
+      border: 1px solid rgba(255,49,88,.2);
+
+      color: #ff7892;
+      font-size: 11px;
+      font-weight: 700;
+
+      margin-bottom: 11px;
     }
 
     .hero h1 {
-      font-size: 28px;
-      margin-bottom: 8px;
+      position: relative;
+      z-index: 2;
+
+      font-size: 27px;
+      line-height: 1.12;
+      letter-spacing: -.8px;
+
+      margin-bottom: 9px;
     }
 
     .hero p {
-      color: #a7a9b2;
-      font-size: 14px;
+      position: relative;
+      z-index: 2;
+
+      color: #a8abb6;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* SEARCH */
+
+    .search-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777b87;
+      pointer-events: none;
     }
 
     .search {
       width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid #2a2c36;
-      background: #15161d;
+      height: 48px;
+
+      padding:
+        0 15px 0 43px;
+
+      border-radius: 15px;
+
+      border: 1px solid var(--border);
+
+      background:
+        rgba(255,255,255,.045);
+
       color: #fff;
       outline: none;
-      font-size: 15px;
-      margin-bottom: 15px;
+
+      font-size: 14px;
+
+      transition: .2s;
     }
+
+    .search:focus {
+      border-color: rgba(255,49,88,.45);
+      background: rgba(255,255,255,.06);
+    }
+
+    .search::placeholder {
+      color: #6f727d;
+    }
+
+    /* CATEGORIES */
 
     .categories {
       display: flex;
       gap: 8px;
+
       overflow-x: auto;
+
       margin-bottom: 22px;
+
       scrollbar-width: none;
     }
 
@@ -109,134 +294,250 @@
     }
 
     .cat {
+      flex: 0 0 auto;
+
       padding: 9px 15px;
-      border-radius: 20px;
-      border: 1px solid #30323d;
-      background: #15161d;
-      color: #bbb;
-      white-space: nowrap;
-      cursor: pointer;
+
+      border-radius: 30px;
+
+      border: 1px solid var(--border);
+
+      background:
+        rgba(255,255,255,.035);
+
+      color: #999ca7;
+
+      font-size: 12px;
+      font-weight: 650;
+
+      transition: .2s;
     }
 
     .cat.active {
-      background: #ff3158;
-      border-color: #ff3158;
+      background: var(--pink);
+      border-color: var(--pink);
       color: #fff;
+
+      box-shadow:
+        0 7px 20px rgba(255,49,88,.2);
     }
+
+    /* SECTION */
 
     .titlebar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+
+      margin-bottom: 13px;
     }
 
     .titlebar h2 {
-      font-size: 19px;
+      font-size: 18px;
+      letter-spacing: -.3px;
     }
 
     .count {
-      color: #777a84;
-      font-size: 12px;
+      color: #6f727d;
+      font-size: 11px;
     }
+
+    /* VIDEO GRID */
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0,1fr));
       gap: 12px;
     }
 
     .card {
-      background: #15161d;
-      border: 1px solid #292b35;
-      border-radius: 16px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.055),
+          rgba(255,255,255,.025)
+        );
+
+      border: 1px solid var(--border);
+
+      border-radius: 18px;
+
       overflow: hidden;
+
+      box-shadow:
+        0 8px 25px rgba(0,0,0,.17);
+
+      transition:
+        transform .18s,
+        border-color .18s;
+    }
+
+    .card:active {
+      transform: scale(.985);
     }
 
     .thumbnail {
       aspect-ratio: 9 / 13;
+
       background: #171820;
+
       position: relative;
+
       overflow: hidden;
+
       cursor: pointer;
+    }
+
+    .thumbnail:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+
+      background:
+        linear-gradient(
+          to top,
+          rgba(0,0,0,.55),
+          transparent 45%
+        );
+
+      pointer-events: none;
     }
 
     .thumbnail img {
       width: 100%;
       height: 100%;
+
       object-fit: cover;
+
       display: block;
+
+      transition: transform .35s;
+    }
+
+    .card:hover .thumbnail img {
+      transform: scale(1.035);
     }
 
     .thumbnail-placeholder {
       width: 100%;
       height: 100%;
-      background: linear-gradient(145deg, #292b36, #101116);
+
+      background:
+        linear-gradient(
+          145deg,
+          #292b36,
+          #101116
+        );
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       font-size: 35px;
     }
 
     .play {
       position: absolute;
+
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%);
-      width: 55px;
-      height: 55px;
+
+      transform:
+        translate(-50%,-50%);
+
+      width: 52px;
+      height: 52px;
+
       border-radius: 50%;
-      background: rgba(255, 49, 88, .94);
+
+      background:
+        rgba(255,49,88,.95);
+
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+
+      font-size: 19px;
+
       padding-left: 3px;
+
+      z-index: 2;
+
+      box-shadow:
+        0 8px 25px rgba(255,49,88,.3);
     }
 
     .save-btn {
       position: absolute;
+
       right: 8px;
       top: 8px;
+
       width: 35px;
       height: 35px;
+
       border: 0;
+
       border-radius: 50%;
-      background: rgba(0, 0, 0, .7);
+
+      background:
+        rgba(0,0,0,.68);
+
+      backdrop-filter: blur(8px);
+
       color: #fff;
+
       font-size: 18px;
-      z-index: 3;
-      cursor: pointer;
+
+      z-index: 5;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .save-btn.saved {
-      color: #ff3158;
+      color: var(--pink);
     }
 
     .card-info {
-      padding: 11px;
+      padding: 12px;
     }
 
     .card-title {
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 750;
+
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      line-height: 1.4;
     }
 
     .card-category {
-      color: #ff5272;
-      font-size: 12px;
+      color: #ff5b78;
+
+      font-size: 10px;
+
       margin-top: 5px;
+
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      font-weight: 700;
     }
 
     .stats {
       display: flex;
-      gap: 12px;
-      margin-top: 8px;
-      color: #858792;
-      font-size: 11px;
+      align-items: center;
+
+      gap: 11px;
+
+      margin-top: 9px;
+
+      color: #777a86;
+
+      font-size: 10px;
     }
 
     .stat {
@@ -248,71 +549,159 @@
     .like-btn {
       border: 0;
       background: transparent;
+
       color: #858792;
+
       cursor: pointer;
+
       padding: 0;
     }
 
     .like-btn:hover {
-      color: #ff3158;
+      color: var(--pink);
     }
 
-    .loading,
+    /* EMPTY */
+
     .empty {
       grid-column: 1 / -1;
+
       text-align: center;
-      padding: 45px 10px;
-      color: #777a84;
+
+      padding: 55px 10px;
+
+      color: #71747f;
+
+      font-size: 13px;
     }
+
+    /* BOTTOM NAV */
 
     .bottom {
       position: fixed;
-      left: 0;
-      right: 0;
+
+      left: 50%;
+      transform: translateX(-50%);
+
       bottom: 0;
-      max-width: 650px;
-      margin: auto;
-      padding: 10px 5px calc(10px + env(safe-area-inset-bottom));
-      background: rgba(12, 13, 18, .98);
-      border-top: 1px solid #292b35;
-      display: flex;
-      justify-content: space-around;
-      z-index: 100;
+
+      width: 100%;
+      max-width: 680px;
+
+      padding:
+        9px
+        8px
+        calc(9px + env(safe-area-inset-bottom));
+
+      background:
+        rgba(10,11,16,.94);
+
+      backdrop-filter: blur(18px);
+
+      border-top:
+        1px solid rgba(255,255,255,.07);
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4,1fr);
+
+      z-index: 1000;
     }
 
     .bottom button {
       border: 0;
       background: none;
-      color: #777;
-      font-size: 12px;
-      line-height: 18px;
-      cursor: pointer;
+
+      color: #70737e;
+
+      font-size: 10px;
+
+      line-height: 17px;
+
+      transition: .2s;
+    }
+
+    .bottom button .nav-icon {
+      display: block;
+      font-size: 18px;
+      line-height: 22px;
     }
 
     .bottom button.active {
-      color: #ff3158;
+      color: var(--pink);
     }
 
+    /* PROFILE */
+
     .profile {
-      background: #15161d;
-      border: 1px solid #292b35;
-      border-radius: 20px;
-      padding: 28px 20px;
+      position: relative;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          145deg,
+          #171923,
+          #101117
+        );
+
+      border: 1px solid var(--border);
+
+      border-radius: 25px;
+
+      padding: 30px 20px;
+
       text-align: center;
     }
 
+    .profile-cover {
+      height: 95px;
+
+      margin: -30px -20px 0;
+
+      background:
+        radial-gradient(
+          circle at 50% 0,
+          rgba(255,49,88,.3),
+          transparent 60%
+        ),
+        linear-gradient(
+          135deg,
+          #211019,
+          #12141b
+        );
+    }
+
     .profile-avatar {
-      width: 90px;
-      height: 90px;
+      width: 92px;
+      height: 92px;
+
       border-radius: 50%;
-      background: #ff3158;
-      margin: 0 auto 15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ff3158,
+          #ff6b85
+        );
+
+      margin:
+        -46px auto 15px;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       font-size: 34px;
       font-weight: 800;
+
       overflow: hidden;
+
+      border:
+        4px solid #11131a;
+
+      position: relative;
     }
 
     .profile-avatar img {
@@ -327,83 +716,383 @@
     }
 
     .profile .username {
-      color: #ff5272;
-      font-size: 14px;
+      color: var(--pink2);
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 9px;
+    }
+
+    .profile-stat {
+      padding: 13px 8px;
+
+      border-radius: 14px;
+
+      background:
+        rgba(255,255,255,.035);
+
+      border: 1px solid var(--border);
+    }
+
+    .profile-stat strong {
+      display: block;
+      font-size: 17px;
+      margin-bottom: 3px;
+    }
+
+    .profile-stat span {
+      color: #777a85;
+      font-size: 10px;
+    }
+
+    /* DETAILS */
+
+    .details {
+      animation: detailsIn .22s ease;
+    }
+
+    @keyframes detailsIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      border: 0;
+
+      background:
+        rgba(255,255,255,.05);
+
+      color: #fff;
+
+      border: 1px solid var(--border);
+
+      padding: 9px 13px;
+
+      border-radius: 12px;
+
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    .details-media {
+      position: relative;
+
+      width: 100%;
+
+      aspect-ratio: 16 / 10;
+
+      border-radius: 21px;
+
+      overflow: hidden;
+
+      background: #111;
+
+      border: 1px solid var(--border);
+
+      margin-bottom: 16px;
+    }
+
+    .details-media img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .details-media-placeholder {
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 55px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #292b36,
+          #101116
+        );
+    }
+
+    .details-play {
+      position: absolute;
+
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(-50%,-50%);
+
+      width: 65px;
+      height: 65px;
+
+      border-radius: 50%;
+
+      border: 0;
+
+      background: var(--pink);
+
+      color: #fff;
+
+      font-size: 24px;
+
+      padding-left: 4px;
+
+      box-shadow:
+        0 10px 30px rgba(255,49,88,.3);
+    }
+
+    .details-category {
+      display: inline-flex;
+
+      padding: 6px 10px;
+
+      border-radius: 20px;
+
+      background:
+        rgba(255,49,88,.1);
+
+      border:
+        1px solid rgba(255,49,88,.2);
+
+      color: #ff6985;
+
+      font-size: 10px;
+
+      font-weight: 750;
+
+      text-transform: uppercase;
+
+      letter-spacing: .5px;
+
+      margin-bottom: 9px;
+    }
+
+    .details-title {
+      font-size: 24px;
+
+      line-height: 1.25;
+
+      letter-spacing: -.5px;
+
+      margin-bottom: 12px;
+    }
+
+    .details-stats {
+      display: flex;
+      gap: 16px;
+
+      color: #888b96;
+
+      font-size: 12px;
+
+      padding-bottom: 17px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      margin-bottom: 17px;
+    }
+
+    .details-actions {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 10px;
+
       margin-bottom: 18px;
     }
 
-    .profile .info {
-      color: #888;
-      font-size: 14px;
-      line-height: 24px;
+    .action-btn {
+      height: 46px;
+
+      border-radius: 14px;
+
+      border: 1px solid var(--border);
+
+      background:
+        rgba(255,255,255,.045);
+
+      color: #fff;
+
+      font-weight: 700;
+
+      font-size: 13px;
     }
+
+    .action-btn.primary {
+      background: var(--pink);
+
+      border-color: var(--pink);
+
+      box-shadow:
+        0 8px 25px rgba(255,49,88,.2);
+    }
+
+    .action-btn.saved {
+      color: var(--pink);
+    }
+
+    /* PLAYER */
 
     .player {
       position: fixed;
+
       inset: 0;
+
       z-index: 9999;
+
       background: #000;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
     }
 
     .player video {
       width: 100%;
-      max-width: 700px;
+
+      max-width: 760px;
+
       max-height: 90vh;
+
       background: #000;
     }
 
     .close-player {
       position: fixed;
+
       top: 15px;
       right: 15px;
-      width: 40px;
-      height: 40px;
+
+      width: 42px;
+      height: 42px;
+
       border: 0;
+
       border-radius: 50%;
-      background: rgba(255, 255, 255, .15);
+
+      background:
+        rgba(255,255,255,.14);
+
+      backdrop-filter: blur(10px);
+
       color: #fff;
+
       font-size: 25px;
+
       z-index: 10000;
-      cursor: pointer;
+    }
+
+    @media (max-width: 380px) {
+
+      .app {
+        padding-left: 11px;
+        padding-right: 11px;
+      }
+
+      .grid {
+        gap: 9px;
+      }
+
+      .card-info {
+        padding: 10px;
+      }
+
+      .details-title {
+        font-size: 21px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<div class="app">
+  <div class="app">
 
-  <div class="header">
-    <div class="logo">Desi <span>Hub TV</span></div>
-    <div class="avatar" id="avatar">D</div>
+    <div class="header">
+
+      <div class="brand">
+
+        <div class="brand-logo">
+          DH
+        </div>
+
+        <div class="logo-text">
+          Desi <span>Hub TV</span>
+        </div>
+
+      </div>
+
+      <div
+        class="avatar"
+        id="avatar"
+      >
+        D
+      </div>
+
+    </div>
+
+    <div id="content"></div>
+
   </div>
 
-  <div id="content"></div>
 
-</div>
+  <div class="bottom">
 
-<div class="bottom">
+    <button
+      id="navHome"
+      class="active"
+    >
+      <span class="nav-icon">🏠</span>
+      Home
+    </button>
 
-  <button id="navHome" class="active">
-    🏠<br>Home
-  </button>
+    <button
+      id="navViral"
+    >
+      <span class="nav-icon">🔥</span>
+      Viral
+    </button>
 
-  <button id="navViral">
-    🔥<br>Viral
-  </button>
+    <button
+      id="navSaved"
+    >
+      <span class="nav-icon">❤️</span>
+      Saved
+    </button>
 
-  <button id="navSaved">
-    ❤️<br>Saved
-  </button>
+    <button
+      id="navProfile"
+    >
+      <span class="nav-icon">👤</span>
+      Profile
+    </button>
 
-  <button id="navProfile">
-    👤<br>Profile
-  </button>
+  </div>
 
-</div>
 
 <script>
 
@@ -413,23 +1102,41 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_CgovIrCCYoka2GeHzjgLZg_lYbdy-D8";
 
-const tg = window.Telegram?.WebApp;
+
+const tg =
+  window.Telegram?.WebApp;
+
 
 if (tg) {
   tg.ready();
   tg.expand();
 }
 
+
 const telegramUser =
   tg?.initDataUnsafe?.user || null;
+
 
 const userId =
   telegramUser?.id || null;
 
+
 let videos = [];
-let savedIds = new Set();
-let currentPage = "home";
-let selectedCategory = "All";
+
+let savedIds =
+  new Set();
+
+let currentPage =
+  "home";
+
+let selectedCategory =
+  "All";
+
+let selectedVideo =
+  null;
+
+
+/* TELEGRAM PROFILE */
 
 function setupTelegramProfile() {
 
@@ -437,7 +1144,9 @@ function setupTelegramProfile() {
     document.getElementById("avatar");
 
   if (!telegramUser) {
+
     avatar.textContent = "D";
+
     return;
   }
 
@@ -453,145 +1162,245 @@ function setupTelegramProfile() {
   } else {
 
     avatar.textContent =
-      (telegramUser.first_name || "D")
-        .charAt(0)
-        .toUpperCase();
+      (
+        telegramUser.first_name ||
+        "D"
+      )
+      .charAt(0)
+      .toUpperCase();
+
   }
 }
 
+
 setupTelegramProfile();
+
+
+/* LOAD VIDEOS */
 
 async function loadVideos() {
 
   try {
 
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/videos?select=*&order=created_at.desc`,
-      {
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/videos?select=*&order=created_at.desc`,
+        {
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization":
+              `Bearer ${SUPABASE_KEY}`
+          }
         }
-      }
-    );
+      );
+
 
     if (!response.ok) {
-      throw new Error(await response.text());
+
+      throw new Error(
+        await response.text()
+      );
+
     }
 
-    videos = await response.json();
+
+    videos =
+      await response.json();
 
   } catch (error) {
 
-    console.error("VIDEO LOAD ERROR:", error);
+    console.error(
+      "VIDEO LOAD ERROR:",
+      error
+    );
+
     videos = [];
   }
 }
 
+
+/* LOAD SAVED */
+
 async function loadSaved() {
 
   if (!userId) {
-    savedIds = new Set();
+
+    savedIds =
+      new Set();
+
     return;
   }
+
 
   try {
 
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&select=video_id`,
-      {
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&select=video_id`,
+        {
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization":
+              `Bearer ${SUPABASE_KEY}`
+          }
         }
-      }
-    );
+      );
+
 
     if (!response.ok) {
-      throw new Error(await response.text());
+
+      throw new Error(
+        await response.text()
+      );
+
     }
 
-    const data = await response.json();
+
+    const data =
+      await response.json();
+
 
     savedIds =
-      new Set(data.map(item => Number(item.video_id)));
+      new Set(
+        data.map(
+          item =>
+            Number(item.video_id)
+        )
+      );
 
   } catch (error) {
 
-    console.error("SAVED LOAD ERROR:", error);
-    savedIds = new Set();
+    console.error(
+      "SAVED LOAD ERROR:",
+      error
+    );
+
+    savedIds =
+      new Set();
   }
 }
 
-async function toggleSave(videoId) {
+
+/* SAVE / UNSAVE */
+
+async function toggleSave(
+  videoId
+) {
 
   if (!userId) {
-    alert("Please open this app from Telegram.");
+
+    alert(
+      "Please open this app from Telegram."
+    );
+
     return;
   }
 
-  const numericId = Number(videoId);
+
+  const numericId =
+    Number(videoId);
+
 
   if (savedIds.has(numericId)) {
 
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&video_id=eq.${numericId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&video_id=eq.${numericId}`,
+        {
+          method: "DELETE",
+
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization":
+              `Bearer ${SUPABASE_KEY}`
+          }
         }
-      }
-    );
+      );
+
 
     if (response.ok) {
-      savedIds.delete(numericId);
+
+      savedIds.delete(
+        numericId
+      );
+
     }
 
   } else {
 
-    const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/saved_videos`,
-      {
-        method: "POST",
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`,
-          "Content-Type": "application/json",
-          "Prefer": "return=minimal"
-        },
-        body: JSON.stringify({
-          telegram_user_id: userId,
-          video_id: numericId
-        })
-      }
-    );
+    const response =
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/saved_videos`,
+        {
+          method: "POST",
+
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization":
+              `Bearer ${SUPABASE_KEY}`,
+            "Content-Type":
+              "application/json",
+            "Prefer":
+              "return=minimal"
+          },
+
+          body:
+            JSON.stringify({
+              telegram_user_id:
+                userId,
+
+              video_id:
+                numericId
+            })
+        }
+      );
+
 
     if (response.ok) {
-      savedIds.add(numericId);
+
+      savedIds.add(
+        numericId
+      );
+
     }
+
   }
+
 
   render();
 }
 
-async function addView(videoId) {
+
+/* VIEW */
+
+async function addView(
+  videoId
+) {
 
   try {
 
     const video =
-      videos.find(v => Number(v.id) === Number(videoId));
+      videos.find(
+        v =>
+          Number(v.id) ===
+          Number(videoId)
+      );
+
 
     if (!video) return;
+
 
     const currentViews =
       Number(video.views || 0);
 
+
     const newViews =
       currentViews + 1;
 
-    video.views = newViews;
+
+    video.views =
+      newViews;
+
 
     await fetch(
       `${SUPABASE_URL}/rest/v1/videos?id=eq.${videoId}`,
@@ -600,41 +1409,64 @@ async function addView(videoId) {
 
         headers: {
           "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`,
-          "Content-Type": "application/json",
-          "Prefer": "return=minimal"
+          "Authorization":
+            `Bearer ${SUPABASE_KEY}`,
+          "Content-Type":
+            "application/json",
+          "Prefer":
+            "return=minimal"
         },
 
-        body: JSON.stringify({
-          views: newViews
-        })
+        body:
+          JSON.stringify({
+            views: newViews
+          })
       }
     );
 
   } catch (error) {
 
-    console.error("VIEW ERROR:", error);
+    console.error(
+      "VIEW ERROR:",
+      error
+    );
   }
 }
 
-async function addLike(videoId) {
+
+/* LIKE */
+
+async function addLike(
+  videoId
+) {
 
   try {
 
     const video =
-      videos.find(v => Number(v.id) === Number(videoId));
+      videos.find(
+        v =>
+          Number(v.id) ===
+          Number(videoId)
+      );
+
 
     if (!video) return;
+
 
     const currentLikes =
       Number(video.likes || 0);
 
+
     const newLikes =
       currentLikes + 1;
 
-    video.likes = newLikes;
+
+    video.likes =
+      newLikes;
+
 
     render();
+
 
     await fetch(
       `${SUPABASE_URL}/rest/v1/videos?id=eq.${videoId}`,
@@ -643,121 +1475,226 @@ async function addLike(videoId) {
 
         headers: {
           "apikey": SUPABASE_KEY,
-          "Authorization": `Bearer ${SUPABASE_KEY}`,
-          "Content-Type": "application/json",
-          "Prefer": "return=minimal"
+          "Authorization":
+            `Bearer ${SUPABASE_KEY}`,
+          "Content-Type":
+            "application/json",
+          "Prefer":
+            "return=minimal"
         },
 
-        body: JSON.stringify({
-          likes: newLikes
-        })
+        body:
+          JSON.stringify({
+            likes: newLikes
+          })
       }
     );
 
   } catch (error) {
 
-    console.error("LIKE ERROR:", error);
+    console.error(
+      "LIKE ERROR:",
+      error
+    );
   }
 }
 
+
+/* MAIN RENDER */
+
 function render() {
 
-  const content =
-    document.getElementById("content");
+  if (
+    currentPage ===
+    "profile"
+  ) {
 
-  if (currentPage === "profile") {
     renderProfile();
+
     return;
   }
 
-  let list = videos;
 
-  if (currentPage === "viral") {
+  if (
+    currentPage ===
+    "details"
+  ) {
 
-    list = videos.filter(
-      video => video.category === "Viral"
+    renderDetails(
+      selectedVideo
     );
+
+    return;
   }
 
-  if (currentPage === "saved") {
 
-    list = videos.filter(
-      video => savedIds.has(Number(video.id))
+  const content =
+    document.getElementById(
+      "content"
     );
+
+
+  let list =
+    videos;
+
+
+  if (
+    currentPage ===
+    "viral"
+  ) {
+
+    list =
+      videos.filter(
+        video =>
+          video.category ===
+          "Viral"
+      );
+
   }
+
+
+  if (
+    currentPage ===
+    "saved"
+  ) {
+
+    list =
+      videos.filter(
+        video =>
+          savedIds.has(
+            Number(video.id)
+          )
+      );
+
+  }
+
+
+  const heading =
+    currentPage === "viral"
+      ? "🔥 Viral Videos"
+      : currentPage === "saved"
+      ? "❤️ Saved Videos"
+      : "Watch. Discover. Enjoy.";
+
+
+  const description =
+    currentPage === "viral"
+      ? "Trending videos from Desi Hub TV."
+      : currentPage === "saved"
+      ? "Your personal saved collection."
+      : "Fresh reels and viral videos in one place.";
+
 
   content.innerHTML = `
 
     <div class="hero">
 
+      <div class="hero-badge">
+        ✦ DESI HUB TV
+      </div>
+
       <h1>
-        ${
-          currentPage === "viral"
-            ? "🔥 Viral Videos"
-            : currentPage === "saved"
-            ? "❤️ Saved Videos"
-            : "Watch. Discover. Enjoy."
-        }
+        ${heading}
       </h1>
 
       <p>
-        ${
-          currentPage === "viral"
-            ? "Trending videos from Desi Hub TV."
-            : currentPage === "saved"
-            ? "Your saved videos."
-            : "Fresh reels and viral videos in one place."
-        }
+        ${description}
       </p>
 
     </div>
 
+
     ${
       currentPage !== "saved"
-      ? `
-        <input
-          id="search"
-          class="search"
-          type="text"
-          placeholder="🔎 Search videos..."
-        >
-      `
-      : ""
+        ? `
+          <div class="search-wrap">
+
+            <span class="search-icon">
+              🔎
+            </span>
+
+            <input
+              id="search"
+              class="search"
+              type="text"
+              placeholder="Search videos..."
+            >
+
+          </div>
+        `
+        : ""
     }
+
 
     ${
       currentPage === "home"
-      ? `
-        <div class="categories">
+        ? `
+          <div class="categories">
 
-          <button
-            class="cat ${selectedCategory === "All" ? "active" : ""}"
-            data-category="All"
-          >All</button>
+            <button
+              class="cat ${
+                selectedCategory === "All"
+                  ? "active"
+                  : ""
+              }"
+              data-category="All"
+            >
+              All
+            </button>
 
-          <button
-            class="cat ${selectedCategory === "Instagram" ? "active" : ""}"
-            data-category="Instagram"
-          >Instagram</button>
 
-          <button
-            class="cat ${selectedCategory === "TikTok" ? "active" : ""}"
-            data-category="TikTok"
-          >TikTok</button>
+            <button
+              class="cat ${
+                selectedCategory === "Instagram"
+                  ? "active"
+                  : ""
+              }"
+              data-category="Instagram"
+            >
+              Instagram
+            </button>
 
-          <button
-            class="cat ${selectedCategory === "Viral" ? "active" : ""}"
-            data-category="Viral"
-          >Viral</button>
 
-        </div>
-      `
-      : ""
+            <button
+              class="cat ${
+                selectedCategory === "TikTok"
+                  ? "active"
+                  : ""
+              }"
+              data-category="TikTok"
+            >
+              TikTok
+            </button>
+
+
+            <button
+              class="cat ${
+                selectedCategory === "Viral"
+                  ? "active"
+                  : ""
+              }"
+              data-category="Viral"
+            >
+              Viral
+            </button>
+
+          </div>
+        `
+        : ""
     }
+
 
     <div class="titlebar">
 
-      <h2>Videos</h2>
+      <h2>
+        ${
+          currentPage === "viral"
+            ? "Trending Now"
+            : currentPage === "saved"
+            ? "Your Collection"
+            : "Latest Videos"
+        }
+      </h2>
 
       <span class="count">
         ${list.length} videos
@@ -765,185 +1702,543 @@ function render() {
 
     </div>
 
-    <div id="videoGrid" class="grid"></div>
+
+    <div
+      id="videoGrid"
+      class="grid"
+    ></div>
+
   `;
 
-  let filtered = list;
 
-  if (currentPage === "home") {
+  let filtered =
+    list;
 
-    filtered = list.filter(video => {
 
-      return selectedCategory === "All" ||
-        video.category === selectedCategory;
+  if (
+    currentPage ===
+    "home"
+  ) {
 
-    });
+    filtered =
+      list.filter(
+        video =>
+          selectedCategory ===
+          "All" ||
+          video.category ===
+          selectedCategory
+      );
+
   }
 
-  renderGrid(filtered);
+
+  renderGrid(
+    filtered
+  );
+
 
   const search =
-    document.getElementById("search");
+    document.getElementById(
+      "search"
+    );
+
 
   if (search) {
 
-    search.addEventListener("input", () => {
+    search.addEventListener(
+      "input",
+      () => {
 
-      const term =
-        search.value.toLowerCase();
-
-      const results =
-        filtered.filter(video =>
-          (video.title || "")
+        const term =
+          search.value
             .toLowerCase()
-            .includes(term)
+            .trim();
+
+
+        const results =
+          filtered.filter(
+            video =>
+              (
+                video.title ||
+                ""
+              )
+              .toLowerCase()
+              .includes(term)
+          );
+
+
+        renderGrid(
+          results
         );
 
-      renderGrid(results);
+      }
+    );
 
-    });
   }
+
 
   document
     .querySelectorAll(".cat")
     .forEach(button => {
 
-      button.addEventListener("click", () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-        selectedCategory =
-          button.dataset.category;
+          selectedCategory =
+            button.dataset.category;
 
-        render();
+          render();
 
-      });
+        }
+      );
 
     });
 }
 
-function renderGrid(list) {
+
+/* VIDEO GRID */
+
+function renderGrid(
+  list
+) {
 
   const grid =
-    document.getElementById("videoGrid");
+    document.getElementById(
+      "videoGrid"
+    );
+
 
   if (!grid) return;
 
+
   if (!list.length) {
 
-    grid.innerHTML =
-      `<div class="empty">
+    grid.innerHTML = `
+      <div class="empty">
+        🎬<br><br>
         No videos found.
-      </div>`;
+      </div>
+    `;
 
     return;
   }
 
-  grid.innerHTML = list.map(video => {
 
-    const isSaved =
-      savedIds.has(Number(video.id));
+  grid.innerHTML =
+    list.map(
+      video => {
 
-    const thumbnail =
-      video.thumbnail_file_id
-        ? `/api/thumbnail?file_id=${encodeURIComponent(video.thumbnail_file_id)}`
-        : "";
+        const isSaved =
+          savedIds.has(
+            Number(video.id)
+          );
 
-    return `
 
-      <div class="card">
+        const thumbnail =
+          video.thumbnail_file_id
+            ? `/api/thumbnail?file_id=${encodeURIComponent(
+                video.thumbnail_file_id
+              )}`
+            : "";
 
-        <div
-          class="thumbnail"
-          onclick="playVideo('${escapeAttr(video.file_id)}', ${Number(video.id)})"
-        >
 
-          ${
-            thumbnail
-              ? `
-                <img
-                  src="${thumbnail}"
-                  alt=""
-                  loading="lazy"
-                >
-              `
-              : `
-                <div class="thumbnail-placeholder">
-                  🎬
-                </div>
-              `
-          }
+        return `
 
-          <button
-            class="save-btn ${isSaved ? "saved" : ""}"
-            onclick="event.stopPropagation(); toggleSave(${Number(video.id)})"
+          <div
+            class="card"
+            onclick="openDetails(
+              ${Number(video.id)}
+            )"
           >
-            ${isSaved ? "♥" : "♡"}
-          </button>
 
-          <div class="play">
-            ▶
+            <div class="thumbnail">
+
+              ${
+                thumbnail
+                  ? `
+                    <img
+                      src="${thumbnail}"
+                      alt=""
+                      loading="lazy"
+                    >
+                  `
+                  : `
+                    <div
+                      class="thumbnail-placeholder"
+                    >
+                      🎬
+                    </div>
+                  `
+              }
+
+
+              <button
+                class="save-btn ${
+                  isSaved
+                    ? "saved"
+                    : ""
+                }"
+                onclick="
+                  event.stopPropagation();
+                  toggleSave(
+                    ${Number(video.id)}
+                  )
+                "
+              >
+                ${
+                  isSaved
+                    ? "♥"
+                    : "♡"
+                }
+              </button>
+
+
+              <div class="play">
+                ▶
+              </div>
+
+            </div>
+
+
+            <div class="card-info">
+
+              <div class="card-title">
+                ${escapeHtml(
+                  video.title ||
+                  "Untitled Video"
+                )}
+              </div>
+
+
+              <div class="card-category">
+                ${escapeHtml(
+                  video.category ||
+                  "Other"
+                )}
+              </div>
+
+
+              <div class="stats">
+
+                <span class="stat">
+                  👁
+                  ${formatNumber(
+                    video.views || 0
+                  )}
+                </span>
+
+
+                <button
+                  class="like-btn stat"
+                  onclick="
+                    event.stopPropagation();
+                    addLike(
+                      ${Number(video.id)}
+                    )
+                  "
+                >
+                  ❤️
+                  ${formatNumber(
+                    video.likes || 0
+                  )}
+                </button>
+
+              </div>
+
+            </div>
+
           </div>
 
-        </div>
+        `;
 
-        <div class="card-info">
+      }
+    )
+    .join("");
+}
 
-          <div class="card-title">
-            ${escapeHtml(video.title || "Untitled")}
-          </div>
 
-          <div class="card-category">
-            ${escapeHtml(video.category || "Other")}
-          </div>
+/* OPEN DETAILS */
 
-          <div class="stats">
+function openDetails(
+  videoId
+) {
 
-            <span class="stat">
-              👁 ${formatNumber(video.views || 0)}
-            </span>
+  const video =
+    videos.find(
+      v =>
+        Number(v.id) ===
+        Number(videoId)
+    );
 
-            <button
-              class="like-btn stat"
-              onclick="addLike(${Number(video.id)})"
-            >
-              ❤️ ${formatNumber(video.likes || 0)}
-            </button>
 
-          </div>
+  if (!video) return;
 
-        </div>
+
+  selectedVideo =
+    video;
+
+
+  currentPage =
+    "details";
+
+
+  document
+    .querySelectorAll(
+      ".bottom button"
+    )
+    .forEach(
+      button =>
+        button.classList.remove(
+          "active"
+        )
+    );
+
+
+  renderDetails(
+    video
+  );
+}
+
+
+/* DETAILS PAGE */
+
+function renderDetails(
+  video
+) {
+
+  const content =
+    document.getElementById(
+      "content"
+    );
+
+
+  if (!video) {
+
+    currentPage =
+      "home";
+
+    render();
+
+    return;
+  }
+
+
+  const isSaved =
+    savedIds.has(
+      Number(video.id)
+    );
+
+
+  const thumbnail =
+    video.thumbnail_file_id
+      ? `/api/thumbnail?file_id=${encodeURIComponent(
+          video.thumbnail_file_id
+        )}`
+      : "";
+
+
+  content.innerHTML = `
+
+    <div class="details">
+
+      <button
+        class="back-btn"
+        onclick="goBack()"
+      >
+        ← Back
+      </button>
+
+
+      <div class="details-media">
+
+        ${
+          thumbnail
+            ? `
+              <img
+                src="${thumbnail}"
+                alt=""
+              >
+            `
+            : `
+              <div
+                class="details-media-placeholder"
+              >
+                🎬
+              </div>
+            `
+        }
+
+
+        <button
+          class="details-play"
+          onclick="
+            playVideo(
+              '${escapeAttr(video.file_id)}',
+              ${Number(video.id)}
+            )
+          "
+        >
+          ▶
+        </button>
 
       </div>
-    `;
 
-  }).join("");
+
+      <div class="details-category">
+        ${escapeHtml(
+          video.category ||
+          "Other"
+        )}
+      </div>
+
+
+      <h1 class="details-title">
+        ${escapeHtml(
+          video.title ||
+          "Untitled Video"
+        )}
+      </h1>
+
+
+      <div class="details-stats">
+
+        <span>
+          👁
+          ${formatNumber(
+            video.views || 0
+          )}
+          views
+        </span>
+
+
+        <span>
+          ❤️
+          ${formatNumber(
+            video.likes || 0
+          )}
+          likes
+        </span>
+
+      </div>
+
+
+      <div class="details-actions">
+
+        <button
+          class="action-btn primary"
+          onclick="
+            playVideo(
+              '${escapeAttr(video.file_id)}',
+              ${Number(video.id)}
+            )
+          "
+        >
+          ▶ Watch Video
+        </button>
+
+
+        <button
+          class="action-btn ${
+            isSaved
+              ? "saved"
+              : ""
+          }"
+          onclick="
+            toggleSave(
+              ${Number(video.id)}
+            )
+          "
+        >
+          ${
+            isSaved
+              ? "♥ Saved"
+              : "♡ Save Video"
+          }
+        </button>
+
+      </div>
+
+
+      <div
+        style="
+          color:#737680;
+          font-size:12px;
+          line-height:1.6;
+        "
+      >
+        Enjoy this video on Desi Hub TV.
+        More fresh and viral content is
+        coming soon.
+      </div>
+
+    </div>
+
+  `;
 }
+
+
+/* BACK */
+
+function goBack() {
+
+  currentPage =
+    "home";
+
+  selectedVideo =
+    null;
+
+  setActive(
+    "navHome"
+  );
+
+  render();
+}
+
+
+/* PROFILE */
 
 function renderProfile() {
 
   const content =
-    document.getElementById("content");
+    document.getElementById(
+      "content"
+    );
+
 
   const firstName =
-    telegramUser?.first_name || "Telegram User";
+    telegramUser?.first_name ||
+    "Telegram User";
+
 
   const lastName =
-    telegramUser?.last_name || "";
+    telegramUser?.last_name ||
+    "";
+
 
   const fullName =
     `${firstName} ${lastName}`.trim();
+
 
   const username =
     telegramUser?.username
       ? `@${telegramUser.username}`
       : "Telegram account";
 
-  let profileImage = "";
 
-  if (telegramUser?.photo_url) {
+  let profileImage =
+    "";
+
+
+  if (
+    telegramUser?.photo_url
+  ) {
 
     profileImage = `
       <img
-        src="${escapeAttr(telegramUser.photo_url)}"
+        src="${escapeAttr(
+          telegramUser.photo_url
+        )}"
         alt="Telegram Profile"
       >
     `;
@@ -952,55 +2247,114 @@ function renderProfile() {
 
     profileImage =
       escapeHtml(
-        firstName.charAt(0).toUpperCase()
+        firstName
+          .charAt(0)
+          .toUpperCase()
       );
+
   }
+
 
   content.innerHTML = `
 
     <div class="profile">
 
+      <div class="profile-cover"></div>
+
+
       <div class="profile-avatar">
         ${profileImage}
       </div>
 
+
       <h2>
-        ${escapeHtml(fullName)}
+        ${escapeHtml(
+          fullName
+        )}
       </h2>
 
+
       <div class="username">
-        ${escapeHtml(username)}
+        ${escapeHtml(
+          username
+        )}
       </div>
 
-      <div class="info">
-        ❤️ Saved Videos: ${savedIds.size}<br>
-        🎬 Total Videos: ${videos.length}
+
+      <div class="profile-stats">
+
+        <div class="profile-stat">
+
+          <strong>
+            ${savedIds.size}
+          </strong>
+
+          <span>
+            Saved Videos
+          </span>
+
+        </div>
+
+
+        <div class="profile-stat">
+
+          <strong>
+            ${videos.length}
+          </strong>
+
+          <span>
+            Total Videos
+          </span>
+
+        </div>
+
       </div>
 
     </div>
+
   `;
 }
 
-function playVideo(fileId, videoId) {
 
-  addView(videoId);
+/* VIDEO PLAYER */
+
+function playVideo(
+  fileId,
+  videoId
+) {
+
+  addView(
+    videoId
+  );
+
 
   const url =
-    `/api/video?file_id=${encodeURIComponent(fileId)}`;
+    `/api/video?file_id=${encodeURIComponent(
+      fileId
+    )}`;
+
 
   const player =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  player.className = "player";
+
+  player.className =
+    "player";
+
 
   player.innerHTML = `
 
     <button
       class="close-player"
-      onclick="this.parentElement.remove()"
+      onclick="
+        this.parentElement.remove()
+      "
     >
       ×
     </button>
+
 
     <video
       controls
@@ -1018,103 +2372,257 @@ function playVideo(fileId, videoId) {
 
   `;
 
-  document.body.appendChild(player);
+
+  document.body.appendChild(
+    player
+  );
+
 
   const video =
-    player.querySelector("video");
-
-  video.play().catch(() => {});
-}
-
-function setActive(buttonId) {
-
-  document
-    .querySelectorAll(".bottom button")
-    .forEach(button =>
-      button.classList.remove("active")
+    player.querySelector(
+      "video"
     );
 
+
+  video
+    .play()
+    .catch(
+      () => {}
+    );
+}
+
+
+/* ACTIVE NAV */
+
+function setActive(
+  buttonId
+) {
+
   document
-    .getElementById(buttonId)
-    .classList.add("active");
+    .querySelectorAll(
+      ".bottom button"
+    )
+    .forEach(
+      button =>
+        button.classList.remove(
+          "active"
+        )
+    );
+
+
+  const button =
+    document.getElementById(
+      buttonId
+    );
+
+
+  if (button) {
+
+    button.classList.add(
+      "active"
+    );
+
+  }
 }
 
-document
-  .getElementById("navHome")
-  .addEventListener("click", () => {
 
-    currentPage = "home";
-
-    setActive("navHome");
-
-    render();
-  });
+/* NAVIGATION */
 
 document
-  .getElementById("navViral")
-  .addEventListener("click", () => {
+  .getElementById(
+    "navHome"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-    currentPage = "viral";
+      currentPage =
+        "home";
 
-    setActive("navViral");
+      selectedVideo =
+        null;
 
-    render();
-  });
+      setActive(
+        "navHome"
+      );
+
+      render();
+
+    }
+  );
+
 
 document
-  .getElementById("navSaved")
-  .addEventListener("click", () => {
+  .getElementById(
+    "navViral"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-    currentPage = "saved";
+      currentPage =
+        "viral";
 
-    setActive("navSaved");
+      selectedVideo =
+        null;
 
-    render();
-  });
+      setActive(
+        "navViral"
+      );
+
+      render();
+
+    }
+  );
+
 
 document
-  .getElementById("navProfile")
-  .addEventListener("click", () => {
+  .getElementById(
+    "navSaved"
+  )
+  .addEventListener(
+    "click",
+    () => {
 
-    currentPage = "profile";
+      currentPage =
+        "saved";
 
-    setActive("navProfile");
+      selectedVideo =
+        null;
 
-    render();
-  });
+      setActive(
+        "navSaved"
+      );
 
-function formatNumber(number) {
+      render();
 
-  number = Number(number || 0);
+    }
+  );
 
-  if (number >= 1000000) {
-    return (number / 1000000).toFixed(1) + "M";
+
+document
+  .getElementById(
+    "navProfile"
+  )
+  .addEventListener(
+    "click",
+    () => {
+
+      currentPage =
+        "profile";
+
+      selectedVideo =
+        null;
+
+      setActive(
+        "navProfile"
+      );
+
+      render();
+
+    }
+  );
+
+
+/* FORMAT NUMBER */
+
+function formatNumber(
+  number
+) {
+
+  number =
+    Number(
+      number || 0
+    );
+
+
+  if (
+    number >=
+    1000000
+  ) {
+
+    return (
+      number / 1000000
+    )
+    .toFixed(1) +
+    "M";
+
   }
 
-  if (number >= 1000) {
-    return (number / 1000).toFixed(1) + "K";
+
+  if (
+    number >=
+    1000
+  ) {
+
+    return (
+      number / 1000
+    )
+    .toFixed(1) +
+    "K";
+
   }
 
-  return String(number);
+
+  return String(
+    number
+  );
 }
 
-function escapeHtml(text) {
+
+/* ESCAPE HTML */
+
+function escapeHtml(
+  text
+) {
 
   return String(text)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 }
 
-function escapeAttr(text) {
+
+/* ESCAPE ATTRIBUTE */
+
+function escapeAttr(
+  text
+) {
 
   return String(text)
-    .replaceAll("\\", "\\\\")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll(
+      "\\",
+      "\\\\"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 }
+
+
+/* START */
 
 async function startApp() {
 
@@ -1124,6 +2632,7 @@ async function startApp() {
 
   render();
 }
+
 
 startApp();
 

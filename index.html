@@ -1,436 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Desi Hub TV</title>
-
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #0b0b0f;
-      color: #fff;
-      min-height: 100vh;
-    }
-
-    .app {
-      max-width: 600px;
-      margin: auto;
-      padding: 18px 14px 90px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .logo {
-      font-size: 22px;
-      font-weight: 800;
-    }
-
-    .logo span {
-      color: #ff3158;
-    }
-
-    .user {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #22232b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, #24101a, #14151d);
-      border: 1px solid #292b35;
-      border-radius: 20px;
-      padding: 22px;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-size: 28px;
-      margin-bottom: 8px;
-    }
-
-    .hero p {
-      color: #a7a8b0;
-      font-size: 14px;
-    }
-
-    .search {
-      width: 100%;
-      background: #17181f;
-      border: 1px solid #292b35;
-      color: white;
-      padding: 14px 16px;
-      border-radius: 14px;
-      outline: none;
-      margin-bottom: 18px;
-      font-size: 15px;
-    }
-
-    .categories {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      margin-bottom: 22px;
-      scrollbar-width: none;
-    }
-
-    .categories::-webkit-scrollbar {
-      display: none;
-    }
-
-    .categories button {
-      border: 1px solid #30313b;
-      background: #17181f;
-      color: #ccc;
-      padding: 9px 14px;
-      border-radius: 20px;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .categories button.active {
-      background: #ff3158;
-      border-color: #ff3158;
-      color: white;
-    }
-
-    .section-title {
-      font-size: 19px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .card {
-      background: #15161d;
-      border: 1px solid #292b35;
-      border-radius: 16px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform .15s ease;
-    }
-
-    .card:active {
-      transform: scale(.97);
-    }
-
-    .thumb {
-      aspect-ratio: 9 / 13;
-      background: linear-gradient(145deg, #242631, #111217);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 42px;
-    }
-
-    .info {
-      padding: 11px;
-    }
-
-    .title {
-      font-size: 14px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .category {
-      color: #ff5474;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    .empty,
-    .loading {
-      text-align: center;
-      color: #8f9098;
-      padding: 40px 10px;
-      grid-column: 1 / -1;
-    }
-
-    .bottom {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      max-width: 600px;
-      margin: auto;
-      background: rgba(15, 15, 20, .96);
-      border-top: 1px solid #292b35;
-      display: flex;
-      justify-content: space-around;
-      padding: 12px 5px calc(12px + env(safe-area-inset-bottom));
-    }
-
-    .bottom button {
-      background: none;
-      border: 0;
-      color: #888;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .bottom button.active {
-      color: #ff3158;
-    }
-
-    @media (max-width: 380px) {
-      .hero h1 {
-        font-size: 24px;
-      }
-
-      .grid {
-        gap: 9px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="app">
-
-    <div class="header">
-      <div class="logo">Desi <span>Hub TV</span></div>
-      <div class="user" id="user">D</div>
-    </div>
-
-    <div class="hero">
-      <h1>Watch. Discover. Enjoy.</h1>
-      <p>Fresh reels and viral videos in one place.</p>
-    </div>
-
-    <input
-      id="search"
-      class="search"
-      type="text"
-      placeholder="🔎 Search videos..."
-    />
-
-    <div class="categories">
-      <button class="active" data-cat="All">All</button>
-      <button data-cat="Instagram">Instagram</button>
-      <button data-cat="TikTok">TikTok</button>
-      <button data-cat="Viral">Viral</button>
-    </div>
-
-    <div class="section-title">Latest Videos</div>
-
-    <div id="videos" class="grid">
-      <div class="loading">Loading videos...</div>
-    </div>
-
-  </div>
-
-  <div class="bottom">
-    <button class="active">🏠<br>Home</button>
-    <button>🔥<br>Viral</button>
-    <button>❤️<br>Saved</button>
-    <button>👤<br>Profile</button>
-  </div>
-
-<script>
-
-  const SUPABASE_URL =
-    "https://icievlmrfbanhoaqvtwz.supabase.co";
-
-  const SUPABASE_KEY =
-    "sb_publishable_CgovIrCCYoka2GeHzjgLZg_lYbdy-D8";
-
-  const tg = window.Telegram?.WebApp;
-
-  if (tg) {
-    tg.ready();
-    tg.expand();
-
-    const user = tg.initDataUnsafe?.user;
-
-    if (user) {
-      document.getElementById("user").textContent =
-        (user.first_name || "D").charAt(0).toUpperCase();
-    }
-  }
-
-  let allVideos = [];
-  let selectedCategory = "All";
-
-  async function loadVideos() {
-
-    const container = document.getElementById("videos");
-
-    try {
-
-      const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/videos?select=*&order=created_at.desc`,
-        {
-          method: "GET",
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization": `Bearer ${SUPABASE_KEY}`,
-            "Content-Type": "application/json"
-          }
-        }
-      );
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
-      }
-
-      allVideos = await response.json();
-
-      renderVideos();
-
-    } catch (error) {
-
-      console.error("Supabase error:", error);
-
-      container.innerHTML =
-        `<div class="empty">
-          Unable to load videos.
-        </div>`;
-    }
-  }
-
-  function renderVideos() {
-
-    const container = document.getElementById("videos");
-
-    const search =
-      document.getElementById("search").value.toLowerCase();
-
-    const filtered = allVideos.filter(video => {
-
-      const categoryMatch =
-        selectedCategory === "All" ||
-        video.category === selectedCategory;
-
-      const searchMatch =
-        (video.title || "").toLowerCase().includes(search);
-
-      return categoryMatch && searchMatch;
-    });
-
-    if (!filtered.length) {
-
-      container.innerHTML =
-        `<div class="empty">
-          No videos found.
-        </div>`;
-
-      return;
-    }
-
-    container.innerHTML = filtered.map(video => `
-
-      <div class="card" onclick="openVideo('${video.file_id}')">
-
-        <div class="thumb">
-          ▶️
-        </div>
-
-        <div class="info">
-
-          <div class="title">
-            ${escapeHtml(video.title || "Untitled")}
-          </div>
-
-          <div class="category">
-            ${escapeHtml(video.category || "Other")}
-          </div>
-
-        </div>
+function openVideo(fileId) {
+
+  const videoUrl =
+    `/api/video?file_id=${encodeURIComponent(fileId)}`;
+
+  const player = document.createElement("div");
+
+  player.innerHTML = `
+    <div style="
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background:#000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    ">
+
+      <div style="
+        width:100%;
+        max-width:600px;
+        position:relative;
+      ">
+
+        <button
+          onclick="this.parentElement.parentElement.remove()"
+          style="
+            position:absolute;
+            right:8px;
+            top:-45px;
+            width:38px;
+            height:38px;
+            border:0;
+            border-radius:50%;
+            background:#222;
+            color:#fff;
+            font-size:20px;
+            z-index:2;
+          "
+        >×</button>
+
+        <video
+          controls
+          autoplay
+          playsinline
+          style="
+            width:100%;
+            max-height:80vh;
+            border-radius:14px;
+            background:#000;
+          "
+        >
+          <source src="${videoUrl}" type="video/mp4">
+          Your browser does not support video playback.
+        </video>
 
       </div>
 
-    `).join("");
-  }
+    </div>
+  `;
 
-  function openVideo(fileId) {
-
-    if (tg) {
-
-      tg.showPopup({
-        title: "Video",
-        message:
-          "Video player will be connected in the next step.",
-        buttons: [
-          {
-            type: "ok"
-          }
-        ]
-      });
-
-    } else {
-
-      alert("Video ID: " + fileId);
-
-    }
-  }
-
-  function escapeHtml(text) {
-
-    return String(text)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  document
-    .querySelectorAll(".categories button")
-    .forEach(button => {
-
-      button.addEventListener("click", () => {
-
-        document
-          .querySelectorAll(".categories button")
-          .forEach(b =>
-            b.classList.remove("active")
-          );
-
-        button.classList.add("active");
-
-        selectedCategory =
-          button.dataset.cat;
-
-        renderVideos();
-      });
-
-    });
-
-  document
-    .getElementById("search")
-    .addEventListener("input", renderVideos);
-
-  loadVideos();
-
-</script>
-
-</body>
-</html>
+  document.body.appendChild(player);
+}

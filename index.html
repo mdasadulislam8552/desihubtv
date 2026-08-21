@@ -2,53 +2,39 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Desi Hub TV</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
 
 :root{
   --bg:#07080c;
   --card:#11131a;
   --border:rgba(255,255,255,.08);
   --text:#fff;
-  --muted:#858894;
+  --muted:#858895;
   --pink:#ff3158;
-  --pink2:#ff6682;
+  --pink2:#ff6683;
 }
 
 html,body{
   background:var(--bg);
   color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  min-height:100%;
+  min-height:100vh;
 }
 
-body{
-  -webkit-tap-highlight-color:transparent;
-  overscroll-behavior:none;
-}
-
-button,input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
+button,input{font:inherit}
+button{cursor:pointer}
 
 .app{
   width:100%;
   max-width:680px;
   margin:auto;
-  padding:16px 14px 105px;
+  padding:16px 14px calc(105px + env(safe-area-inset-bottom));
 }
 
 /* HEADER */
@@ -110,6 +96,8 @@ button{
 /* HERO */
 
 .hero{
+  position:relative;
+  overflow:hidden;
   padding:24px 21px;
   border-radius:25px;
   margin-bottom:18px;
@@ -120,10 +108,11 @@ button{
 }
 
 .hero-badge{
-  display:inline-block;
+  display:inline-flex;
   padding:6px 10px;
-  border-radius:20px;
-  background:rgba(255,49,88,.1);
+  border-radius:30px;
+  background:rgba(255,49,88,.11);
+  border:1px solid rgba(255,49,88,.2);
   color:#ff7892;
   font-size:11px;
   font-weight:700;
@@ -132,7 +121,7 @@ button{
 
 .hero h1{
   font-size:27px;
-  line-height:1.15;
+  line-height:1.12;
   margin-bottom:9px;
 }
 
@@ -149,6 +138,15 @@ button{
   margin-bottom:16px;
 }
 
+.search-icon{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  pointer-events:none;
+  color:#777b87;
+}
+
 .search{
   width:100%;
   height:48px;
@@ -158,13 +156,11 @@ button{
   background:rgba(255,255,255,.045);
   color:#fff;
   outline:none;
+  font-size:14px;
 }
 
-.search-icon{
-  position:absolute;
-  left:15px;
-  top:50%;
-  transform:translateY(-50%);
+.search::placeholder{
+  color:#6f727d;
 }
 
 /* CATEGORIES */
@@ -188,6 +184,8 @@ button{
   border:1px solid var(--border);
   background:rgba(255,255,255,.035);
   color:#999ca7;
+  font-size:12px;
+  font-weight:650;
 }
 
 .cat.active{
@@ -200,8 +198,8 @@ button{
 
 .titlebar{
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   margin-bottom:13px;
 }
 
@@ -243,14 +241,22 @@ button{
   display:block;
 }
 
+.thumbnail:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.55),transparent 45%);
+  pointer-events:none;
+}
+
 .thumbnail-placeholder{
   width:100%;
   height:100%;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:35px;
   background:linear-gradient(145deg,#292b36,#101116);
+  font-size:35px;
 }
 
 .play{
@@ -266,7 +272,8 @@ button{
   align-items:center;
   justify-content:center;
   font-size:19px;
-  z-index:2;
+  padding-left:3px;
+  z-index:3;
 }
 
 .save-btn{
@@ -277,7 +284,7 @@ button{
   height:35px;
   border:0;
   border-radius:50%;
-  background:rgba(0,0,0,.7);
+  background:rgba(0,0,0,.68);
   color:#fff;
   font-size:18px;
   z-index:5;
@@ -304,11 +311,13 @@ button{
   font-size:10px;
   margin-top:5px;
   text-transform:uppercase;
+  letter-spacing:.4px;
   font-weight:700;
 }
 
 .stats{
   display:flex;
+  align-items:center;
   gap:11px;
   margin-top:9px;
   color:#777a86;
@@ -328,14 +337,32 @@ button{
   padding:0;
 }
 
+/* TRENDING BADGE */
+
+.trending-badge{
+  position:absolute;
+  left:8px;
+  top:8px;
+  z-index:5;
+  padding:5px 8px;
+  border-radius:20px;
+  background:rgba(255,49,88,.92);
+  color:white;
+  font-size:9px;
+  font-weight:800;
+}
+
+/* EMPTY */
+
 .empty{
   grid-column:1/-1;
   text-align:center;
   padding:55px 10px;
   color:#71747f;
+  font-size:13px;
 }
 
-/* BOTTOM */
+/* BOTTOM NAV */
 
 .bottom{
   position:fixed;
@@ -361,18 +388,20 @@ button{
   line-height:17px;
 }
 
-.bottom button.active{
-  color:var(--pink);
-}
-
-.nav-icon{
+.bottom button .nav-icon{
   display:block;
   font-size:18px;
+  line-height:22px;
+}
+
+.bottom button.active{
+  color:var(--pink);
 }
 
 /* PROFILE */
 
 .profile{
+  overflow:hidden;
   background:linear-gradient(145deg,#171923,#101117);
   border:1px solid var(--border);
   border-radius:25px;
@@ -397,10 +426,10 @@ button{
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
-  border:4px solid #11131a;
   font-size:34px;
   font-weight:800;
+  overflow:hidden;
+  border:4px solid #11131a;
 }
 
 .profile-avatar img{
@@ -436,6 +465,7 @@ button{
 .profile-stat strong{
   display:block;
   font-size:17px;
+  margin-bottom:3px;
 }
 
 .profile-stat span{
@@ -446,18 +476,12 @@ button{
 /* DETAILS */
 
 .details{
-  animation:detailsIn .2s ease;
+  animation:detailsIn .22s ease;
 }
 
 @keyframes detailsIn{
-  from{
-    opacity:0;
-    transform:translateY(8px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
 .back-btn{
@@ -471,6 +495,7 @@ button{
 }
 
 .details-media{
+  position:relative;
   width:100%;
   aspect-ratio:16/10;
   border-radius:21px;
@@ -478,7 +503,6 @@ button{
   background:#111;
   border:1px solid var(--border);
   margin-bottom:16px;
-  position:relative;
 }
 
 .details-media img{
@@ -487,7 +511,7 @@ button{
   object-fit:cover;
 }
 
-.details-media-placeholder{
+.details-placeholder{
   width:100%;
   height:100%;
   display:flex;
@@ -503,18 +527,19 @@ button{
   transform:translate(-50%,-50%);
   width:65px;
   height:65px;
-  border:0;
   border-radius:50%;
+  border:0;
   background:var(--pink);
   color:#fff;
   font-size:24px;
 }
 
 .details-category{
-  display:inline-block;
+  display:inline-flex;
   padding:6px 10px;
   border-radius:20px;
   background:rgba(255,49,88,.1);
+  border:1px solid rgba(255,49,88,.2);
   color:#ff6985;
   font-size:10px;
   font-weight:750;
@@ -563,7 +588,7 @@ button{
   color:var(--pink);
 }
 
-/* CUSTOM PLAYER */
+/* PLAYER */
 
 .player{
   position:fixed;
@@ -573,83 +598,32 @@ button{
   display:flex;
   align-items:center;
   justify-content:center;
-  overscroll-behavior:none;
-  touch-action:none;
 }
 
 .player video{
   width:100%;
   max-width:760px;
-  max-height:88vh;
+  max-height:90vh;
   background:#000;
-  outline:none;
 }
 
-.player-close{
+.close-player{
   position:fixed;
-  top:14px;
-  right:14px;
+  top:15px;
+  right:15px;
   width:42px;
   height:42px;
   border:0;
   border-radius:50%;
-  background:rgba(255,255,255,.15);
+  background:rgba(255,255,255,.14);
   color:#fff;
   font-size:25px;
-  z-index:10003;
-}
-
-.player-controls{
-  position:fixed;
-  left:50%;
-  bottom:25px;
-  transform:translateX(-50%);
-  width:min(92%,650px);
-  padding:10px 12px;
-  border-radius:16px;
-  background:rgba(15,15,18,.88);
-  backdrop-filter:blur(15px);
-  z-index:10002;
-}
-
-.progress{
-  width:100%;
-  margin-bottom:8px;
-  accent-color:var(--pink);
-}
-
-.control-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.control-row button{
-  border:0;
-  background:none;
-  color:#fff;
-  font-size:17px;
-}
-
-.time{
-  color:#aaa;
-  font-size:11px;
-  margin-left:auto;
+  z-index:10000;
 }
 
 @media(max-width:380px){
-  .app{
-    padding-left:11px;
-    padding-right:11px;
-  }
-
-  .grid{
-    gap:9px;
-  }
-
-  .details-title{
-    font-size:21px;
-  }
+  .app{padding-left:11px;padding-right:11px}
+  .grid{gap:9px}
 }
 </style>
 </head>
@@ -661,20 +635,14 @@ button{
   <div class="header">
 
     <div class="brand">
-
-      <div class="brand-logo">
-        DH
-      </div>
+      <div class="brand-logo">DH</div>
 
       <div class="logo-text">
         Desi <span>Hub TV</span>
       </div>
-
     </div>
 
-    <div class="avatar" id="avatar">
-      D
-    </div>
+    <div class="avatar" id="avatar">D</div>
 
   </div>
 
@@ -692,7 +660,7 @@ button{
 
   <button id="navViral">
     <span class="nav-icon">🔥</span>
-    Viral
+    Trending
   </button>
 
   <button id="navSaved">
@@ -721,12 +689,9 @@ const tg =
 window.Telegram?.WebApp;
 
 if(tg){
-
   tg.ready();
   tg.expand();
-
 }
-
 
 const telegramUser =
 tg?.initDataUnsafe?.user || null;
@@ -736,13 +701,10 @@ telegramUser?.id || null;
 
 
 let videos = [];
-
 let savedIds = new Set();
 
 let currentPage = "home";
-
 let selectedCategory = "All";
-
 let selectedVideo = null;
 
 
@@ -755,32 +717,28 @@ function setupTelegramProfile(){
 
   if(!telegramUser){
 
-    avatar.textContent="D";
-
+    avatar.textContent = "D";
     return;
-
   }
 
   if(telegramUser.photo_url){
 
-    avatar.innerHTML=`
+    avatar.innerHTML = `
       <img
         src="${escapeAttr(telegramUser.photo_url)}"
-        alt="Telegram Profile"
+        alt="Profile"
       >
     `;
 
   }else{
 
-    avatar.textContent=
-    (
-      telegramUser.first_name || "D"
-    ).charAt(0).toUpperCase();
+    avatar.textContent =
+    (telegramUser.first_name || "D")
+    .charAt(0)
+    .toUpperCase();
 
   }
-
 }
-
 
 setupTelegramProfile();
 
@@ -802,13 +760,8 @@ async function loadVideos(){
       }
     );
 
-    if(!response.ok){
-
-      throw new Error(
-        await response.text()
-      );
-
-    }
+    if(!response.ok)
+      throw new Error(await response.text());
 
     videos =
     await response.json();
@@ -820,23 +773,18 @@ async function loadVideos(){
       error
     );
 
-    videos=[];
-
+    videos = [];
   }
-
 }
 
 
-/* SAVED */
+/* LOAD SAVED */
 
 async function loadSaved(){
 
   if(!userId){
-
-    savedIds=new Set();
-
+    savedIds = new Set();
     return;
-
   }
 
   try{
@@ -852,13 +800,8 @@ async function loadSaved(){
       }
     );
 
-    if(!response.ok){
-
-      throw new Error(
-        await response.text()
-      );
-
-    }
+    if(!response.ok)
+      throw new Error(await response.text());
 
     const data =
     await response.json();
@@ -866,7 +809,7 @@ async function loadSaved(){
     savedIds =
     new Set(
       data.map(
-        item=>Number(item.video_id)
+        item => Number(item.video_id)
       )
     );
 
@@ -877,10 +820,8 @@ async function loadSaved(){
       error
     );
 
-    savedIds=new Set();
-
+    savedIds = new Set();
   }
-
 }
 
 
@@ -895,61 +836,62 @@ async function toggleSave(videoId){
     );
 
     return;
-
   }
 
-  const id=Number(videoId);
+  const id = Number(videoId);
 
-  if(savedIds.has(id)){
+  try{
 
-    const response =
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&video_id=eq.${id}`,
-      {
-        method:"DELETE",
-        headers:{
-          "apikey":SUPABASE_KEY,
-          "Authorization":`Bearer ${SUPABASE_KEY}`
+    if(savedIds.has(id)){
+
+      const response =
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&video_id=eq.${id}`,
+        {
+          method:"DELETE",
+          headers:{
+            "apikey":SUPABASE_KEY,
+            "Authorization":`Bearer ${SUPABASE_KEY}`
+          }
         }
-      }
-    );
+      );
 
-    if(response.ok){
+      if(response.ok)
+        savedIds.delete(id);
 
-      savedIds.delete(id);
+    }else{
 
+      const response =
+      await fetch(
+        `${SUPABASE_URL}/rest/v1/saved_videos`,
+        {
+          method:"POST",
+          headers:{
+            "apikey":SUPABASE_KEY,
+            "Authorization":`Bearer ${SUPABASE_KEY}`,
+            "Content-Type":"application/json",
+            "Prefer":"return=minimal"
+          },
+          body:JSON.stringify({
+            telegram_user_id:userId,
+            video_id:id
+          })
+        }
+      );
+
+      if(response.ok)
+        savedIds.add(id);
     }
 
-  }else{
+    render();
 
-    const response =
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/saved_videos`,
-      {
-        method:"POST",
-        headers:{
-          "apikey":SUPABASE_KEY,
-          "Authorization":`Bearer ${SUPABASE_KEY}`,
-          "Content-Type":"application/json",
-          "Prefer":"return=minimal"
-        },
-        body:JSON.stringify({
-          telegram_user_id:userId,
-          video_id:id
-        })
-      }
+  }catch(error){
+
+    console.error(
+      "SAVE ERROR:",
+      error
     );
-
-    if(response.ok){
-
-      savedIds.add(id);
-
-    }
-
   }
-
-  render();
-
 }
 
 
@@ -959,15 +901,15 @@ async function addView(videoId){
 
   const video =
   videos.find(
-    v=>Number(v.id)===Number(videoId)
+    v => Number(v.id) === Number(videoId)
   );
 
-  if(!video)return;
+  if(!video) return;
 
   const newViews =
-  Number(video.views||0)+1;
+  Number(video.views || 0) + 1;
 
-  video.views=newViews;
+  video.views = newViews;
 
   try{
 
@@ -978,7 +920,8 @@ async function addView(videoId){
         headers:{
           "apikey":SUPABASE_KEY,
           "Authorization":`Bearer ${SUPABASE_KEY}`,
-          "Content-Type":"application/json"
+          "Content-Type":"application/json",
+          "Prefer":"return=minimal"
         },
         body:JSON.stringify({
           views:newViews
@@ -992,9 +935,7 @@ async function addView(videoId){
       "VIEW ERROR:",
       error
     );
-
   }
-
 }
 
 
@@ -1004,15 +945,15 @@ async function addLike(videoId){
 
   const video =
   videos.find(
-    v=>Number(v.id)===Number(videoId)
+    v => Number(v.id) === Number(videoId)
   );
 
-  if(!video)return;
+  if(!video) return;
 
   const newLikes =
-  Number(video.likes||0)+1;
+  Number(video.likes || 0) + 1;
 
-  video.likes=newLikes;
+  video.likes = newLikes;
 
   render();
 
@@ -1025,7 +966,8 @@ async function addLike(videoId){
         headers:{
           "apikey":SUPABASE_KEY,
           "Authorization":`Bearer ${SUPABASE_KEY}`,
-          "Content-Type":"application/json"
+          "Content-Type":"application/json",
+          "Prefer":"return=minimal"
         },
         body:JSON.stringify({
           likes:newLikes
@@ -1039,9 +981,44 @@ async function addLike(videoId){
       "LIKE ERROR:",
       error
     );
-
   }
+}
 
+
+/* TRENDING SCORE */
+
+function trendingScore(video){
+
+  const views =
+  Number(video.views || 0);
+
+  const likes =
+  Number(video.likes || 0);
+
+  /*
+    Trending formula:
+    Views = main weight
+    Likes = stronger engagement weight
+  */
+
+  return (
+    views +
+    (likes * 5)
+  );
+}
+
+
+/* GET TRENDING */
+
+function getTrendingVideos(){
+
+  return [...videos]
+    .sort(
+      (a,b) =>
+        trendingScore(b) -
+        trendingScore(a)
+    )
+    .slice(0,20);
 }
 
 
@@ -1049,76 +1026,73 @@ async function addLike(videoId){
 
 function render(){
 
-  if(currentPage==="profile"){
-
+  if(currentPage === "profile"){
     renderProfile();
-
     return;
-
   }
 
-  if(currentPage==="details"){
-
+  if(currentPage === "details"){
     renderDetails(selectedVideo);
-
     return;
-
   }
 
   const content =
   document.getElementById("content");
 
-  let list=videos;
+  let list = videos;
 
-  if(currentPage==="viral"){
-
-    list=
-    videos.filter(
-      video=>video.category==="Viral"
-    );
-
+  if(currentPage === "viral"){
+    list = getTrendingVideos();
   }
 
-  if(currentPage==="saved"){
+  if(currentPage === "saved"){
 
-    list=
+    list =
     videos.filter(
-      video=>savedIds.has(Number(video.id))
+      video =>
+        savedIds.has(Number(video.id))
     );
-
   }
+
 
   const heading =
-  currentPage==="viral"
-  ? "🔥 Viral Videos"
-  : currentPage==="saved"
-  ? "❤️ Saved Videos"
-  : "Watch. Discover. Enjoy.";
+  currentPage === "viral"
+    ? "🔥 Trending Now"
+    : currentPage === "saved"
+    ? "❤️ Saved Videos"
+    : "Watch. Discover. Enjoy.";
+
 
   const description =
-  currentPage==="viral"
-  ? "Trending videos from Desi Hub TV."
-  : currentPage==="saved"
-  ? "Your personal saved collection."
-  : "Fresh reels and viral videos in one place.";
+  currentPage === "viral"
+    ? "The hottest videos based on views and likes."
+    : currentPage === "saved"
+    ? "Your personal saved collection."
+    : "Fresh reels and viral videos in one place.";
 
-  content.innerHTML=`
+
+  content.innerHTML = `
 
     <div class="hero">
 
       <div class="hero-badge">
-        ✦ DESI HUB TV
+        ✦ DESI HUB TV V2
       </div>
 
-      <h1>${heading}</h1>
+      <h1>
+        ${heading}
+      </h1>
 
-      <p>${description}</p>
+      <p>
+        ${description}
+      </p>
 
     </div>
 
+
     ${
-      currentPage!=="saved"
-      ?`
+      currentPage !== "saved"
+      ? `
         <div class="search-wrap">
 
           <span class="search-icon">
@@ -1128,61 +1102,91 @@ function render(){
           <input
             id="search"
             class="search"
+            type="text"
             placeholder="Search videos..."
           >
 
         </div>
       `
-      :""
+      : ""
     }
 
+
     ${
-      currentPage==="home"
-      ?`
+      currentPage === "home"
+      ? `
         <div class="categories">
 
           <button
-            class="cat ${selectedCategory==="All"?"active":""}"
+            class="cat ${
+              selectedCategory === "All"
+              ? "active"
+              : ""
+            }"
             data-category="All"
           >
             All
           </button>
 
           <button
-            class="cat ${selectedCategory==="Instagram"?"active":""}"
+            class="cat ${
+              selectedCategory === "Instagram"
+              ? "active"
+              : ""
+            }"
             data-category="Instagram"
           >
             Instagram
           </button>
 
           <button
-            class="cat ${selectedCategory==="TikTok"?"active":""}"
+            class="cat ${
+              selectedCategory === "TikTok"
+              ? "active"
+              : ""
+            }"
             data-category="TikTok"
           >
             TikTok
           </button>
 
           <button
-            class="cat ${selectedCategory==="Viral"?"active":""}"
+            class="cat ${
+              selectedCategory === "Viral"
+              ? "active"
+              : ""
+            }"
             data-category="Viral"
           >
             Viral
           </button>
 
+          <button
+            class="cat ${
+              selectedCategory === "Deshi"
+              ? "active"
+              : ""
+            }"
+            data-category="Deshi"
+          >
+            Deshi
+          </button>
+
         </div>
       `
-      :""
+      : ""
     }
+
 
     <div class="titlebar">
 
       <h2>
         ${
-          currentPage==="viral"
-          ?"Trending Now"
-          :currentPage==="saved"
-          ?"Your Collection"
-          :"Latest Videos"
+          currentPage === "viral"
+          ? "Top Trending"
+          : currentPage === "saved"
+          ? "Your Collection"
+          : "Latest Videos"
         }
       </h2>
 
@@ -1192,23 +1196,29 @@ function render(){
 
     </div>
 
-    <div id="videoGrid" class="grid"></div>
+
+    <div
+      id="videoGrid"
+      class="grid"
+    ></div>
 
   `;
 
 
-  let filtered=list;
+  let filtered = list;
 
-  if(currentPage==="home"){
+
+  if(currentPage === "home"){
 
     filtered =
     list.filter(
       video =>
-      selectedCategory==="All" ||
-      video.category===selectedCategory
+        selectedCategory === "All" ||
+        video.category === selectedCategory
     );
 
   }
+
 
   renderGrid(filtered);
 
@@ -1216,63 +1226,66 @@ function render(){
   const search =
   document.getElementById("search");
 
+
   if(search){
 
     search.addEventListener(
       "input",
-      ()=>{
+      () => {
 
         const term =
-        search.value.toLowerCase().trim();
+        search.value
+        .toLowerCase()
+        .trim();
 
-        renderGrid(
-          filtered.filter(
-            video=>
-            (video.title||"")
+        const results =
+        filtered.filter(
+          video =>
+            (
+              video.title || ""
+            )
             .toLowerCase()
             .includes(term)
-          )
         );
 
+        renderGrid(results);
       }
     );
-
   }
 
 
   document
   .querySelectorAll(".cat")
-  .forEach(button=>{
+  .forEach(button => {
 
     button.addEventListener(
       "click",
-      ()=>{
+      () => {
 
         selectedCategory =
         button.dataset.category;
 
         render();
-
       }
     );
 
   });
-
 }
 
 
-/* GRID */
+/* VIDEO GRID */
 
 function renderGrid(list){
 
   const grid =
   document.getElementById("videoGrid");
 
-  if(!grid)return;
+  if(!grid) return;
+
 
   if(!list.length){
 
-    grid.innerHTML=`
+    grid.innerHTML = `
       <div class="empty">
         🎬<br><br>
         No videos found.
@@ -1280,54 +1293,82 @@ function renderGrid(list){
     `;
 
     return;
-
   }
 
+
+  const trendingIds =
+  new Set(
+    getTrendingVideos()
+    .slice(0,5)
+    .map(v => Number(v.id))
+  );
+
+
   grid.innerHTML =
-  list.map(video=>{
+  list.map(video => {
+
+    const id =
+    Number(video.id);
 
     const isSaved =
-    savedIds.has(Number(video.id));
+    savedIds.has(id);
 
     const thumbnail =
     video.thumbnail_file_id
-    ? `/api/thumbnail?file_id=${encodeURIComponent(video.thumbnail_file_id)}`
-    :"";
+      ? `/api/thumbnail?file_id=${encodeURIComponent(video.thumbnail_file_id)}`
+      : "";
 
-    return`
+
+    return `
 
       <div
         class="card"
-        onclick="openDetails(${Number(video.id)})"
+        onclick="openDetails(${id})"
       >
 
         <div class="thumbnail">
 
           ${
+            currentPage === "viral" &&
+            trendingIds.has(id)
+            ? `
+              <div class="trending-badge">
+                🔥 TRENDING
+              </div>
+            `
+            : ""
+          }
+
+
+          ${
             thumbnail
-            ?`
+            ? `
               <img
                 src="${thumbnail}"
                 alt=""
                 loading="lazy"
               >
             `
-            :`
+            : `
               <div class="thumbnail-placeholder">
                 🎬
               </div>
             `
           }
 
+
           <button
-            class="save-btn ${isSaved?"saved":""}"
+            class="save-btn ${
+              isSaved ? "saved" : ""
+            }"
             onclick="
               event.stopPropagation();
-              toggleSave(${Number(video.id)})
+              toggleSave(${id})
             "
           >
-            ${isSaved?"♥":"♡"}
+            ${isSaved ? "♥" : "♡"}
           </button>
+
 
           <div class="play">
             ▶
@@ -1335,30 +1376,46 @@ function renderGrid(list){
 
         </div>
 
+
         <div class="card-info">
 
           <div class="card-title">
-            ${escapeHtml(video.title||"Untitled Video")}
+            ${escapeHtml(
+              video.title ||
+              "Untitled Video"
+            )}
           </div>
 
+
           <div class="card-category">
-            ${escapeHtml(video.category||"Other")}
+            ${escapeHtml(
+              video.category ||
+              "Other"
+            )}
           </div>
+
 
           <div class="stats">
 
             <span class="stat">
-              👁 ${formatNumber(video.views||0)}
+              👁
+              ${formatNumber(
+                video.views || 0
+              )}
             </span>
+
 
             <button
               class="like-btn stat"
               onclick="
                 event.stopPropagation();
-                addLike(${Number(video.id)})
+                addLike(${id})
               "
             >
-              ❤️ ${formatNumber(video.likes||0)}
+              ❤️
+              ${formatNumber(
+                video.likes || 0
+              )}
             </button>
 
           </div>
@@ -1370,7 +1427,6 @@ function renderGrid(list){
     `;
 
   }).join("");
-
 }
 
 
@@ -1380,23 +1436,21 @@ function openDetails(videoId){
 
   const video =
   videos.find(
-    v=>Number(v.id)===Number(videoId)
+    v => Number(v.id) === Number(videoId)
   );
 
-  if(!video)return;
+  if(!video) return;
 
-  selectedVideo=video;
-
-  currentPage="details";
+  selectedVideo = video;
+  currentPage = "details";
 
   document
   .querySelectorAll(".bottom button")
   .forEach(
-    button=>button.classList.remove("active")
+    b => b.classList.remove("active")
   );
 
-  renderDetails(video);
-
+  render();
 }
 
 
@@ -1407,23 +1461,25 @@ function renderDetails(video){
 
   if(!video){
 
-    currentPage="home";
-
+    currentPage = "home";
     render();
-
     return;
-
   }
 
+
+  const id =
+  Number(video.id);
+
   const isSaved =
-  savedIds.has(Number(video.id));
+  savedIds.has(id);
 
   const thumbnail =
   video.thumbnail_file_id
-  ? `/api/thumbnail?file_id=${encodeURIComponent(video.thumbnail_file_id)}`
-  :"";
+    ? `/api/thumbnail?file_id=${encodeURIComponent(video.thumbnail_file_id)}`
+    : "";
 
-  content.innerHTML=`
+
+  content.innerHTML = `
 
     <div class="details">
 
@@ -1434,29 +1490,31 @@ function renderDetails(video){
         ← Back
       </button>
 
+
       <div class="details-media">
 
         ${
           thumbnail
-          ?`
+          ? `
             <img
               src="${thumbnail}"
               alt=""
             >
           `
-          :`
-            <div class="details-media-placeholder">
+          : `
+            <div class="details-placeholder">
               🎬
             </div>
           `
         }
+
 
         <button
           class="details-play"
           onclick="
             playVideo(
               '${escapeAttr(video.file_id)}',
-              ${Number(video.id)}
+              ${id}
             )
           "
         >
@@ -1465,25 +1523,37 @@ function renderDetails(video){
 
       </div>
 
+
       <div class="details-category">
-        ${escapeHtml(video.category||"Other")}
+        ${escapeHtml(
+          video.category || "Other"
+        )}
       </div>
 
+
       <h1 class="details-title">
-        ${escapeHtml(video.title||"Untitled Video")}
+        ${escapeHtml(
+          video.title || "Untitled Video"
+        )}
       </h1>
+
 
       <div class="details-stats">
 
         <span>
-          👁 ${formatNumber(video.views||0)} views
+          👁
+          ${formatNumber(video.views || 0)}
+          views
         </span>
 
         <span>
-          ❤️ ${formatNumber(video.likes||0)} likes
+          ❤️
+          ${formatNumber(video.likes || 0)}
+          likes
         </span>
 
       </div>
+
 
       <div class="details-actions">
 
@@ -1492,20 +1562,27 @@ function renderDetails(video){
           onclick="
             playVideo(
               '${escapeAttr(video.file_id)}',
-              ${Number(video.id)}
+              ${id}
             )
           "
         >
           ▶ Watch Video
         </button>
 
+
         <button
-          class="action-btn ${isSaved?"saved":""}"
+          class="action-btn ${
+            isSaved ? "saved" : ""
+          }"
           onclick="
-            toggleSave(${Number(video.id)})
+            toggleSave(${id})
           "
         >
-          ${isSaved?"♥ Saved":"♡ Save Video"}
+          ${
+            isSaved
+            ? "♥ Saved"
+            : "♡ Save Video"
+          }
         </button>
 
       </div>
@@ -1513,7 +1590,6 @@ function renderDetails(video){
     </div>
 
   `;
-
 }
 
 
@@ -1521,14 +1597,12 @@ function renderDetails(video){
 
 function goBack(){
 
-  currentPage="home";
-
-  selectedVideo=null;
+  currentPage = "home";
+  selectedVideo = null;
 
   setActive("navHome");
 
   render();
-
 }
 
 
@@ -1552,73 +1626,77 @@ function renderProfile(){
 
   const username =
   telegramUser?.username
-  ? `@${telegramUser.username}`
-  : "Telegram account";
+    ? `@${telegramUser.username}`
+    : "Telegram account";
 
 
-  let image="";
+  let image = "";
+
 
   if(telegramUser?.photo_url){
 
-    image=`
+    image = `
       <img
-        src="${escapeAttr(telegramUser.photo_url)}"
+        src="${escapeAttr(
+          telegramUser.photo_url
+        )}"
         alt="Telegram Profile"
       >
     `;
 
   }else{
 
-    image=
+    image =
     escapeHtml(
-      firstName.charAt(0).toUpperCase()
+      firstName
+      .charAt(0)
+      .toUpperCase()
     );
 
   }
 
 
-  content.innerHTML=`
+  content.innerHTML = `
 
     <div class="profile">
 
       <div class="profile-cover"></div>
 
+
       <div class="profile-avatar">
         ${image}
       </div>
+
 
       <h2>
         ${escapeHtml(fullName)}
       </h2>
 
+
       <div class="username">
         ${escapeHtml(username)}
       </div>
 
+
       <div class="profile-stats">
 
         <div class="profile-stat">
-
           <strong>
             ${savedIds.size}
           </strong>
-
           <span>
             Saved Videos
           </span>
-
         </div>
 
-        <div class="profile-stat">
 
+        <div class="profile-stat">
           <strong>
             ${videos.length}
           </strong>
-
           <span>
             Total Videos
           </span>
-
         </div>
 
       </div>
@@ -1626,7 +1704,6 @@ function renderProfile(){
     </div>
 
   `;
-
 }
 
 
@@ -1643,24 +1720,24 @@ function playVideo(fileId,videoId){
   const player =
   document.createElement("div");
 
-  player.className="player";
+  player.className = "player";
 
 
-  player.innerHTML=`
+  player.innerHTML = `
 
     <button
-      class="player-close"
-      id="closePlayer"
+      class="close-player"
+      onclick="this.parentElement.remove()"
     >
       ×
     </button>
 
+
     <video
-      id="mainVideo"
+      controls
+      autoplay
       playsinline
       preload="metadata"
-      disablepictureinpicture
-      controlslist="nodownload noplaybackrate"
     >
 
       <source
@@ -1670,39 +1747,6 @@ function playVideo(fileId,videoId){
 
     </video>
 
-    <div class="player-controls">
-
-      <input
-        class="progress"
-        id="videoProgress"
-        type="range"
-        min="0"
-        max="100"
-        value="0"
-      >
-
-      <div class="control-row">
-
-        <button id="playPause">
-          ▶
-        </button>
-
-        <button id="muteBtn">
-          🔊
-        </button>
-
-        <button id="fullscreenBtn">
-          ⛶
-        </button>
-
-        <span class="time" id="videoTime">
-          0:00 / 0:00
-        </span>
-
-      </div>
-
-    </div>
-
   `;
 
 
@@ -1710,250 +1754,29 @@ function playVideo(fileId,videoId){
 
 
   const video =
-  player.querySelector("#mainVideo");
-
-  const close =
-  player.querySelector("#closePlayer");
-
-  const playPause =
-  player.querySelector("#playPause");
-
-  const muteBtn =
-  player.querySelector("#muteBtn");
-
-  const fullscreenBtn =
-  player.querySelector("#fullscreenBtn");
-
-  const progress =
-  player.querySelector("#videoProgress");
-
-  const time =
-  player.querySelector("#videoTime");
-
-
-  /* CLOSE */
-
-  close.onclick=()=>{
-
-    video.pause();
-
-    player.remove();
-
-  };
-
-
-  /* PLAY PAUSE */
-
-  playPause.onclick=()=>{
-
-    if(video.paused){
-
-      video.play();
-
-    }else{
-
-      video.pause();
-
-    }
-
-  };
-
-
-  video.addEventListener(
-    "play",
-    ()=>{
-      playPause.textContent="⏸";
-    }
-  );
-
-
-  video.addEventListener(
-    "pause",
-    ()=>{
-      playPause.textContent="▶";
-    }
-  );
-
-
-  /* MUTE */
-
-  muteBtn.onclick=()=>{
-
-    video.muted=!video.muted;
-
-    muteBtn.textContent =
-    video.muted
-    ? "🔇"
-    : "🔊";
-
-  };
-
-
-  /* FULLSCREEN */
-
-  fullscreenBtn.onclick=()=>{
-
-    if(document.fullscreenElement){
-
-      document.exitFullscreen();
-
-    }else{
-
-      if(video.requestFullscreen){
-
-        video.requestFullscreen();
-
-      }else if(player.requestFullscreen){
-
-        player.requestFullscreen();
-
-      }
-
-    }
-
-  };
-
-
-  /* PROGRESS */
-
-  video.addEventListener(
-    "timeupdate",
-    ()=>{
-
-      if(!video.duration)return;
-
-      progress.value =
-      (video.currentTime/video.duration)*100;
-
-      time.textContent =
-      `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
-
-    }
-  );
-
-
-  progress.addEventListener(
-    "input",
-    ()=>{
-
-      if(!video.duration)return;
-
-      video.currentTime =
-      (progress.value/100)*video.duration;
-
-    }
-  );
-
-
-  /* IMPORTANT:
-     NO NEXT VIDEO
-     NO SWIPE
-     NO AUTO NEXT
-  */
-
-  video.addEventListener(
-    "ended",
-    ()=>{
-
-      playPause.textContent="▶";
-
-      video.currentTime=0;
-
-    }
-  );
-
-
-  /* DISABLE CONTEXT MENU */
-
-  player.addEventListener(
-    "contextmenu",
-    event=>{
-      event.preventDefault();
-    }
-  );
-
-
-  /* BLOCK SWIPE */
-
-  let startX=0;
-  let startY=0;
-
-  player.addEventListener(
-    "touchstart",
-    event=>{
-
-      startX=event.touches[0].clientX;
-      startY=event.touches[0].clientY;
-
-    },
-    {passive:true}
-  );
-
-
-  player.addEventListener(
-    "touchmove",
-    event=>{
-
-      const x=event.touches[0].clientX;
-      const y=event.touches[0].clientY;
-
-      const dx=Math.abs(x-startX);
-      const dy=Math.abs(y-startY);
-
-      if(dx>20 && dx>dy){
-
-        event.preventDefault();
-
-      }
-
-    },
-    {passive:false}
-  );
-
-
-  video.play().catch(()=>{});
-
+  player.querySelector("video");
+
+  video
+  .play()
+  .catch(() => {});
 }
 
 
-/* TIME */
+/* ACTIVE NAV */
 
-function formatTime(seconds){
-
-  if(!Number.isFinite(seconds)){
-    return "0:00";
-  }
-
-  const minutes =
-  Math.floor(seconds/60);
-
-  const secs =
-  Math.floor(seconds%60)
-  .toString()
-  .padStart(2,"0");
-
-  return `${minutes}:${secs}`;
-
-}
-
-
-/* NAV ACTIVE */
-
-function setActive(buttonId){
+function setActive(id){
 
   document
   .querySelectorAll(".bottom button")
   .forEach(
-    button=>button.classList.remove("active")
+    b => b.classList.remove("active")
   );
 
   const button =
-  document.getElementById(buttonId);
+  document.getElementById(id);
 
-  if(button){
+  if(button)
     button.classList.add("active");
-  }
-
 }
 
 
@@ -1961,104 +1784,78 @@ function setActive(buttonId){
 
 document
 .getElementById("navHome")
-.addEventListener(
-  "click",
-  ()=>{
+.addEventListener("click",()=>{
 
-    currentPage="home";
+  currentPage = "home";
+  selectedVideo = null;
 
-    selectedVideo=null;
+  setActive("navHome");
 
-    setActive("navHome");
+  render();
 
-    render();
-
-  }
-);
+});
 
 
 document
 .getElementById("navViral")
-.addEventListener(
-  "click",
-  ()=>{
+.addEventListener("click",()=>{
 
-    currentPage="viral";
+  currentPage = "viral";
+  selectedVideo = null;
 
-    selectedVideo=null;
+  setActive("navViral");
 
-    setActive("navViral");
+  render();
 
-    render();
-
-  }
-);
+});
 
 
 document
 .getElementById("navSaved")
-.addEventListener(
-  "click",
-  ()=>{
+.addEventListener("click",()=>{
 
-    currentPage="saved";
+  currentPage = "saved";
+  selectedVideo = null;
 
-    selectedVideo=null;
+  setActive("navSaved");
 
-    setActive("navSaved");
+  render();
 
-    render();
-
-  }
-);
+});
 
 
 document
 .getElementById("navProfile")
-.addEventListener(
-  "click",
-  ()=>{
+.addEventListener("click",()=>{
 
-    currentPage="profile";
+  currentPage = "profile";
+  selectedVideo = null;
 
-    selectedVideo=null;
+  setActive("navProfile");
 
-    setActive("navProfile");
+  render();
 
-    render();
-
-  }
-);
+});
 
 
-/* NUMBER */
+/* NUMBER FORMAT */
 
 function formatNumber(number){
 
-  number=Number(number||0);
+  number =
+  Number(number || 0);
 
-  if(number>=1000000){
+  if(number >= 1000000)
+    return (number/1000000).toFixed(1)+"M";
 
-    return (
-      number/1000000
-    ).toFixed(1)+"M";
-
-  }
-
-  if(number>=1000){
-
-    return (
-      number/1000
-    ).toFixed(1)+"K";
-
-  }
+  if(number >= 1000)
+    return (number/1000).toFixed(1)+"K";
 
   return String(number);
-
 }
 
 
-/* HTML ESCAPE */
+/* ESCAPE */
 
 function escapeHtml(text){
 
@@ -2068,11 +1865,8 @@ function escapeHtml(text){
   .replaceAll(">","&gt;")
   .replaceAll('"',"&quot;")
   .replaceAll("'","&#039;");
-
 }
 
-
-/* ATTRIBUTE ESCAPE */
 
 function escapeAttr(text){
 
@@ -2080,7 +1874,6 @@ function escapeAttr(text){
   .replaceAll("\\","\\\\")
   .replaceAll('"',"&quot;")
   .replaceAll("'","&#039;");
-
 }
 
 
@@ -2093,9 +1886,7 @@ async function startApp(){
   await loadSaved();
 
   render();
-
 }
-
 
 startApp();
 

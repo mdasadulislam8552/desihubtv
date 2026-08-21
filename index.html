@@ -1,1175 +1,784 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
-  <title>Desi Hub TV</title>
-
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg: #07080c;
-      --card: #11131a;
-      --card2: #171922;
-      --border: rgba(255,255,255,.08);
-      --text: #fff;
-      --muted: #8d909d;
-      --pink: #ff3158;
-      --pink2: #ff5577;
-      --green: #31d17c;
-    }
-
-    html {
-      background: var(--bg);
-    }
-
-    body {
-      background:
-        radial-gradient(
-          circle at 50% -10%,
-          rgba(255,49,88,.13),
-          transparent 34%
-        ),
-        var(--bg);
-
-      color: var(--text);
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-      min-height: 100vh;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 680px;
-      margin: auto;
-      padding:
-        16px
-        14px
-        calc(105px + env(safe-area-inset-bottom));
-    }
-
-    /* HEADER */
-
-    .header {
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 13px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ff3158,
-          #ff1748
-        );
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 19px;
-      font-weight: 900;
-
-      box-shadow:
-        0 8px 25px rgba(255,49,88,.22);
-    }
-
-    .logo-text {
-      font-size: 20px;
-      font-weight: 850;
-      letter-spacing: -.5px;
-    }
-
-    .logo-text span {
-      color: var(--pink);
-    }
-
-    .avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ff3158,
-          #ff6b85
-        );
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-weight: 800;
-      overflow: hidden;
-
-      border: 2px solid rgba(255,255,255,.12);
-    }
-
-    .avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* HERO */
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-
-      padding: 24px 21px;
-      border-radius: 25px;
-      margin-bottom: 18px;
-
-      background:
-        radial-gradient(
-          circle at 90% 10%,
-          rgba(255,49,88,.25),
-          transparent 35%
-        ),
-        linear-gradient(
-          135deg,
-          #241019,
-          #11131b 70%
-        );
-
-      border: 1px solid var(--border);
-
-      box-shadow:
-        0 15px 45px rgba(0,0,0,.25);
-    }
-
-    .hero:after {
-      content: "";
-      position: absolute;
-      width: 130px;
-      height: 130px;
-      right: -50px;
-      bottom: -60px;
-      border-radius: 50%;
-      background: rgba(255,49,88,.12);
-      filter: blur(10px);
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-
-      padding: 6px 10px;
-      border-radius: 30px;
-
-      background: rgba(255,49,88,.11);
-      border: 1px solid rgba(255,49,88,.2);
-
-      color: #ff7892;
-      font-size: 11px;
-      font-weight: 700;
-
-      margin-bottom: 11px;
-    }
-
-    .hero h1 {
-      position: relative;
-      z-index: 2;
-
-      font-size: 27px;
-      line-height: 1.12;
-      letter-spacing: -.8px;
-
-      margin-bottom: 9px;
-    }
-
-    .hero p {
-      position: relative;
-      z-index: 2;
-
-      color: #a8abb6;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    /* SEARCH */
-
-    .search-wrap {
-      position: relative;
-      margin-bottom: 16px;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #777b87;
-      pointer-events: none;
-    }
-
-    .search {
-      width: 100%;
-      height: 48px;
-
-      padding:
-        0 15px 0 43px;
-
-      border-radius: 15px;
-
-      border: 1px solid var(--border);
-
-      background:
-        rgba(255,255,255,.045);
-
-      color: #fff;
-      outline: none;
-
-      font-size: 14px;
-
-      transition: .2s;
-    }
-
-    .search:focus {
-      border-color: rgba(255,49,88,.45);
-      background: rgba(255,255,255,.06);
-    }
-
-    .search::placeholder {
-      color: #6f727d;
-    }
-
-    /* CATEGORIES */
-
-    .categories {
-      display: flex;
-      gap: 8px;
-
-      overflow-x: auto;
-
-      margin-bottom: 22px;
-
-      scrollbar-width: none;
-    }
-
-    .categories::-webkit-scrollbar {
-      display: none;
-    }
-
-    .cat {
-      flex: 0 0 auto;
-
-      padding: 9px 15px;
-
-      border-radius: 30px;
-
-      border: 1px solid var(--border);
-
-      background:
-        rgba(255,255,255,.035);
-
-      color: #999ca7;
-
-      font-size: 12px;
-      font-weight: 650;
-
-      transition: .2s;
-    }
-
-    .cat.active {
-      background: var(--pink);
-      border-color: var(--pink);
-      color: #fff;
-
-      box-shadow:
-        0 7px 20px rgba(255,49,88,.2);
-    }
-
-    /* SECTION */
-
-    .titlebar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      margin-bottom: 13px;
-    }
-
-    .titlebar h2 {
-      font-size: 18px;
-      letter-spacing: -.3px;
-    }
-
-    .count {
-      color: #6f727d;
-      font-size: 11px;
-    }
-
-    /* VIDEO GRID */
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 12px;
-    }
-
-    .card {
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,.055),
-          rgba(255,255,255,.025)
-        );
-
-      border: 1px solid var(--border);
-
-      border-radius: 18px;
-
-      overflow: hidden;
-
-      box-shadow:
-        0 8px 25px rgba(0,0,0,.17);
-
-      transition:
-        transform .18s,
-        border-color .18s;
-    }
-
-    .card:active {
-      transform: scale(.985);
-    }
-
-    .thumbnail {
-      aspect-ratio: 9 / 13;
-
-      background: #171820;
-
-      position: relative;
-
-      overflow: hidden;
-
-      cursor: pointer;
-    }
-
-    .thumbnail:after {
-      content: "";
-      position: absolute;
-      inset: 0;
-
-      background:
-        linear-gradient(
-          to top,
-          rgba(0,0,0,.55),
-          transparent 45%
-        );
-
-      pointer-events: none;
-    }
-
-    .thumbnail img {
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-
-      display: block;
-
-      transition: transform .35s;
-    }
-
-    .card:hover .thumbnail img {
-      transform: scale(1.035);
-    }
-
-    .thumbnail-placeholder {
-      width: 100%;
-      height: 100%;
-
-      background:
-        linear-gradient(
-          145deg,
-          #292b36,
-          #101116
-        );
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 35px;
-    }
-
-    .play {
-      position: absolute;
-
-      left: 50%;
-      top: 50%;
-
-      transform:
-        translate(-50%,-50%);
-
-      width: 52px;
-      height: 52px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(255,49,88,.95);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 19px;
-
-      padding-left: 3px;
-
-      z-index: 2;
-
-      box-shadow:
-        0 8px 25px rgba(255,49,88,.3);
-    }
-
-    .save-btn {
-      position: absolute;
-
-      right: 8px;
-      top: 8px;
-
-      width: 35px;
-      height: 35px;
-
-      border: 0;
-
-      border-radius: 50%;
-
-      background:
-        rgba(0,0,0,.68);
-
-      backdrop-filter: blur(8px);
-
-      color: #fff;
-
-      font-size: 18px;
-
-      z-index: 5;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .save-btn.saved {
-      color: var(--pink);
-    }
-
-    .card-info {
-      padding: 12px;
-    }
-
-    .card-title {
-      font-size: 13px;
-      font-weight: 750;
-
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
-      line-height: 1.4;
-    }
-
-    .card-category {
-      color: #ff5b78;
-
-      font-size: 10px;
-
-      margin-top: 5px;
-
-      text-transform: uppercase;
-      letter-spacing: .4px;
-      font-weight: 700;
-    }
-
-    .stats {
-      display: flex;
-      align-items: center;
-
-      gap: 11px;
-
-      margin-top: 9px;
-
-      color: #777a86;
-
-      font-size: 10px;
-    }
-
-    .stat {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .like-btn {
-      border: 0;
-      background: transparent;
-
-      color: #858792;
-
-      cursor: pointer;
-
-      padding: 0;
-    }
-
-    .like-btn:hover {
-      color: var(--pink);
-    }
-
-    /* EMPTY */
-
-    .empty {
-      grid-column: 1 / -1;
-
-      text-align: center;
-
-      padding: 55px 10px;
-
-      color: #71747f;
-
-      font-size: 13px;
-    }
-
-    /* BOTTOM NAV */
-
-    .bottom {
-      position: fixed;
-
-      left: 50%;
-      transform: translateX(-50%);
-
-      bottom: 0;
-
-      width: 100%;
-      max-width: 680px;
-
-      padding:
-        9px
-        8px
-        calc(9px + env(safe-area-inset-bottom));
-
-      background:
-        rgba(10,11,16,.94);
-
-      backdrop-filter: blur(18px);
-
-      border-top:
-        1px solid rgba(255,255,255,.07);
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(4,1fr);
-
-      z-index: 1000;
-    }
-
-    .bottom button {
-      border: 0;
-      background: none;
-
-      color: #70737e;
-
-      font-size: 10px;
-
-      line-height: 17px;
-
-      transition: .2s;
-    }
-
-    .bottom button .nav-icon {
-      display: block;
-      font-size: 18px;
-      line-height: 22px;
-    }
-
-    .bottom button.active {
-      color: var(--pink);
-    }
-
-    /* PROFILE */
-
-    .profile {
-      position: relative;
-
-      overflow: hidden;
-
-      background:
-        linear-gradient(
-          145deg,
-          #171923,
-          #101117
-        );
-
-      border: 1px solid var(--border);
-
-      border-radius: 25px;
-
-      padding: 30px 20px;
-
-      text-align: center;
-    }
-
-    .profile-cover {
-      height: 95px;
-
-      margin: -30px -20px 0;
-
-      background:
-        radial-gradient(
-          circle at 50% 0,
-          rgba(255,49,88,.3),
-          transparent 60%
-        ),
-        linear-gradient(
-          135deg,
-          #211019,
-          #12141b
-        );
-    }
-
-    .profile-avatar {
-      width: 92px;
-      height: 92px;
-
-      border-radius: 50%;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ff3158,
-          #ff6b85
-        );
-
-      margin:
-        -46px auto 15px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 34px;
-      font-weight: 800;
-
-      overflow: hidden;
-
-      border:
-        4px solid #11131a;
-
-      position: relative;
-    }
-
-    .profile-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .profile h2 {
-      margin-bottom: 7px;
-      font-size: 22px;
-    }
-
-    .profile .username {
-      color: var(--pink2);
-      font-size: 13px;
-      margin-bottom: 22px;
-    }
-
-    .profile-stats {
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      gap: 9px;
-    }
-
-    .profile-stat {
-      padding: 13px 8px;
-
-      border-radius: 14px;
-
-      background:
-        rgba(255,255,255,.035);
-
-      border: 1px solid var(--border);
-    }
-
-    .profile-stat strong {
-      display: block;
-      font-size: 17px;
-      margin-bottom: 3px;
-    }
-
-    .profile-stat span {
-      color: #777a85;
-      font-size: 10px;
-    }
-
-    /* DETAILS */
-
-    .details {
-      animation: detailsIn .22s ease;
-    }
-
-    @keyframes detailsIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-
-      border: 0;
-
-      background:
-        rgba(255,255,255,.05);
-
-      color: #fff;
-
-      border: 1px solid var(--border);
-
-      padding: 9px 13px;
-
-      border-radius: 12px;
-
-      font-size: 12px;
-      margin-bottom: 14px;
-    }
-
-    .details-media {
-      position: relative;
-
-      width: 100%;
-
-      aspect-ratio: 16 / 10;
-
-      border-radius: 21px;
-
-      overflow: hidden;
-
-      background: #111;
-
-      border: 1px solid var(--border);
-
-      margin-bottom: 16px;
-    }
-
-    .details-media img {
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-    }
-
-    .details-media-placeholder {
-      width: 100%;
-      height: 100%;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      font-size: 55px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #292b36,
-          #101116
-        );
-    }
-
-    .details-play {
-      position: absolute;
-
-      left: 50%;
-      top: 50%;
-
-      transform:
-        translate(-50%,-50%);
-
-      width: 65px;
-      height: 65px;
-
-      border-radius: 50%;
-
-      border: 0;
-
-      background: var(--pink);
-
-      color: #fff;
-
-      font-size: 24px;
-
-      padding-left: 4px;
-
-      box-shadow:
-        0 10px 30px rgba(255,49,88,.3);
-    }
-
-    .details-category {
-      display: inline-flex;
-
-      padding: 6px 10px;
-
-      border-radius: 20px;
-
-      background:
-        rgba(255,49,88,.1);
-
-      border:
-        1px solid rgba(255,49,88,.2);
-
-      color: #ff6985;
-
-      font-size: 10px;
-
-      font-weight: 750;
-
-      text-transform: uppercase;
-
-      letter-spacing: .5px;
-
-      margin-bottom: 9px;
-    }
-
-    .details-title {
-      font-size: 24px;
-
-      line-height: 1.25;
-
-      letter-spacing: -.5px;
-
-      margin-bottom: 12px;
-    }
-
-    .details-stats {
-      display: flex;
-      gap: 16px;
-
-      color: #888b96;
-
-      font-size: 12px;
-
-      padding-bottom: 17px;
-
-      border-bottom:
-        1px solid var(--border);
-
-      margin-bottom: 17px;
-    }
-
-    .details-actions {
-      display: grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap: 10px;
-
-      margin-bottom: 18px;
-    }
-
-    .action-btn {
-      height: 46px;
-
-      border-radius: 14px;
-
-      border: 1px solid var(--border);
-
-      background:
-        rgba(255,255,255,.045);
-
-      color: #fff;
-
-      font-weight: 700;
-
-      font-size: 13px;
-    }
-
-    .action-btn.primary {
-      background: var(--pink);
-
-      border-color: var(--pink);
-
-      box-shadow:
-        0 8px 25px rgba(255,49,88,.2);
-    }
-
-    .action-btn.saved {
-      color: var(--pink);
-    }
-
-    /* PLAYER */
-
-    .player {
-      position: fixed;
-
-      inset: 0;
-
-      z-index: 9999;
-
-      background: #000;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-    }
-
-    .player video {
-      width: 100%;
-
-      max-width: 760px;
-
-      max-height: 90vh;
-
-      background: #000;
-    }
-
-    .close-player {
-      position: fixed;
-
-      top: 15px;
-      right: 15px;
-
-      width: 42px;
-      height: 42px;
-
-      border: 0;
-
-      border-radius: 50%;
-
-      background:
-        rgba(255,255,255,.14);
-
-      backdrop-filter: blur(10px);
-
-      color: #fff;
-
-      font-size: 25px;
-
-      z-index: 10000;
-    }
-
-    @media (max-width: 380px) {
-
-      .app {
-        padding-left: 11px;
-        padding-right: 11px;
-      }
-
-      .grid {
-        gap: 9px;
-      }
-
-      .card-info {
-        padding: 10px;
-      }
-
-      .details-title {
-        font-size: 21px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Desi Hub TV</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#07080c;
+  --card:#11131a;
+  --border:rgba(255,255,255,.08);
+  --text:#fff;
+  --muted:#858894;
+  --pink:#ff3158;
+  --pink2:#ff6682;
+}
+
+html,body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  min-height:100%;
+}
+
+body{
+  -webkit-tap-highlight-color:transparent;
+  overscroll-behavior:none;
+}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  width:100%;
+  max-width:680px;
+  margin:auto;
+  padding:16px 14px 105px;
+}
+
+/* HEADER */
+
+.header{
+  height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-logo{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#ff3158,#ff1748);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:900;
+}
+
+.logo-text{
+  font-size:20px;
+  font-weight:850;
+}
+
+.logo-text span{
+  color:var(--pink);
+}
+
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ff3158,#ff6b85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  font-weight:800;
+  border:2px solid rgba(255,255,255,.12);
+}
+
+.avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* HERO */
+
+.hero{
+  padding:24px 21px;
+  border-radius:25px;
+  margin-bottom:18px;
+  background:
+    radial-gradient(circle at 90% 10%,rgba(255,49,88,.25),transparent 35%),
+    linear-gradient(135deg,#241019,#11131b 70%);
+  border:1px solid var(--border);
+}
+
+.hero-badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  background:rgba(255,49,88,.1);
+  color:#ff7892;
+  font-size:11px;
+  font-weight:700;
+  margin-bottom:11px;
+}
+
+.hero h1{
+  font-size:27px;
+  line-height:1.15;
+  margin-bottom:9px;
+}
+
+.hero p{
+  color:#a8abb6;
+  font-size:13px;
+  line-height:1.5;
+}
+
+/* SEARCH */
+
+.search-wrap{
+  position:relative;
+  margin-bottom:16px;
+}
+
+.search{
+  width:100%;
+  height:48px;
+  padding:0 15px 0 43px;
+  border-radius:15px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.045);
+  color:#fff;
+  outline:none;
+}
+
+.search-icon{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+/* CATEGORIES */
+
+.categories{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  margin-bottom:22px;
+  scrollbar-width:none;
+}
+
+.categories::-webkit-scrollbar{
+  display:none;
+}
+
+.cat{
+  flex:0 0 auto;
+  padding:9px 15px;
+  border-radius:30px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.035);
+  color:#999ca7;
+}
+
+.cat.active{
+  background:var(--pink);
+  border-color:var(--pink);
+  color:#fff;
+}
+
+/* SECTION */
+
+.titlebar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:13px;
+}
+
+.titlebar h2{
+  font-size:18px;
+}
+
+.count{
+  color:#6f727d;
+  font-size:11px;
+}
+
+/* GRID */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.card{
+  background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.thumbnail{
+  aspect-ratio:9/13;
+  background:#171820;
+  position:relative;
+  overflow:hidden;
+}
+
+.thumbnail img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.thumbnail-placeholder{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:35px;
+  background:linear-gradient(145deg,#292b36,#101116);
+}
+
+.play{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:rgba(255,49,88,.95);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+  z-index:2;
+}
+
+.save-btn{
+  position:absolute;
+  right:8px;
+  top:8px;
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:50%;
+  background:rgba(0,0,0,.7);
+  color:#fff;
+  font-size:18px;
+  z-index:5;
+}
+
+.save-btn.saved{
+  color:var(--pink);
+}
+
+.card-info{
+  padding:12px;
+}
+
+.card-title{
+  font-size:13px;
+  font-weight:750;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.card-category{
+  color:#ff5b78;
+  font-size:10px;
+  margin-top:5px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+
+.stats{
+  display:flex;
+  gap:11px;
+  margin-top:9px;
+  color:#777a86;
+  font-size:10px;
+}
+
+.stat{
+  display:flex;
+  align-items:center;
+  gap:3px;
+}
+
+.like-btn{
+  border:0;
+  background:transparent;
+  color:#858792;
+  padding:0;
+}
+
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:55px 10px;
+  color:#71747f;
+}
+
+/* BOTTOM */
+
+.bottom{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:0;
+  width:100%;
+  max-width:680px;
+  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
+  background:rgba(10,11,16,.96);
+  backdrop-filter:blur(18px);
+  border-top:1px solid rgba(255,255,255,.07);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  z-index:1000;
+}
+
+.bottom button{
+  border:0;
+  background:none;
+  color:#70737e;
+  font-size:10px;
+  line-height:17px;
+}
+
+.bottom button.active{
+  color:var(--pink);
+}
+
+.nav-icon{
+  display:block;
+  font-size:18px;
+}
+
+/* PROFILE */
+
+.profile{
+  background:linear-gradient(145deg,#171923,#101117);
+  border:1px solid var(--border);
+  border-radius:25px;
+  padding:30px 20px;
+  text-align:center;
+}
+
+.profile-cover{
+  height:95px;
+  margin:-30px -20px 0;
+  background:
+    radial-gradient(circle at 50% 0,rgba(255,49,88,.3),transparent 60%),
+    linear-gradient(135deg,#211019,#12141b);
+}
+
+.profile-avatar{
+  width:92px;
+  height:92px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ff3158,#ff6b85);
+  margin:-46px auto 15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border:4px solid #11131a;
+  font-size:34px;
+  font-weight:800;
+}
+
+.profile-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.profile h2{
+  margin-bottom:7px;
+  font-size:22px;
+}
+
+.username{
+  color:var(--pink2);
+  font-size:13px;
+  margin-bottom:22px;
+}
+
+.profile-stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+}
+
+.profile-stat{
+  padding:13px 8px;
+  border-radius:14px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+}
+
+.profile-stat strong{
+  display:block;
+  font-size:17px;
+}
+
+.profile-stat span{
+  color:#777a85;
+  font-size:10px;
+}
+
+/* DETAILS */
+
+.details{
+  animation:detailsIn .2s ease;
+}
+
+@keyframes detailsIn{
+  from{
+    opacity:0;
+    transform:translateY(8px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.back-btn{
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  padding:9px 13px;
+  border-radius:12px;
+  font-size:12px;
+  margin-bottom:14px;
+}
+
+.details-media{
+  width:100%;
+  aspect-ratio:16/10;
+  border-radius:21px;
+  overflow:hidden;
+  background:#111;
+  border:1px solid var(--border);
+  margin-bottom:16px;
+  position:relative;
+}
+
+.details-media img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.details-media-placeholder{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:55px;
+}
+
+.details-play{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:65px;
+  height:65px;
+  border:0;
+  border-radius:50%;
+  background:var(--pink);
+  color:#fff;
+  font-size:24px;
+}
+
+.details-category{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  background:rgba(255,49,88,.1);
+  color:#ff6985;
+  font-size:10px;
+  font-weight:750;
+  text-transform:uppercase;
+  margin-bottom:9px;
+}
+
+.details-title{
+  font-size:24px;
+  line-height:1.25;
+  margin-bottom:12px;
+}
+
+.details-stats{
+  display:flex;
+  gap:16px;
+  color:#888b96;
+  font-size:12px;
+  padding-bottom:17px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:17px;
+}
+
+.details-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.action-btn{
+  height:46px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.045);
+  color:#fff;
+  font-weight:700;
+  font-size:13px;
+}
+
+.action-btn.primary{
+  background:var(--pink);
+  border-color:var(--pink);
+}
+
+.action-btn.saved{
+  color:var(--pink);
+}
+
+/* CUSTOM PLAYER */
+
+.player{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overscroll-behavior:none;
+  touch-action:none;
+}
+
+.player video{
+  width:100%;
+  max-width:760px;
+  max-height:88vh;
+  background:#000;
+  outline:none;
+}
+
+.player-close{
+  position:fixed;
+  top:14px;
+  right:14px;
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  font-size:25px;
+  z-index:10003;
+}
+
+.player-controls{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translateX(-50%);
+  width:min(92%,650px);
+  padding:10px 12px;
+  border-radius:16px;
+  background:rgba(15,15,18,.88);
+  backdrop-filter:blur(15px);
+  z-index:10002;
+}
+
+.progress{
+  width:100%;
+  margin-bottom:8px;
+  accent-color:var(--pink);
+}
+
+.control-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.control-row button{
+  border:0;
+  background:none;
+  color:#fff;
+  font-size:17px;
+}
+
+.time{
+  color:#aaa;
+  font-size:11px;
+  margin-left:auto;
+}
+
+@media(max-width:380px){
+  .app{
+    padding-left:11px;
+    padding-right:11px;
+  }
+
+  .grid{
+    gap:9px;
+  }
+
+  .details-title{
+    font-size:21px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <div class="header">
+  <div class="header">
 
-      <div class="brand">
+    <div class="brand">
 
-        <div class="brand-logo">
-          DH
-        </div>
-
-        <div class="logo-text">
-          Desi <span>Hub TV</span>
-        </div>
-
+      <div class="brand-logo">
+        DH
       </div>
 
-      <div
-        class="avatar"
-        id="avatar"
-      >
-        D
+      <div class="logo-text">
+        Desi <span>Hub TV</span>
       </div>
 
     </div>
 
-    <div id="content"></div>
+    <div class="avatar" id="avatar">
+      D
+    </div>
 
   </div>
 
+  <div id="content"></div>
 
-  <div class="bottom">
+</div>
 
-    <button
-      id="navHome"
-      class="active"
-    >
-      <span class="nav-icon">🏠</span>
-      Home
-    </button>
 
-    <button
-      id="navViral"
-    >
-      <span class="nav-icon">🔥</span>
-      Viral
-    </button>
+<div class="bottom">
 
-    <button
-      id="navSaved"
-    >
-      <span class="nav-icon">❤️</span>
-      Saved
-    </button>
+  <button id="navHome" class="active">
+    <span class="nav-icon">🏠</span>
+    Home
+  </button>
 
-    <button
-      id="navProfile"
-    >
-      <span class="nav-icon">👤</span>
-      Profile
-    </button>
+  <button id="navViral">
+    <span class="nav-icon">🔥</span>
+    Viral
+  </button>
 
-  </div>
+  <button id="navSaved">
+    <span class="nav-icon">❤️</span>
+    Saved
+  </button>
+
+  <button id="navProfile">
+    <span class="nav-icon">👤</span>
+    Profile
+  </button>
+
+</div>
 
 
 <script>
 
 const SUPABASE_URL =
-  "https://icievlmrfbanhoaqvtwz.supabase.co";
+"https://icievlmrfbanhoaqvtwz.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_CgovIrCCYoka2GeHzjgLZg_lYbdy-D8";
+"sb_publishable_CgovIrCCYoka2GeHzjgLZg_lYbdy-D8";
 
 
 const tg =
-  window.Telegram?.WebApp;
+window.Telegram?.WebApp;
 
+if(tg){
 
-if (tg) {
   tg.ready();
   tg.expand();
+
 }
 
 
 const telegramUser =
-  tg?.initDataUnsafe?.user || null;
-
+tg?.initDataUnsafe?.user || null;
 
 const userId =
-  telegramUser?.id || null;
+telegramUser?.id || null;
 
 
 let videos = [];
 
-let savedIds =
-  new Set();
+let savedIds = new Set();
 
-let currentPage =
-  "home";
+let currentPage = "home";
 
-let selectedCategory =
-  "All";
+let selectedCategory = "All";
 
-let selectedVideo =
-  null;
+let selectedVideo = null;
 
 
 /* TELEGRAM PROFILE */
 
-function setupTelegramProfile() {
+function setupTelegramProfile(){
 
   const avatar =
-    document.getElementById("avatar");
+  document.getElementById("avatar");
 
-  if (!telegramUser) {
+  if(!telegramUser){
 
-    avatar.textContent = "D";
+    avatar.textContent="D";
 
     return;
+
   }
 
-  if (telegramUser.photo_url) {
+  if(telegramUser.photo_url){
 
-    avatar.innerHTML = `
+    avatar.innerHTML=`
       <img
         src="${escapeAttr(telegramUser.photo_url)}"
-        alt="Profile"
+        alt="Telegram Profile"
       >
     `;
 
-  } else {
+  }else{
 
-    avatar.textContent =
-      (
-        telegramUser.first_name ||
-        "D"
-      )
-      .charAt(0)
-      .toUpperCase();
+    avatar.textContent=
+    (
+      telegramUser.first_name || "D"
+    ).charAt(0).toUpperCase();
 
   }
+
 }
 
 
@@ -1178,24 +787,22 @@ setupTelegramProfile();
 
 /* LOAD VIDEOS */
 
-async function loadVideos() {
+async function loadVideos(){
 
-  try {
+  try{
 
     const response =
-      await fetch(
-        `${SUPABASE_URL}/rest/v1/videos?select=*&order=created_at.desc`,
-        {
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization":
-              `Bearer ${SUPABASE_KEY}`
-          }
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/videos?select=*&order=created_at.desc`,
+      {
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":`Bearer ${SUPABASE_KEY}`
         }
-      );
+      }
+    );
 
-
-    if (!response.ok) {
+    if(!response.ok){
 
       throw new Error(
         await response.text()
@@ -1203,51 +810,49 @@ async function loadVideos() {
 
     }
 
-
     videos =
-      await response.json();
+    await response.json();
 
-  } catch (error) {
+  }catch(error){
 
     console.error(
       "VIDEO LOAD ERROR:",
       error
     );
 
-    videos = [];
+    videos=[];
+
   }
+
 }
 
 
-/* LOAD SAVED */
+/* SAVED */
 
-async function loadSaved() {
+async function loadSaved(){
 
-  if (!userId) {
+  if(!userId){
 
-    savedIds =
-      new Set();
+    savedIds=new Set();
 
     return;
+
   }
 
-
-  try {
+  try{
 
     const response =
-      await fetch(
-        `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&select=video_id`,
-        {
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization":
-              `Bearer ${SUPABASE_KEY}`
-          }
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&select=video_id`,
+      {
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":`Bearer ${SUPABASE_KEY}`
         }
-      );
+      }
+    );
 
-
-    if (!response.ok) {
+    if(!response.ok){
 
       throw new Error(
         await response.text()
@@ -1255,337 +860,249 @@ async function loadSaved() {
 
     }
 
-
     const data =
-      await response.json();
-
+    await response.json();
 
     savedIds =
-      new Set(
-        data.map(
-          item =>
-            Number(item.video_id)
-        )
-      );
+    new Set(
+      data.map(
+        item=>Number(item.video_id)
+      )
+    );
 
-  } catch (error) {
+  }catch(error){
 
     console.error(
       "SAVED LOAD ERROR:",
       error
     );
 
-    savedIds =
-      new Set();
+    savedIds=new Set();
+
   }
+
 }
 
 
-/* SAVE / UNSAVE */
+/* SAVE */
 
-async function toggleSave(
-  videoId
-) {
+async function toggleSave(videoId){
 
-  if (!userId) {
+  if(!userId){
 
     alert(
       "Please open this app from Telegram."
     );
 
     return;
+
   }
 
+  const id=Number(videoId);
 
-  const numericId =
-    Number(videoId);
-
-
-  if (savedIds.has(numericId)) {
+  if(savedIds.has(id)){
 
     const response =
-      await fetch(
-        `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&video_id=eq.${numericId}`,
-        {
-          method: "DELETE",
-
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization":
-              `Bearer ${SUPABASE_KEY}`
-          }
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/saved_videos?telegram_user_id=eq.${userId}&video_id=eq.${id}`,
+      {
+        method:"DELETE",
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":`Bearer ${SUPABASE_KEY}`
         }
-      );
+      }
+    );
 
+    if(response.ok){
 
-    if (response.ok) {
-
-      savedIds.delete(
-        numericId
-      );
+      savedIds.delete(id);
 
     }
 
-  } else {
+  }else{
 
     const response =
-      await fetch(
-        `${SUPABASE_URL}/rest/v1/saved_videos`,
-        {
-          method: "POST",
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/saved_videos`,
+      {
+        method:"POST",
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":`Bearer ${SUPABASE_KEY}`,
+          "Content-Type":"application/json",
+          "Prefer":"return=minimal"
+        },
+        body:JSON.stringify({
+          telegram_user_id:userId,
+          video_id:id
+        })
+      }
+    );
 
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization":
-              `Bearer ${SUPABASE_KEY}`,
-            "Content-Type":
-              "application/json",
-            "Prefer":
-              "return=minimal"
-          },
+    if(response.ok){
 
-          body:
-            JSON.stringify({
-              telegram_user_id:
-                userId,
-
-              video_id:
-                numericId
-            })
-        }
-      );
-
-
-    if (response.ok) {
-
-      savedIds.add(
-        numericId
-      );
+      savedIds.add(id);
 
     }
 
   }
-
 
   render();
+
 }
 
 
 /* VIEW */
 
-async function addView(
-  videoId
-) {
+async function addView(videoId){
 
-  try {
+  const video =
+  videos.find(
+    v=>Number(v.id)===Number(videoId)
+  );
 
-    const video =
-      videos.find(
-        v =>
-          Number(v.id) ===
-          Number(videoId)
-      );
+  if(!video)return;
 
+  const newViews =
+  Number(video.views||0)+1;
 
-    if (!video) return;
+  video.views=newViews;
 
-
-    const currentViews =
-      Number(video.views || 0);
-
-
-    const newViews =
-      currentViews + 1;
-
-
-    video.views =
-      newViews;
-
+  try{
 
     await fetch(
       `${SUPABASE_URL}/rest/v1/videos?id=eq.${videoId}`,
       {
-        method: "PATCH",
-
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Authorization":
-            `Bearer ${SUPABASE_KEY}`,
-          "Content-Type":
-            "application/json",
-          "Prefer":
-            "return=minimal"
+        method:"PATCH",
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":`Bearer ${SUPABASE_KEY}`,
+          "Content-Type":"application/json"
         },
-
-        body:
-          JSON.stringify({
-            views: newViews
-          })
+        body:JSON.stringify({
+          views:newViews
+        })
       }
     );
 
-  } catch (error) {
+  }catch(error){
 
     console.error(
       "VIEW ERROR:",
       error
     );
+
   }
+
 }
 
 
 /* LIKE */
 
-async function addLike(
-  videoId
-) {
+async function addLike(videoId){
 
-  try {
+  const video =
+  videos.find(
+    v=>Number(v.id)===Number(videoId)
+  );
 
-    const video =
-      videos.find(
-        v =>
-          Number(v.id) ===
-          Number(videoId)
-      );
+  if(!video)return;
 
+  const newLikes =
+  Number(video.likes||0)+1;
 
-    if (!video) return;
+  video.likes=newLikes;
 
+  render();
 
-    const currentLikes =
-      Number(video.likes || 0);
-
-
-    const newLikes =
-      currentLikes + 1;
-
-
-    video.likes =
-      newLikes;
-
-
-    render();
-
+  try{
 
     await fetch(
       `${SUPABASE_URL}/rest/v1/videos?id=eq.${videoId}`,
       {
-        method: "PATCH",
-
-        headers: {
-          "apikey": SUPABASE_KEY,
-          "Authorization":
-            `Bearer ${SUPABASE_KEY}`,
-          "Content-Type":
-            "application/json",
-          "Prefer":
-            "return=minimal"
+        method:"PATCH",
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":`Bearer ${SUPABASE_KEY}`,
+          "Content-Type":"application/json"
         },
-
-        body:
-          JSON.stringify({
-            likes: newLikes
-          })
+        body:JSON.stringify({
+          likes:newLikes
+        })
       }
     );
 
-  } catch (error) {
+  }catch(error){
 
     console.error(
       "LIKE ERROR:",
       error
     );
+
   }
+
 }
 
 
 /* MAIN RENDER */
 
-function render() {
+function render(){
 
-  if (
-    currentPage ===
-    "profile"
-  ) {
+  if(currentPage==="profile"){
 
     renderProfile();
 
     return;
+
   }
 
+  if(currentPage==="details"){
 
-  if (
-    currentPage ===
-    "details"
-  ) {
-
-    renderDetails(
-      selectedVideo
-    );
+    renderDetails(selectedVideo);
 
     return;
-  }
 
+  }
 
   const content =
-    document.getElementById(
-      "content"
+  document.getElementById("content");
+
+  let list=videos;
+
+  if(currentPage==="viral"){
+
+    list=
+    videos.filter(
+      video=>video.category==="Viral"
     );
 
-
-  let list =
-    videos;
-
-
-  if (
-    currentPage ===
-    "viral"
-  ) {
-
-    list =
-      videos.filter(
-        video =>
-          video.category ===
-          "Viral"
-      );
-
   }
 
+  if(currentPage==="saved"){
 
-  if (
-    currentPage ===
-    "saved"
-  ) {
-
-    list =
-      videos.filter(
-        video =>
-          savedIds.has(
-            Number(video.id)
-          )
-      );
+    list=
+    videos.filter(
+      video=>savedIds.has(Number(video.id))
+    );
 
   }
-
 
   const heading =
-    currentPage === "viral"
-      ? "🔥 Viral Videos"
-      : currentPage === "saved"
-      ? "❤️ Saved Videos"
-      : "Watch. Discover. Enjoy.";
-
+  currentPage==="viral"
+  ? "🔥 Viral Videos"
+  : currentPage==="saved"
+  ? "❤️ Saved Videos"
+  : "Watch. Discover. Enjoy.";
 
   const description =
-    currentPage === "viral"
-      ? "Trending videos from Desi Hub TV."
-      : currentPage === "saved"
-      ? "Your personal saved collection."
-      : "Fresh reels and viral videos in one place.";
+  currentPage==="viral"
+  ? "Trending videos from Desi Hub TV."
+  : currentPage==="saved"
+  ? "Your personal saved collection."
+  : "Fresh reels and viral videos in one place.";
 
-
-  content.innerHTML = `
+  content.innerHTML=`
 
     <div class="hero">
 
@@ -1593,106 +1110,79 @@ function render() {
         ✦ DESI HUB TV
       </div>
 
-      <h1>
-        ${heading}
-      </h1>
+      <h1>${heading}</h1>
 
-      <p>
-        ${description}
-      </p>
+      <p>${description}</p>
 
     </div>
 
-
     ${
-      currentPage !== "saved"
-        ? `
-          <div class="search-wrap">
+      currentPage!=="saved"
+      ?`
+        <div class="search-wrap">
 
-            <span class="search-icon">
-              🔎
-            </span>
+          <span class="search-icon">
+            🔎
+          </span>
 
-            <input
-              id="search"
-              class="search"
-              type="text"
-              placeholder="Search videos..."
-            >
+          <input
+            id="search"
+            class="search"
+            placeholder="Search videos..."
+          >
 
-          </div>
-        `
-        : ""
+        </div>
+      `
+      :""
     }
 
-
     ${
-      currentPage === "home"
-        ? `
-          <div class="categories">
+      currentPage==="home"
+      ?`
+        <div class="categories">
 
-            <button
-              class="cat ${
-                selectedCategory === "All"
-                  ? "active"
-                  : ""
-              }"
-              data-category="All"
-            >
-              All
-            </button>
+          <button
+            class="cat ${selectedCategory==="All"?"active":""}"
+            data-category="All"
+          >
+            All
+          </button>
 
+          <button
+            class="cat ${selectedCategory==="Instagram"?"active":""}"
+            data-category="Instagram"
+          >
+            Instagram
+          </button>
 
-            <button
-              class="cat ${
-                selectedCategory === "Instagram"
-                  ? "active"
-                  : ""
-              }"
-              data-category="Instagram"
-            >
-              Instagram
-            </button>
+          <button
+            class="cat ${selectedCategory==="TikTok"?"active":""}"
+            data-category="TikTok"
+          >
+            TikTok
+          </button>
 
+          <button
+            class="cat ${selectedCategory==="Viral"?"active":""}"
+            data-category="Viral"
+          >
+            Viral
+          </button>
 
-            <button
-              class="cat ${
-                selectedCategory === "TikTok"
-                  ? "active"
-                  : ""
-              }"
-              data-category="TikTok"
-            >
-              TikTok
-            </button>
-
-
-            <button
-              class="cat ${
-                selectedCategory === "Viral"
-                  ? "active"
-                  : ""
-              }"
-              data-category="Viral"
-            >
-              Viral
-            </button>
-
-          </div>
-        `
-        : ""
+        </div>
+      `
+      :""
     }
-
 
     <div class="titlebar">
 
       <h2>
         ${
-          currentPage === "viral"
-            ? "Trending Now"
-            : currentPage === "saved"
-            ? "Your Collection"
-            : "Latest Videos"
+          currentPage==="viral"
+          ?"Trending Now"
+          :currentPage==="saved"
+          ?"Your Collection"
+          :"Latest Videos"
         }
       </h2>
 
@@ -1702,73 +1192,46 @@ function render() {
 
     </div>
 
-
-    <div
-      id="videoGrid"
-      class="grid"
-    ></div>
+    <div id="videoGrid" class="grid"></div>
 
   `;
 
 
-  let filtered =
-    list;
+  let filtered=list;
 
-
-  if (
-    currentPage ===
-    "home"
-  ) {
+  if(currentPage==="home"){
 
     filtered =
-      list.filter(
-        video =>
-          selectedCategory ===
-          "All" ||
-          video.category ===
-          selectedCategory
-      );
+    list.filter(
+      video =>
+      selectedCategory==="All" ||
+      video.category===selectedCategory
+    );
 
   }
 
-
-  renderGrid(
-    filtered
-  );
+  renderGrid(filtered);
 
 
   const search =
-    document.getElementById(
-      "search"
-    );
+  document.getElementById("search");
 
-
-  if (search) {
+  if(search){
 
     search.addEventListener(
       "input",
-      () => {
+      ()=>{
 
         const term =
-          search.value
-            .toLowerCase()
-            .trim();
-
-
-        const results =
-          filtered.filter(
-            video =>
-              (
-                video.title ||
-                ""
-              )
-              .toLowerCase()
-              .includes(term)
-          );
-
+        search.value.toLowerCase().trim();
 
         renderGrid(
-          results
+          filtered.filter(
+            video=>
+            (video.title||"")
+            .toLowerCase()
+            .includes(term)
+          )
         );
 
       }
@@ -1778,43 +1241,38 @@ function render() {
 
 
   document
-    .querySelectorAll(".cat")
-    .forEach(button => {
+  .querySelectorAll(".cat")
+  .forEach(button=>{
 
-      button.addEventListener(
-        "click",
-        () => {
+    button.addEventListener(
+      "click",
+      ()=>{
 
-          selectedCategory =
-            button.dataset.category;
+        selectedCategory =
+        button.dataset.category;
 
-          render();
+        render();
 
-        }
-      );
+      }
+    );
 
-    });
+  });
+
 }
 
 
-/* VIDEO GRID */
+/* GRID */
 
-function renderGrid(
-  list
-) {
+function renderGrid(list){
 
   const grid =
-    document.getElementById(
-      "videoGrid"
-    );
+  document.getElementById("videoGrid");
 
+  if(!grid)return;
 
-  if (!grid) return;
+  if(!list.length){
 
-
-  if (!list.length) {
-
-    grid.innerHTML = `
+    grid.innerHTML=`
       <div class="empty">
         🎬<br><br>
         No videos found.
@@ -1822,223 +1280,150 @@ function renderGrid(
     `;
 
     return;
+
   }
 
-
   grid.innerHTML =
-    list.map(
-      video => {
+  list.map(video=>{
 
-        const isSaved =
-          savedIds.has(
-            Number(video.id)
-          );
+    const isSaved =
+    savedIds.has(Number(video.id));
 
+    const thumbnail =
+    video.thumbnail_file_id
+    ? `/api/thumbnail?file_id=${encodeURIComponent(video.thumbnail_file_id)}`
+    :"";
 
-        const thumbnail =
-          video.thumbnail_file_id
-            ? `/api/thumbnail?file_id=${encodeURIComponent(
-                video.thumbnail_file_id
-              )}`
-            : "";
+    return`
 
+      <div
+        class="card"
+        onclick="openDetails(${Number(video.id)})"
+      >
 
-        return `
+        <div class="thumbnail">
 
-          <div
-            class="card"
-            onclick="openDetails(
-              ${Number(video.id)}
-            )"
-          >
-
-            <div class="thumbnail">
-
-              ${
-                thumbnail
-                  ? `
-                    <img
-                      src="${thumbnail}"
-                      alt=""
-                      loading="lazy"
-                    >
-                  `
-                  : `
-                    <div
-                      class="thumbnail-placeholder"
-                    >
-                      🎬
-                    </div>
-                  `
-              }
-
-
-              <button
-                class="save-btn ${
-                  isSaved
-                    ? "saved"
-                    : ""
-                }"
-                onclick="
-                  event.stopPropagation();
-                  toggleSave(
-                    ${Number(video.id)}
-                  )
-                "
+          ${
+            thumbnail
+            ?`
+              <img
+                src="${thumbnail}"
+                alt=""
+                loading="lazy"
               >
-                ${
-                  isSaved
-                    ? "♥"
-                    : "♡"
-                }
-              </button>
-
-
-              <div class="play">
-                ▶
+            `
+            :`
+              <div class="thumbnail-placeholder">
+                🎬
               </div>
+            `
+          }
 
-            </div>
+          <button
+            class="save-btn ${isSaved?"saved":""}"
+            onclick="
+              event.stopPropagation();
+              toggleSave(${Number(video.id)})
+            "
+          >
+            ${isSaved?"♥":"♡"}
+          </button>
 
+          <div class="play">
+            ▶
+          </div>
 
-            <div class="card-info">
+        </div>
 
-              <div class="card-title">
-                ${escapeHtml(
-                  video.title ||
-                  "Untitled Video"
-                )}
-              </div>
+        <div class="card-info">
 
+          <div class="card-title">
+            ${escapeHtml(video.title||"Untitled Video")}
+          </div>
 
-              <div class="card-category">
-                ${escapeHtml(
-                  video.category ||
-                  "Other"
-                )}
-              </div>
+          <div class="card-category">
+            ${escapeHtml(video.category||"Other")}
+          </div>
 
+          <div class="stats">
 
-              <div class="stats">
+            <span class="stat">
+              👁 ${formatNumber(video.views||0)}
+            </span>
 
-                <span class="stat">
-                  👁
-                  ${formatNumber(
-                    video.views || 0
-                  )}
-                </span>
-
-
-                <button
-                  class="like-btn stat"
-                  onclick="
-                    event.stopPropagation();
-                    addLike(
-                      ${Number(video.id)}
-                    )
-                  "
-                >
-                  ❤️
-                  ${formatNumber(
-                    video.likes || 0
-                  )}
-                </button>
-
-              </div>
-
-            </div>
+            <button
+              class="like-btn stat"
+              onclick="
+                event.stopPropagation();
+                addLike(${Number(video.id)})
+              "
+            >
+              ❤️ ${formatNumber(video.likes||0)}
+            </button>
 
           </div>
 
-        `;
+        </div>
 
-      }
-    )
-    .join("");
+      </div>
+
+    `;
+
+  }).join("");
+
 }
 
 
-/* OPEN DETAILS */
+/* DETAILS */
 
-function openDetails(
-  videoId
-) {
+function openDetails(videoId){
 
   const video =
-    videos.find(
-      v =>
-        Number(v.id) ===
-        Number(videoId)
-    );
+  videos.find(
+    v=>Number(v.id)===Number(videoId)
+  );
 
+  if(!video)return;
 
-  if (!video) return;
+  selectedVideo=video;
 
-
-  selectedVideo =
-    video;
-
-
-  currentPage =
-    "details";
-
+  currentPage="details";
 
   document
-    .querySelectorAll(
-      ".bottom button"
-    )
-    .forEach(
-      button =>
-        button.classList.remove(
-          "active"
-        )
-    );
-
-
-  renderDetails(
-    video
+  .querySelectorAll(".bottom button")
+  .forEach(
+    button=>button.classList.remove("active")
   );
+
+  renderDetails(video);
+
 }
 
 
-/* DETAILS PAGE */
-
-function renderDetails(
-  video
-) {
+function renderDetails(video){
 
   const content =
-    document.getElementById(
-      "content"
-    );
+  document.getElementById("content");
 
+  if(!video){
 
-  if (!video) {
-
-    currentPage =
-      "home";
+    currentPage="home";
 
     render();
 
     return;
+
   }
 
-
   const isSaved =
-    savedIds.has(
-      Number(video.id)
-    );
-
+  savedIds.has(Number(video.id));
 
   const thumbnail =
-    video.thumbnail_file_id
-      ? `/api/thumbnail?file_id=${encodeURIComponent(
-          video.thumbnail_file_id
-        )}`
-      : "";
+  video.thumbnail_file_id
+  ? `/api/thumbnail?file_id=${encodeURIComponent(video.thumbnail_file_id)}`
+  :"";
 
-
-  content.innerHTML = `
+  content.innerHTML=`
 
     <div class="details">
 
@@ -2049,26 +1434,22 @@ function renderDetails(
         ← Back
       </button>
 
-
       <div class="details-media">
 
         ${
           thumbnail
-            ? `
-              <img
-                src="${thumbnail}"
-                alt=""
-              >
-            `
-            : `
-              <div
-                class="details-media-placeholder"
-              >
-                🎬
-              </div>
-            `
+          ?`
+            <img
+              src="${thumbnail}"
+              alt=""
+            >
+          `
+          :`
+            <div class="details-media-placeholder">
+              🎬
+            </div>
+          `
         }
-
 
         <button
           class="details-play"
@@ -2084,44 +1465,25 @@ function renderDetails(
 
       </div>
 
-
       <div class="details-category">
-        ${escapeHtml(
-          video.category ||
-          "Other"
-        )}
+        ${escapeHtml(video.category||"Other")}
       </div>
 
-
       <h1 class="details-title">
-        ${escapeHtml(
-          video.title ||
-          "Untitled Video"
-        )}
+        ${escapeHtml(video.title||"Untitled Video")}
       </h1>
-
 
       <div class="details-stats">
 
         <span>
-          👁
-          ${formatNumber(
-            video.views || 0
-          )}
-          views
+          👁 ${formatNumber(video.views||0)} views
         </span>
 
-
         <span>
-          ❤️
-          ${formatNumber(
-            video.likes || 0
-          )}
-          likes
+          ❤️ ${formatNumber(video.likes||0)} likes
         </span>
 
       </div>
-
 
       <div class="details-actions">
 
@@ -2137,149 +1499,101 @@ function renderDetails(
           ▶ Watch Video
         </button>
 
-
         <button
-          class="action-btn ${
-            isSaved
-              ? "saved"
-              : ""
-          }"
+          class="action-btn ${isSaved?"saved":""}"
           onclick="
-            toggleSave(
-              ${Number(video.id)}
-            )
+            toggleSave(${Number(video.id)})
           "
         >
-          ${
-            isSaved
-              ? "♥ Saved"
-              : "♡ Save Video"
-          }
+          ${isSaved?"♥ Saved":"♡ Save Video"}
         </button>
 
-      </div>
-
-
-      <div
-        style="
-          color:#737680;
-          font-size:12px;
-          line-height:1.6;
-        "
-      >
-        Enjoy this video on Desi Hub TV.
-        More fresh and viral content is
-        coming soon.
       </div>
 
     </div>
 
   `;
+
 }
 
 
 /* BACK */
 
-function goBack() {
+function goBack(){
 
-  currentPage =
-    "home";
+  currentPage="home";
 
-  selectedVideo =
-    null;
+  selectedVideo=null;
 
-  setActive(
-    "navHome"
-  );
+  setActive("navHome");
 
   render();
+
 }
 
 
 /* PROFILE */
 
-function renderProfile() {
+function renderProfile(){
 
   const content =
-    document.getElementById(
-      "content"
-    );
-
+  document.getElementById("content");
 
   const firstName =
-    telegramUser?.first_name ||
-    "Telegram User";
-
+  telegramUser?.first_name ||
+  "Telegram User";
 
   const lastName =
-    telegramUser?.last_name ||
-    "";
-
+  telegramUser?.last_name ||
+  "";
 
   const fullName =
-    `${firstName} ${lastName}`.trim();
-
+  `${firstName} ${lastName}`.trim();
 
   const username =
-    telegramUser?.username
-      ? `@${telegramUser.username}`
-      : "Telegram account";
+  telegramUser?.username
+  ? `@${telegramUser.username}`
+  : "Telegram account";
 
 
-  let profileImage =
-    "";
+  let image="";
 
+  if(telegramUser?.photo_url){
 
-  if (
-    telegramUser?.photo_url
-  ) {
-
-    profileImage = `
+    image=`
       <img
-        src="${escapeAttr(
-          telegramUser.photo_url
-        )}"
+        src="${escapeAttr(telegramUser.photo_url)}"
         alt="Telegram Profile"
       >
     `;
 
-  } else {
+  }else{
 
-    profileImage =
-      escapeHtml(
-        firstName
-          .charAt(0)
-          .toUpperCase()
-      );
+    image=
+    escapeHtml(
+      firstName.charAt(0).toUpperCase()
+    );
 
   }
 
 
-  content.innerHTML = `
+  content.innerHTML=`
 
     <div class="profile">
 
       <div class="profile-cover"></div>
 
-
       <div class="profile-avatar">
-        ${profileImage}
+        ${image}
       </div>
-
 
       <h2>
-        ${escapeHtml(
-          fullName
-        )}
+        ${escapeHtml(fullName)}
       </h2>
 
-
       <div class="username">
-        ${escapeHtml(
-          username
-        )}
+        ${escapeHtml(username)}
       </div>
-
 
       <div class="profile-stats">
 
@@ -2294,7 +1608,6 @@ function renderProfile() {
           </span>
 
         </div>
-
 
         <div class="profile-stat">
 
@@ -2313,54 +1626,41 @@ function renderProfile() {
     </div>
 
   `;
+
 }
 
 
 /* VIDEO PLAYER */
 
-function playVideo(
-  fileId,
-  videoId
-) {
+function playVideo(fileId,videoId){
 
-  addView(
-    videoId
-  );
-
+  addView(videoId);
 
   const url =
-    `/api/video?file_id=${encodeURIComponent(
-      fileId
-    )}`;
+  `/api/video?file_id=${encodeURIComponent(fileId)}`;
 
 
   const player =
-    document.createElement(
-      "div"
-    );
+  document.createElement("div");
+
+  player.className="player";
 
 
-  player.className =
-    "player";
-
-
-  player.innerHTML = `
+  player.innerHTML=`
 
     <button
-      class="close-player"
-      onclick="
-        this.parentElement.remove()
-      "
+      class="player-close"
+      id="closePlayer"
     >
       ×
     </button>
 
-
     <video
-      controls
-      autoplay
+      id="mainVideo"
       playsinline
       preload="metadata"
+      disablepictureinpicture
+      controlslist="nodownload noplaybackrate"
     >
 
       <source
@@ -2370,267 +1670,430 @@ function playVideo(
 
     </video>
 
+    <div class="player-controls">
+
+      <input
+        class="progress"
+        id="videoProgress"
+        type="range"
+        min="0"
+        max="100"
+        value="0"
+      >
+
+      <div class="control-row">
+
+        <button id="playPause">
+          ▶
+        </button>
+
+        <button id="muteBtn">
+          🔊
+        </button>
+
+        <button id="fullscreenBtn">
+          ⛶
+        </button>
+
+        <span class="time" id="videoTime">
+          0:00 / 0:00
+        </span>
+
+      </div>
+
+    </div>
+
   `;
 
 
-  document.body.appendChild(
-    player
-  );
+  document.body.appendChild(player);
 
 
   const video =
-    player.querySelector(
-      "video"
-    );
+  player.querySelector("#mainVideo");
+
+  const close =
+  player.querySelector("#closePlayer");
+
+  const playPause =
+  player.querySelector("#playPause");
+
+  const muteBtn =
+  player.querySelector("#muteBtn");
+
+  const fullscreenBtn =
+  player.querySelector("#fullscreenBtn");
+
+  const progress =
+  player.querySelector("#videoProgress");
+
+  const time =
+  player.querySelector("#videoTime");
 
 
-  video
-    .play()
-    .catch(
-      () => {}
-    );
+  /* CLOSE */
+
+  close.onclick=()=>{
+
+    video.pause();
+
+    player.remove();
+
+  };
+
+
+  /* PLAY PAUSE */
+
+  playPause.onclick=()=>{
+
+    if(video.paused){
+
+      video.play();
+
+    }else{
+
+      video.pause();
+
+    }
+
+  };
+
+
+  video.addEventListener(
+    "play",
+    ()=>{
+      playPause.textContent="⏸";
+    }
+  );
+
+
+  video.addEventListener(
+    "pause",
+    ()=>{
+      playPause.textContent="▶";
+    }
+  );
+
+
+  /* MUTE */
+
+  muteBtn.onclick=()=>{
+
+    video.muted=!video.muted;
+
+    muteBtn.textContent =
+    video.muted
+    ? "🔇"
+    : "🔊";
+
+  };
+
+
+  /* FULLSCREEN */
+
+  fullscreenBtn.onclick=()=>{
+
+    if(document.fullscreenElement){
+
+      document.exitFullscreen();
+
+    }else{
+
+      if(video.requestFullscreen){
+
+        video.requestFullscreen();
+
+      }else if(player.requestFullscreen){
+
+        player.requestFullscreen();
+
+      }
+
+    }
+
+  };
+
+
+  /* PROGRESS */
+
+  video.addEventListener(
+    "timeupdate",
+    ()=>{
+
+      if(!video.duration)return;
+
+      progress.value =
+      (video.currentTime/video.duration)*100;
+
+      time.textContent =
+      `${formatTime(video.currentTime)} / ${formatTime(video.duration)}`;
+
+    }
+  );
+
+
+  progress.addEventListener(
+    "input",
+    ()=>{
+
+      if(!video.duration)return;
+
+      video.currentTime =
+      (progress.value/100)*video.duration;
+
+    }
+  );
+
+
+  /* IMPORTANT:
+     NO NEXT VIDEO
+     NO SWIPE
+     NO AUTO NEXT
+  */
+
+  video.addEventListener(
+    "ended",
+    ()=>{
+
+      playPause.textContent="▶";
+
+      video.currentTime=0;
+
+    }
+  );
+
+
+  /* DISABLE CONTEXT MENU */
+
+  player.addEventListener(
+    "contextmenu",
+    event=>{
+      event.preventDefault();
+    }
+  );
+
+
+  /* BLOCK SWIPE */
+
+  let startX=0;
+  let startY=0;
+
+  player.addEventListener(
+    "touchstart",
+    event=>{
+
+      startX=event.touches[0].clientX;
+      startY=event.touches[0].clientY;
+
+    },
+    {passive:true}
+  );
+
+
+  player.addEventListener(
+    "touchmove",
+    event=>{
+
+      const x=event.touches[0].clientX;
+      const y=event.touches[0].clientY;
+
+      const dx=Math.abs(x-startX);
+      const dy=Math.abs(y-startY);
+
+      if(dx>20 && dx>dy){
+
+        event.preventDefault();
+
+      }
+
+    },
+    {passive:false}
+  );
+
+
+  video.play().catch(()=>{});
+
 }
 
 
-/* ACTIVE NAV */
+/* TIME */
 
-function setActive(
-  buttonId
-) {
+function formatTime(seconds){
+
+  if(!Number.isFinite(seconds)){
+    return "0:00";
+  }
+
+  const minutes =
+  Math.floor(seconds/60);
+
+  const secs =
+  Math.floor(seconds%60)
+  .toString()
+  .padStart(2,"0");
+
+  return `${minutes}:${secs}`;
+
+}
+
+
+/* NAV ACTIVE */
+
+function setActive(buttonId){
 
   document
-    .querySelectorAll(
-      ".bottom button"
-    )
-    .forEach(
-      button =>
-        button.classList.remove(
-          "active"
-        )
-    );
-
+  .querySelectorAll(".bottom button")
+  .forEach(
+    button=>button.classList.remove("active")
+  );
 
   const button =
-    document.getElementById(
-      buttonId
-    );
+  document.getElementById(buttonId);
 
-
-  if (button) {
-
-    button.classList.add(
-      "active"
-    );
-
+  if(button){
+    button.classList.add("active");
   }
+
 }
 
 
-/* NAVIGATION */
+/* NAV */
 
 document
-  .getElementById(
-    "navHome"
-  )
-  .addEventListener(
-    "click",
-    () => {
+.getElementById("navHome")
+.addEventListener(
+  "click",
+  ()=>{
 
-      currentPage =
-        "home";
+    currentPage="home";
 
-      selectedVideo =
-        null;
+    selectedVideo=null;
 
-      setActive(
-        "navHome"
-      );
+    setActive("navHome");
 
-      render();
+    render();
 
-    }
-  );
+  }
+);
 
 
 document
-  .getElementById(
-    "navViral"
-  )
-  .addEventListener(
-    "click",
-    () => {
+.getElementById("navViral")
+.addEventListener(
+  "click",
+  ()=>{
 
-      currentPage =
-        "viral";
+    currentPage="viral";
 
-      selectedVideo =
-        null;
+    selectedVideo=null;
 
-      setActive(
-        "navViral"
-      );
+    setActive("navViral");
 
-      render();
+    render();
 
-    }
-  );
+  }
+);
 
 
 document
-  .getElementById(
-    "navSaved"
-  )
-  .addEventListener(
-    "click",
-    () => {
+.getElementById("navSaved")
+.addEventListener(
+  "click",
+  ()=>{
 
-      currentPage =
-        "saved";
+    currentPage="saved";
 
-      selectedVideo =
-        null;
+    selectedVideo=null;
 
-      setActive(
-        "navSaved"
-      );
+    setActive("navSaved");
 
-      render();
+    render();
 
-    }
-  );
+  }
+);
 
 
 document
-  .getElementById(
-    "navProfile"
-  )
-  .addEventListener(
-    "click",
-    () => {
+.getElementById("navProfile")
+.addEventListener(
+  "click",
+  ()=>{
 
-      currentPage =
-        "profile";
+    currentPage="profile";
 
-      selectedVideo =
-        null;
+    selectedVideo=null;
 
-      setActive(
-        "navProfile"
-      );
+    setActive("navProfile");
 
-      render();
+    render();
 
-    }
-  );
+  }
+);
 
 
-/* FORMAT NUMBER */
+/* NUMBER */
 
-function formatNumber(
-  number
-) {
+function formatNumber(number){
 
-  number =
-    Number(
-      number || 0
-    );
+  number=Number(number||0);
 
-
-  if (
-    number >=
-    1000000
-  ) {
+  if(number>=1000000){
 
     return (
-      number / 1000000
-    )
-    .toFixed(1) +
-    "M";
+      number/1000000
+    ).toFixed(1)+"M";
 
   }
 
-
-  if (
-    number >=
-    1000
-  ) {
+  if(number>=1000){
 
     return (
-      number / 1000
-    )
-    .toFixed(1) +
-    "K";
+      number/1000
+    ).toFixed(1)+"K";
 
   }
 
+  return String(number);
 
-  return String(
-    number
-  );
 }
 
 
-/* ESCAPE HTML */
+/* HTML ESCAPE */
 
-function escapeHtml(
-  text
-) {
+function escapeHtml(text){
 
   return String(text)
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+
 }
 
 
-/* ESCAPE ATTRIBUTE */
+/* ATTRIBUTE ESCAPE */
 
-function escapeAttr(
-  text
-) {
+function escapeAttr(text){
 
   return String(text)
-    .replaceAll(
-      "\\",
-      "\\\\"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+  .replaceAll("\\","\\\\")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+
 }
 
 
 /* START */
 
-async function startApp() {
+async function startApp(){
 
   await loadVideos();
 
   await loadSaved();
 
   render();
+
 }
 
 

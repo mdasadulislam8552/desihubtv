@@ -49,14 +49,21 @@
     }
 
     .avatar {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: #ff3158;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .hero {
@@ -168,6 +175,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 35px;
     }
 
     .play {
@@ -203,21 +211,6 @@
 
     .save-btn.saved {
       color: #ff3158;
-    }
-
-    .share-btn {
-      position: absolute;
-      left: 8px;
-      top: 8px;
-      width: 35px;
-      height: 35px;
-      border: 0;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, .7);
-      color: #fff;
-      font-size: 16px;
-      z-index: 3;
-      cursor: pointer;
     }
 
     .card-info {
@@ -304,30 +297,45 @@
       background: #15161d;
       border: 1px solid #292b35;
       border-radius: 20px;
-      padding: 25px;
+      padding: 28px 20px;
       text-align: center;
     }
 
     .profile-avatar {
-      width: 75px;
-      height: 75px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       background: #ff3158;
       margin: 0 auto 15px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 30px;
+      font-size: 34px;
       font-weight: 800;
+      overflow: hidden;
+    }
+
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .profile h2 {
       margin-bottom: 7px;
+      font-size: 22px;
     }
 
-    .profile p {
+    .profile .username {
+      color: #ff5272;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .profile .info {
       color: #888;
       font-size: 14px;
+      line-height: 24px;
     }
 
     .player {
@@ -423,10 +431,35 @@ let savedIds = new Set();
 let currentPage = "home";
 let selectedCategory = "All";
 
-if (telegramUser) {
-  document.getElementById("avatar").textContent =
-    (telegramUser.first_name || "D").charAt(0).toUpperCase();
+function setupTelegramProfile() {
+
+  const avatar =
+    document.getElementById("avatar");
+
+  if (!telegramUser) {
+    avatar.textContent = "D";
+    return;
+  }
+
+  if (telegramUser.photo_url) {
+
+    avatar.innerHTML = `
+      <img
+        src="${escapeAttr(telegramUser.photo_url)}"
+        alt="Profile"
+      >
+    `;
+
+  } else {
+
+    avatar.textContent =
+      (telegramUser.first_name || "D")
+        .charAt(0)
+        .toUpperCase();
+  }
 }
+
+setupTelegramProfile();
 
 async function loadVideos() {
 
@@ -624,24 +657,6 @@ async function addLike(videoId) {
   } catch (error) {
 
     console.error("LIKE ERROR:", error);
-  }
-}
-
-function shareVideo(video) {
-
-  const shareText =
-    `🎬 ${video.title || "Desi Hub TV Video"}\n\nWatch on Desi Hub TV`;
-
-  const appUrl =
-    "https://t.me/desihubtv_bot";
-
-  const telegramShare =
-    `https://t.me/share/url?url=${encodeURIComponent(appUrl)}&text=${encodeURIComponent(shareText)}`;
-
-  if (tg?.openTelegramLink) {
-    tg.openTelegramLink(telegramShare);
-  } else {
-    window.open(telegramShare, "_blank");
   }
 }
 
@@ -858,13 +873,6 @@ function renderGrid(list) {
           }
 
           <button
-            class="share-btn"
-            onclick="event.stopPropagation(); shareVideoById(${Number(video.id)})"
-          >
-            ↗
-          </button>
-
-          <button
             class="save-btn ${isSaved ? "saved" : ""}"
             onclick="event.stopPropagation(); toggleSave(${Number(video.id)})"
           >
@@ -900,13 +908,6 @@ function renderGrid(list) {
               ❤️ ${formatNumber(video.likes || 0)}
             </button>
 
-            <button
-              class="like-btn stat"
-              onclick="shareVideoById(${Number(video.id)})"
-            >
-              📤
-            </button>
-
           </div>
 
         </div>
@@ -917,52 +918,64 @@ function renderGrid(list) {
   }).join("");
 }
 
-function shareVideoById(videoId) {
-
-  const video =
-    videos.find(v => Number(v.id) === Number(videoId));
-
-  if (video) {
-    shareVideo(video);
-  }
-}
-
 function renderProfile() {
 
   const content =
     document.getElementById("content");
 
-  const name =
+  const firstName =
     telegramUser?.first_name || "Telegram User";
+
+  const lastName =
+    telegramUser?.last_name || "";
+
+  const fullName =
+    `${firstName} ${lastName}`.trim();
 
   const username =
     telegramUser?.username
       ? `@${telegramUser.username}`
       : "Telegram account";
 
+  let profileImage = "";
+
+  if (telegramUser?.photo_url) {
+
+    profileImage = `
+      <img
+        src="${escapeAttr(telegramUser.photo_url)}"
+        alt="Telegram Profile"
+      >
+    `;
+
+  } else {
+
+    profileImage =
+      escapeHtml(
+        firstName.charAt(0).toUpperCase()
+      );
+  }
+
   content.innerHTML = `
 
     <div class="profile">
 
       <div class="profile-avatar">
-        ${escapeHtml(name.charAt(0).toUpperCase())}
+        ${profileImage}
       </div>
 
       <h2>
-        ${escapeHtml(name)}
+        ${escapeHtml(fullName)}
       </h2>
 
-      <p>
+      <div class="username">
         ${escapeHtml(username)}
-      </p>
+      </div>
 
-      <p style="margin-top:15px;">
-        Saved Videos: ${savedIds.size}
-      </p>
-
-      <p style="margin-top:8px;">
-        Total Videos: ${videos.length}
-      </p>
+      <div class="info">
+        ❤️ Saved Videos: ${savedIds.size}<br>
+        🎬 Total Videos: ${videos.length}
+      </div>
 
     </div>
   `;
@@ -1099,7 +1112,8 @@ function escapeAttr(text) {
 
   return String(text)
     .replaceAll("\\", "\\\\")
-    .replaceAll("'", "\\'");
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 async function startApp() {

@@ -1,563 +1,434 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Desi Hub TV</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Desi Hub TV</title>
 
-<style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-body{
-  background:#09090d;
-  color:#fff;
-  font-family:Arial,sans-serif;
-  padding-bottom:75px;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-header{
-  padding:24px 18px;
-  background:linear-gradient(135deg,#ff0050,#7200ff);
-}
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b0b0f;
+      color: #fff;
+      min-height: 100vh;
+    }
 
-header h1{
-  font-size:27px;
-}
+    .app {
+      max-width: 600px;
+      margin: auto;
+      padding: 18px 14px 90px;
+    }
 
-header p{
-  margin-top:6px;
-  font-size:13px;
-  opacity:.85;
-}
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-.search{
-  padding:15px;
-}
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+    }
 
-.search input{
-  width:100%;
-  padding:14px;
-  border:0;
-  outline:none;
-  border-radius:14px;
-  background:#191920;
-  color:#fff;
-  font-size:15px;
-}
+    .logo span {
+      color: #ff3158;
+    }
 
-.banner{
-  margin:0 15px 20px;
-  padding:22px;
-  border-radius:18px;
-  background:linear-gradient(135deg,#ff1744,#9c00ff);
-}
+    .user {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #22232b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
 
-.banner h2{
-  font-size:21px;
-  margin-bottom:7px;
-}
+    .hero {
+      background: linear-gradient(135deg, #24101a, #14151d);
+      border: 1px solid #292b35;
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
 
-.banner p{
-  font-size:13px;
-  color:#eee;
-}
+    .hero h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
 
-.section{
-  padding:5px 15px 12px;
-  font-size:19px;
-  font-weight:bold;
-}
+    .hero p {
+      color: #a7a8b0;
+      font-size: 14px;
+    }
 
-.videos{
-  padding:0 15px;
-}
+    .search {
+      width: 100%;
+      background: #17181f;
+      border: 1px solid #292b35;
+      color: white;
+      padding: 14px 16px;
+      border-radius: 14px;
+      outline: none;
+      margin-bottom: 18px;
+      font-size: 15px;
+    }
 
-.video{
-  margin-bottom:15px;
-  border-radius:16px;
-  overflow:hidden;
-  background:#17171f;
-  border:1px solid #282832;
-}
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      margin-bottom: 22px;
+      scrollbar-width: none;
+    }
 
-.thumb{
-  height:170px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(135deg,#292936,#44445a);
-  font-size:55px;
-}
+    .categories::-webkit-scrollbar {
+      display: none;
+    }
 
-.video-info{
-  padding:14px;
-}
+    .categories button {
+      border: 1px solid #30313b;
+      background: #17181f;
+      color: #ccc;
+      padding: 9px 14px;
+      border-radius: 20px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
 
-.video-title{
-  font-size:16px;
-  font-weight:bold;
-}
+    .categories button.active {
+      background: #ff3158;
+      border-color: #ff3158;
+      color: white;
+    }
 
-.video-meta{
-  margin-top:5px;
-  color:#999;
-  font-size:12px;
-}
+    .section-title {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
 
-.play{
-  margin-top:12px;
-  width:100%;
-  border:0;
-  padding:12px;
-  border-radius:11px;
-  background:#ff0050;
-  color:#fff;
-  font-weight:bold;
-}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
 
-.page{
-  display:none;
-}
+    .card {
+      background: #15161d;
+      border: 1px solid #292b35;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .15s ease;
+    }
 
-.page.active{
-  display:block;
-}
+    .card:active {
+      transform: scale(.97);
+    }
 
-.player{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:#000;
-  z-index:500;
-  padding:15px;
-}
+    .thumb {
+      aspect-ratio: 9 / 13;
+      background: linear-gradient(145deg, #242631, #111217);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+    }
 
-.player.active{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
+    .info {
+      padding: 11px;
+    }
 
-.player video{
-  width:100%;
-  max-height:70vh;
-  background:#000;
-}
+    .title {
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-.close{
-  position:absolute;
-  top:18px;
-  right:18px;
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:50%;
-  background:#222;
-  color:#fff;
-  font-size:20px;
-}
+    .category {
+      color: #ff5474;
+      font-size: 12px;
+      margin-top: 5px;
+    }
 
-.player-title{
-  margin-top:15px;
-  font-size:17px;
-  font-weight:bold;
-}
+    .empty,
+    .loading {
+      text-align: center;
+      color: #8f9098;
+      padding: 40px 10px;
+      grid-column: 1 / -1;
+    }
 
-.bottom-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:68px;
-  background:#111118;
-  border-top:1px solid #292933;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  z-index:100;
-}
+    .bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-width: 600px;
+      margin: auto;
+      background: rgba(15, 15, 20, .96);
+      border-top: 1px solid #292b35;
+      display: flex;
+      justify-content: space-around;
+      padding: 12px 5px calc(12px + env(safe-area-inset-bottom));
+    }
 
-.nav-btn{
-  border:0;
-  background:none;
-  color:#888;
-  font-size:10px;
-  text-align:center;
-}
+    .bottom button {
+      background: none;
+      border: 0;
+      color: #888;
+      font-size: 12px;
+      cursor: pointer;
+    }
 
-.nav-btn span{
-  display:block;
-  font-size:22px;
-  margin-bottom:3px;
-}
+    .bottom button.active {
+      color: #ff3158;
+    }
 
-.nav-btn.active{
-  color:#ff2860;
-}
-</style>
+    @media (max-width: 380px) {
+      .hero h1 {
+        font-size: 24px;
+      }
+
+      .grid {
+        gap: 9px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- HOME -->
-
-<div id="home" class="page active">
-
-<header>
-<h1>🔥 Desi Hub TV</h1>
-<p>Your Entertainment Hub</p>
-</header>
-
-<div class="search">
-<input type="text" placeholder="Search videos...">
-</div>
-
-<div class="banner">
-<h2>🔥 Trending Now</h2>
-<p>Discover the latest entertainment.</p>
-</div>
-
-<div class="section">
-Latest Videos
-</div>
-
-<div class="videos">
-
-<div class="video">
-
-<div class="thumb">
-🎬
-</div>
-
-<div class="video-info">
-
-<div class="video-title">
-Featured Video
-</div>
-
-<div class="video-meta">
-Deshi • New
-</div>
-
-<button class="play"
-onclick="playVideo('Featured Video','')">
-▶ Play Video
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- VIRAL -->
-
-<div id="viral" class="page">
-
-<header>
-<h1>🔥 Viral</h1>
-<p>Trending Videos</p>
-</header>
-
-<div class="section">
-Viral Videos
-</div>
-
-<div class="videos">
-
-<div class="video">
-
-<div class="thumb">
-🔥
-</div>
-
-<div class="video-info">
-
-<div class="video-title">
-Viral Video
-</div>
-
-<div class="video-meta">
-Trending
-</div>
-
-<button class="play"
-onclick="playVideo('Viral Video','')">
-▶ Play Video
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- DESHI -->
-
-<div id="deshi" class="page">
-
-<header>
-<h1>🇧🇩 Deshi</h1>
-<p>Bangladesh Content</p>
-</header>
-
-<div class="section">
-Deshi Videos
-</div>
-
-<div class="videos">
-
-<div class="video">
-
-<div class="thumb">
-🇧🇩
-</div>
-
-<div class="video-info">
-
-<div class="video-title">
-Deshi Video
-</div>
-
-<div class="video-meta">
-Bangladesh
-</div>
-
-<button class="play"
-onclick="playVideo('Deshi Video','')">
-▶ Play Video
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- INSTAGRAM -->
-
-<div id="instagram" class="page">
-
-<header>
-<h1>📸 Instagram</h1>
-<p>Instagram Viral</p>
-</header>
-
-<div class="section">
-Instagram Videos
-</div>
-
-<div class="videos">
-
-<div class="video">
-
-<div class="thumb">
-📸
-</div>
-
-<div class="video-info">
-
-<div class="video-title">
-Instagram Viral
-</div>
-
-<div class="video-meta">
-Instagram
-</div>
-
-<button class="play"
-onclick="playVideo('Instagram Viral','')">
-▶ Play Video
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- TIKTOK -->
-
-<div id="tiktok" class="page">
-
-<header>
-<h1>🎵 TikTok</h1>
-<p>TikTok Viral</p>
-</header>
-
-<div class="section">
-TikTok Videos
-</div>
-
-<div class="videos">
-
-<div class="video">
-
-<div class="thumb">
-🎵
-</div>
-
-<div class="video-info">
-
-<div class="video-title">
-TikTok Viral
-</div>
-
-<div class="video-meta">
-TikTok
-</div>
-
-<button class="play"
-onclick="playVideo('TikTok Viral','')">
-▶ Play Video
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- VIDEO PLAYER -->
-
-<div id="player" class="player">
-
-<button class="close"
-onclick="closePlayer()">
-×
-</button>
-
-<video id="videoPlayer" controls playsinline></video>
-
-<div id="playerTitle" class="player-title"></div>
-
-</div>
-
-
-<!-- NAVIGATION -->
-
-<nav class="bottom-nav">
-
-<button class="nav-btn active"
-onclick="openPage('home',this)">
-<span>🏠</span>
-Home
-</button>
-
-<button class="nav-btn"
-onclick="openPage('viral',this)">
-<span>🔥</span>
-Viral
-</button>
-
-<button class="nav-btn"
-onclick="openPage('deshi',this)">
-<span>🇧🇩</span>
-Deshi
-</button>
-
-<button class="nav-btn"
-onclick="openPage('instagram',this)">
-<span>📸</span>
-Instagram
-</button>
-
-<button class="nav-btn"
-onclick="openPage('tiktok',this)">
-<span>🎵</span>
-TikTok
-</button>
-
-</nav>
-
+  <div class="app">
+
+    <div class="header">
+      <div class="logo">Desi <span>Hub TV</span></div>
+      <div class="user" id="user">D</div>
+    </div>
+
+    <div class="hero">
+      <h1>Watch. Discover. Enjoy.</h1>
+      <p>Fresh reels and viral videos in one place.</p>
+    </div>
+
+    <input
+      id="search"
+      class="search"
+      type="text"
+      placeholder="🔎 Search videos..."
+    />
+
+    <div class="categories">
+      <button class="active" data-cat="All">All</button>
+      <button data-cat="Instagram">Instagram</button>
+      <button data-cat="TikTok">TikTok</button>
+      <button data-cat="Viral">Viral</button>
+    </div>
+
+    <div class="section-title">Latest Videos</div>
+
+    <div id="videos" class="grid">
+      <div class="loading">Loading videos...</div>
+    </div>
+
+  </div>
+
+  <div class="bottom">
+    <button class="active">🏠<br>Home</button>
+    <button>🔥<br>Viral</button>
+    <button>❤️<br>Saved</button>
+    <button>👤<br>Profile</button>
+  </div>
 
 <script>
 
-const tg=window.Telegram.WebApp;
+  const SUPABASE_URL =
+    "https://icievlmrfbanhoaqvtwz.supabase.co";
 
-tg.ready();
-tg.expand();
+  const SUPABASE_KEY =
+    "sb_publishable_CgovIrCCYoka2GeHzjgLZg_lYbdy-D8";
 
+  const tg = window.Telegram?.WebApp;
 
-function openPage(page,button){
+  if (tg) {
+    tg.ready();
+    tg.expand();
 
-document.querySelectorAll('.page')
-.forEach(function(p){
-p.classList.remove('active');
-});
+    const user = tg.initDataUnsafe?.user;
 
-document.getElementById(page)
-.classList.add('active');
+    if (user) {
+      document.getElementById("user").textContent =
+        (user.first_name || "D").charAt(0).toUpperCase();
+    }
+  }
 
-document.querySelectorAll('.nav-btn')
-.forEach(function(b){
-b.classList.remove('active');
-});
+  let allVideos = [];
+  let selectedCategory = "All";
 
-button.classList.add('active');
+  async function loadVideos() {
 
-window.scrollTo(0,0);
+    const container = document.getElementById("videos");
 
-}
+    try {
 
+      const response = await fetch(
+        `${SUPABASE_URL}/rest/v1/videos?select=*&order=created_at.desc`,
+        {
+          method: "GET",
+          headers: {
+            "apikey": SUPABASE_KEY,
+            "Authorization": `Bearer ${SUPABASE_KEY}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
 
-function playVideo(title,url){
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
 
-if(!url){
-alert("Video will be connected soon.");
-return;
-}
+      allVideos = await response.json();
 
-const player=document.getElementById("player");
+      renderVideos();
 
-const video=document.getElementById("videoPlayer");
+    } catch (error) {
 
-const titleBox=document.getElementById("playerTitle");
+      console.error("Supabase error:", error);
 
-video.src=url;
+      container.innerHTML =
+        `<div class="empty">
+          Unable to load videos.
+        </div>`;
+    }
+  }
 
-titleBox.textContent=title;
+  function renderVideos() {
 
-player.classList.add("active");
+    const container = document.getElementById("videos");
 
-video.play();
+    const search =
+      document.getElementById("search").value.toLowerCase();
 
-}
+    const filtered = allVideos.filter(video => {
 
+      const categoryMatch =
+        selectedCategory === "All" ||
+        video.category === selectedCategory;
 
-function closePlayer(){
+      const searchMatch =
+        (video.title || "").toLowerCase().includes(search);
 
-const player=document.getElementById("player");
+      return categoryMatch && searchMatch;
+    });
 
-const video=document.getElementById("videoPlayer");
+    if (!filtered.length) {
 
-video.pause();
+      container.innerHTML =
+        `<div class="empty">
+          No videos found.
+        </div>`;
 
-video.src="";
+      return;
+    }
 
-player.classList.remove("active");
+    container.innerHTML = filtered.map(video => `
 
-}
+      <div class="card" onclick="openVideo('${video.file_id}')">
+
+        <div class="thumb">
+          ▶️
+        </div>
+
+        <div class="info">
+
+          <div class="title">
+            ${escapeHtml(video.title || "Untitled")}
+          </div>
+
+          <div class="category">
+            ${escapeHtml(video.category || "Other")}
+          </div>
+
+        </div>
+
+      </div>
+
+    `).join("");
+  }
+
+  function openVideo(fileId) {
+
+    if (tg) {
+
+      tg.showPopup({
+        title: "Video",
+        message:
+          "Video player will be connected in the next step.",
+        buttons: [
+          {
+            type: "ok"
+          }
+        ]
+      });
+
+    } else {
+
+      alert("Video ID: " + fileId);
+
+    }
+  }
+
+  function escapeHtml(text) {
+
+    return String(text)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  document
+    .querySelectorAll(".categories button")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        document
+          .querySelectorAll(".categories button")
+          .forEach(b =>
+            b.classList.remove("active")
+          );
+
+        button.classList.add("active");
+
+        selectedCategory =
+          button.dataset.cat;
+
+        renderVideos();
+      });
+
+    });
+
+  document
+    .getElementById("search")
+    .addEventListener("input", renderVideos);
+
+  loadVideos();
 
 </script>
 

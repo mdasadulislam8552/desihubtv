@@ -16,31 +16,50 @@ export default async function handler(req, res) {
       });
     }
 
-    // Get Telegram file information
-    const telegramResponse = await fetch(
+    const fileResponse = await fetch(
       `https://api.telegram.org/bot${botToken}/getFile?file_id=${encodeURIComponent(fileId)}`
     );
 
-    const telegramData = await telegramResponse.json();
+    const fileData = await fileResponse.json();
 
-    if (!telegramResponse.ok || !telegramData.ok) {
+    if (!fileResponse.ok || !fileData.ok) {
       return res.status(500).json({
-        error: "Telegram getFile failed",
-        details: telegramData
+        error: "Telegram getFile failed"
       });
     }
 
-    const filePath = telegramData.result.file_path;
+    const filePath = fileData.result.file_path;
 
-    // Redirect browser to Telegram file
-    const videoUrl =
-      `https://api.telegram.org/file/bot${botToken}/${filePath}`;
+    const telegramVideo = await fetch(
+      `https://api.telegram.org/file/bot${botToken}/${filePath}`
+    );
 
-    return res.redirect(302, videoUrl);
+    if (!telegramVideo.ok) {
+      return res.status(500).json({
+        error: "Unable to fetch Telegram video"
+      });
+    }
+
+    res.setHeader(
+      "Content-Type",
+      telegramVideo.headers.get("content-type") || "video/mp4"
+    );
+
+    const contentLength = telegramVideo.headers.get("content-length");
+
+    if (contentLength) {
+      res.setHeader("Content-Length", contentLength);
+    }
+
+    res.setHeader("Cache-Control", "public, max-age=3600");
+
+    const buffer = await telegramVideo.arrayBuffer();
+
+    return res.status(200).send(Buffer.from(buffer));
 
   } catch (error) {
 
-    console.error("VIDEO API ERROR:", error);
+    console.error("VIDEO STREAM ERROR:", error);
 
     return res.status(500).json({
       error: error.message

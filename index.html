@@ -1,478 +1,565 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desi Hub TV</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desi Hub TV</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+body{
+  background:#09090d;
+  color:#fff;
+  font-family:Arial,sans-serif;
+  padding-bottom:75px;
+}
 
-    body {
-      background: #09090d;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-      padding-bottom: 75px;
-    }
+header{
+  padding:24px 18px;
+  background:linear-gradient(135deg,#ff0050,#7200ff);
+}
 
-    header {
-      padding: 25px 18px;
-      background: linear-gradient(135deg, #ff0050, #7200ff);
-    }
+header h1{
+  font-size:27px;
+}
 
-    header h1 {
-      font-size: 27px;
-    }
+header p{
+  margin-top:6px;
+  font-size:13px;
+  opacity:.85;
+}
 
-    header p {
-      margin-top: 6px;
-      font-size: 13px;
-      opacity: 0.85;
-    }
+.search{
+  padding:15px;
+}
 
-    .search {
-      padding: 15px;
-    }
+.search input{
+  width:100%;
+  padding:14px;
+  border:0;
+  outline:none;
+  border-radius:14px;
+  background:#191920;
+  color:#fff;
+  font-size:15px;
+}
 
-    .search input {
-      width: 100%;
-      padding: 14px;
-      border: 0;
-      outline: none;
-      border-radius: 14px;
-      background: #191920;
-      color: white;
-      font-size: 15px;
-    }
+.banner{
+  margin:0 15px 20px;
+  padding:22px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#ff1744,#9c00ff);
+}
 
-    .banner {
-      margin: 0 15px 20px;
-      padding: 22px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, #ff1744, #9c00ff);
-    }
+.banner h2{
+  font-size:21px;
+  margin-bottom:7px;
+}
 
-    .banner h2 {
-      font-size: 21px;
-      margin-bottom: 7px;
-    }
+.banner p{
+  font-size:13px;
+  color:#eee;
+}
 
-    .banner p {
-      font-size: 13px;
-      color: #eeeeee;
-    }
+.section{
+  padding:5px 15px 12px;
+  font-size:19px;
+  font-weight:bold;
+}
 
-    .section {
-      padding: 5px 15px 12px;
-      font-size: 19px;
-      font-weight: bold;
-    }
+.videos{
+  padding:0 15px;
+}
 
-    .videos {
-      padding: 0 15px;
-    }
+.video{
+  margin-bottom:15px;
+  border-radius:16px;
+  overflow:hidden;
+  background:#17171f;
+  border:1px solid #282832;
+}
 
-    .video {
-      margin-bottom: 15px;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #17171f;
-      border: 1px solid #282832;
-    }
+.thumb{
+  height:170px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#292936,#44445a);
+  font-size:55px;
+}
 
-    .thumb {
-      height: 155px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #292936, #44445a);
-      font-size: 50px;
-    }
+.video-info{
+  padding:14px;
+}
 
-    .video-info {
-      padding: 14px;
-    }
+.video-title{
+  font-size:16px;
+  font-weight:bold;
+}
 
-    .video-title {
-      font-size: 15px;
-      font-weight: bold;
-    }
+.video-meta{
+  margin-top:5px;
+  color:#999;
+  font-size:12px;
+}
 
-    .video-meta {
-      margin-top: 5px;
-      color: #999999;
-      font-size: 12px;
-    }
+.play{
+  margin-top:12px;
+  width:100%;
+  border:0;
+  padding:12px;
+  border-radius:11px;
+  background:#ff0050;
+  color:#fff;
+  font-weight:bold;
+}
 
-    .play {
-      margin-top: 12px;
-      width: 100%;
-      border: 0;
-      padding: 11px;
-      border-radius: 11px;
-      background: #ff0050;
-      color: white;
-      font-weight: bold;
-    }
+.page{
+  display:none;
+}
 
-    .page {
-      display: none;
-    }
+.page.active{
+  display:block;
+}
 
-    .page.active {
-      display: block;
-    }
+.player{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:500;
+  padding:15px;
+}
 
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 68px;
-      background: #111118;
-      border-top: 1px solid #292933;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 100;
-    }
+.player.active{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
 
-    .nav-btn {
-      border: 0;
-      background: none;
-      color: #888888;
-      font-size: 10px;
-      text-align: center;
-    }
+.player video{
+  width:100%;
+  max-height:70vh;
+  background:#000;
+}
 
-    .nav-btn span {
-      display: block;
-      font-size: 22px;
-      margin-bottom: 3px;
-    }
+.close{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#222;
+  color:#fff;
+  font-size:20px;
+}
 
-    .nav-btn.active {
-      color: #ff2860;
-    }
-  </style>
+.player-title{
+  margin-top:15px;
+  font-size:17px;
+  font-weight:bold;
+}
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:68px;
+  background:#111118;
+  border-top:1px solid #292933;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:100;
+}
+
+.nav-btn{
+  border:0;
+  background:none;
+  color:#888;
+  font-size:10px;
+  text-align:center;
+}
+
+.nav-btn span{
+  display:block;
+  font-size:22px;
+  margin-bottom:3px;
+}
+
+.nav-btn.active{
+  color:#ff2860;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- HOME -->
-  <div id="home" class="page active">
+<!-- HOME -->
 
-    <header>
-      <h1>🔥 Desi Hub TV</h1>
-      <p>Your Entertainment Hub</p>
-    </header>
+<div id="home" class="page active">
 
-    <div class="search">
-      <input type="text" placeholder="Search videos...">
-    </div>
+<header>
+<h1>🔥 Desi Hub TV</h1>
+<p>Your Entertainment Hub</p>
+</header>
 
-    <div class="banner">
-      <h2>🔥 Trending Now</h2>
-      <p>Discover the latest entertainment.</p>
-    </div>
+<div class="search">
+<input type="text" placeholder="Search videos...">
+</div>
 
-    <div class="section">
-      Latest Videos
-    </div>
+<div class="banner">
+<h2>🔥 Trending Now</h2>
+<p>Discover the latest entertainment.</p>
+</div>
 
-    <div class="videos">
+<div class="section">
+Latest Videos
+</div>
 
-      <div class="video">
-        <div class="thumb">🎬</div>
+<div class="videos">
 
-        <div class="video-info">
-          <div class="video-title">
-            Featured Video
-          </div>
+<div class="video">
 
-          <div class="video-meta">
-            Deshi • New
-          </div>
+<div class="thumb">
+🎬
+</div>
 
-          <button class="play">
-            ▶ Play
-          </button>
-        </div>
-      </div>
+<div class="video-info">
 
-    </div>
+<div class="video-title">
+Featured Video
+</div>
 
-  </div>
+<div class="video-meta">
+Deshi • New
+</div>
 
+<button class="play"
+onclick="playVideo('Featured Video','')">
+▶ Play Video
+</button>
 
-  <!-- VIRAL -->
-  <div id="viral" class="page">
+</div>
 
-    <header>
-      <h1>🔥 Viral</h1>
-      <p>Trending Videos</p>
-    </header>
+</div>
 
-    <div class="section">
-      Viral Videos
-    </div>
+</div>
 
-    <div class="videos">
+</div>
 
-      <div class="video">
 
-        <div class="thumb">
-          🔥
-        </div>
+<!-- VIRAL -->
 
-        <div class="video-info">
+<div id="viral" class="page">
 
-          <div class="video-title">
-            Viral Video
-          </div>
+<header>
+<h1>🔥 Viral</h1>
+<p>Trending Videos</p>
+</header>
 
-          <div class="video-meta">
-            Trending Now
-          </div>
+<div class="section">
+Viral Videos
+</div>
 
-          <button class="play">
-            ▶ Play
-          </button>
+<div class="videos">
 
-        </div>
+<div class="video">
 
-      </div>
+<div class="thumb">
+🔥
+</div>
 
-    </div>
+<div class="video-info">
 
-  </div>
+<div class="video-title">
+Viral Video
+</div>
 
+<div class="video-meta">
+Trending
+</div>
 
-  <!-- DESHI -->
-  <div id="deshi" class="page">
+<button class="play"
+onclick="playVideo('Viral Video','')">
+▶ Play Video
+</button>
 
-    <header>
-      <h1>🇧🇩 Deshi</h1>
-      <p>Bangladesh Trending Content</p>
-    </header>
+</div>
 
-    <div class="section">
-      Deshi Videos
-    </div>
+</div>
 
-    <div class="videos">
+</div>
 
-      <div class="video">
+</div>
 
-        <div class="thumb">
-          🇧🇩
-        </div>
 
-        <div class="video-info">
+<!-- DESHI -->
 
-          <div class="video-title">
-            Deshi Video
-          </div>
+<div id="deshi" class="page">
 
-          <div class="video-meta">
-            Bangladesh
-          </div>
+<header>
+<h1>🇧🇩 Deshi</h1>
+<p>Bangladesh Content</p>
+</header>
 
-          <button class="play">
-            ▶ Play
-          </button>
+<div class="section">
+Deshi Videos
+</div>
 
-        </div>
+<div class="videos">
 
-      </div>
+<div class="video">
 
-    </div>
+<div class="thumb">
+🇧🇩
+</div>
 
-  </div>
+<div class="video-info">
 
+<div class="video-title">
+Deshi Video
+</div>
 
-  <!-- INSTAGRAM -->
-  <div id="instagram" class="page">
+<div class="video-meta">
+Bangladesh
+</div>
 
-    <header>
-      <h1>📸 Instagram</h1>
-      <p>Instagram Viral Content</p>
-    </header>
+<button class="play"
+onclick="playVideo('Deshi Video','')">
+▶ Play Video
+</button>
 
-    <div class="section">
-      Instagram Viral
-    </div>
+</div>
 
-    <div class="videos">
+</div>
 
-      <div class="video">
+</div>
 
-        <div class="thumb">
-          📸
-        </div>
+</div>
 
-        <div class="video-info">
 
-          <div class="video-title">
-            Instagram Viral
-          </div>
+<!-- INSTAGRAM -->
 
-          <div class="video-meta">
-            Instagram
-          </div>
+<div id="instagram" class="page">
 
-          <button class="play">
-            ▶ Play
-          </button>
+<header>
+<h1>📸 Instagram</h1>
+<p>Instagram Viral</p>
+</header>
 
-        </div>
+<div class="section">
+Instagram Videos
+</div>
 
-      </div>
+<div class="videos">
 
-    </div>
+<div class="video">
 
-  </div>
+<div class="thumb">
+📸
+</div>
 
+<div class="video-info">
 
-  <!-- TIKTOK -->
-  <div id="tiktok" class="page">
+<div class="video-title">
+Instagram Viral
+</div>
 
-    <header>
-      <h1>🎵 TikTok</h1>
-      <p>TikTok Viral Content</p>
-    </header>
+<div class="video-meta">
+Instagram
+</div>
 
-    <div class="section">
-      TikTok Viral
-    </div>
+<button class="play"
+onclick="playVideo('Instagram Viral','')">
+▶ Play Video
+</button>
 
-    <div class="videos">
+</div>
 
-      <div class="video">
+</div>
 
-        <div class="thumb">
-          🎵
-        </div>
+</div>
 
-        <div class="video-info">
+</div>
 
-          <div class="video-title">
-            TikTok Viral
-          </div>
 
-          <div class="video-meta">
-            TikTok
-          </div>
+<!-- TIKTOK -->
 
-          <button class="play">
-            ▶ Play
-          </button>
+<div id="tiktok" class="page">
 
-        </div>
+<header>
+<h1>🎵 TikTok</h1>
+<p>TikTok Viral</p>
+</header>
 
-      </div>
+<div class="section">
+TikTok Videos
+</div>
 
-    </div>
+<div class="videos">
 
-  </div>
+<div class="video">
 
+<div class="thumb">
+🎵
+</div>
 
-  <!-- BOTTOM NAVIGATION -->
-  <nav class="bottom-nav">
+<div class="video-info">
 
-    <button
-      class="nav-btn active"
-      onclick="openPage('home', this)"
-    >
-      <span>🏠</span>
-      Home
-    </button>
+<div class="video-title">
+TikTok Viral
+</div>
 
-    <button
-      class="nav-btn"
-      onclick="openPage('viral', this)"
-    >
-      <span>🔥</span>
-      Viral
-    </button>
+<div class="video-meta">
+TikTok
+</div>
 
-    <button
-      class="nav-btn"
-      onclick="openPage('deshi', this)"
-    >
-      <span>🇧🇩</span>
-      Deshi
-    </button>
+<button class="play"
+onclick="playVideo('TikTok Viral','')">
+▶ Play Video
+</button>
 
-    <button
-      class="nav-btn"
-      onclick="openPage('instagram', this)"
-    >
-      <span>📸</span>
-      Instagram
-    </button>
+</div>
 
-    <button
-      class="nav-btn"
-      onclick="openPage('tiktok', this)"
-    >
-      <span>🎵</span>
-      TikTok
-    </button>
+</div>
 
-  </nav>
+</div>
 
+</div>
 
-  <script>
 
-    const tg = window.Telegram.WebApp;
+<!-- VIDEO PLAYER -->
 
-    tg.ready();
-    tg.expand();
+<div id="player" class="player">
 
+<button class="close"
+onclick="closePlayer()">
+×
+</button>
 
-    function openPage(page, button) {
+<video id="videoPlayer" controls playsinline></video>
 
-      document
-        .querySelectorAll(".page")
-        .forEach(function(pageElement) {
+<div id="playerTitle" class="player-title"></div>
 
-          pageElement.classList.remove("active");
+</div>
 
-        });
 
+<!-- NAVIGATION -->
 
-      document
-        .getElementById(page)
-        .classList.add("active");
+<nav class="bottom-nav">
 
+<button class="nav-btn active"
+onclick="openPage('home',this)">
+<span>🏠</span>
+Home
+</button>
 
-      document
-        .querySelectorAll(".nav-btn")
-        .forEach(function(navButton) {
+<button class="nav-btn"
+onclick="openPage('viral',this)">
+<span>🔥</span>
+Viral
+</button>
 
-          navButton.classList.remove("active");
+<button class="nav-btn"
+onclick="openPage('deshi',this)">
+<span>🇧🇩</span>
+Deshi
+</button>
 
-        });
+<button class="nav-btn"
+onclick="openPage('instagram',this)">
+<span>📸</span>
+Instagram
+</button>
 
+<button class="nav-btn"
+onclick="openPage('tiktok',this)">
+<span>🎵</span>
+TikTok
+</button>
 
-      button.classList.add("active");
+</nav>
 
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+<script>
 
-    }
+const tg=window.Telegram.WebApp;
 
-  </script>
+tg.ready();
+tg.expand();
+
+
+function openPage(page,button){
+
+document.querySelectorAll('.page')
+.forEach(function(p){
+p.classList.remove('active');
+});
+
+document.getElementById(page)
+.classList.add('active');
+
+document.querySelectorAll('.nav-btn')
+.forEach(function(b){
+b.classList.remove('active');
+});
+
+button.classList.add('active');
+
+window.scrollTo(0,0);
+
+}
+
+
+function playVideo(title,url){
+
+if(!url){
+alert("Video will be connected soon.");
+return;
+}
+
+const player=document.getElementById("player");
+
+const video=document.getElementById("videoPlayer");
+
+const titleBox=document.getElementById("playerTitle");
+
+video.src=url;
+
+titleBox.textContent=title;
+
+player.classList.add("active");
+
+video.play();
+
+}
+
+
+function closePlayer(){
+
+const player=document.getElementById("player");
+
+const video=document.getElementById("videoPlayer");
+
+video.pause();
+
+video.src="";
+
+player.classList.remove("active");
+
+}
+
+</script>
 
 </body>
 </html>

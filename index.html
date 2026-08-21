@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desi Hub TV</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #09090d;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      padding-bottom: 75px;
+    }
+
+    header {
+      padding: 25px 18px;
+      background: linear-gradient(135deg, #ff0050, #7200ff);
+    }
+
+    header h1 {
+      font-size: 27px;
+    }
+
+    header p {
+      margin-top: 6px;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .search {
+      padding: 15px;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      outline: none;
+      border-radius: 14px;
+      background: #191920;
+      color: white;
+      font-size: 15px;
+    }
+
+    .banner {
+      margin: 0 15px 20px;
+      padding: 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #ff1744, #9c00ff);
+    }
+
+    .banner h2 {
+      font-size: 21px;
+      margin-bottom: 7px;
+    }
+
+    .banner p {
+      font-size: 13px;
+      color: #eeeeee;
+    }
+
+    .section {
+      padding: 5px 15px 12px;
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .videos {
+      padding: 0 15px;
+    }
+
+    .video {
+      margin-bottom: 15px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #17171f;
+      border: 1px solid #282832;
+    }
+
+    .thumb {
+      height: 155px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #292936, #44445a);
+      font-size: 50px;
+    }
+
+    .video-info {
+      padding: 14px;
+    }
+
+    .video-title {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .video-meta {
+      margin-top: 5px;
+      color: #999999;
+      font-size: 12px;
+    }
+
+    .play {
+      margin-top: 12px;
+      width: 100%;
+      border: 0;
+      padding: 11px;
+      border-radius: 11px;
+      background: #ff0050;
+      color: white;
+      font-weight: bold;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 68px;
+      background: #111118;
+      border-top: 1px solid #292933;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      border: 0;
+      background: none;
+      color: #888888;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .nav-btn span {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 3px;
+    }
+
+    .nav-btn.active {
+      color: #ff2860;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HOME -->
+  <div id="home" class="page active">
+
+    <header>
+      <h1>🔥 Desi Hub TV</h1>
+      <p>Your Entertainment Hub</p>
+    </header>
+
+    <div class="search">
+      <input type="text" placeholder="Search videos...">
+    </div>
+
+    <div class="banner">
+      <h2>🔥 Trending Now</h2>
+      <p>Discover the latest entertainment.</p>
+    </div>
+
+    <div class="section">
+      Latest Videos
+    </div>
+
+    <div class="videos">
+
+      <div class="video">
+        <div class="thumb">🎬</div>
+
+        <div class="video-info">
+          <div class="video-title">
+            Featured Video
+          </div>
+
+          <div class="video-meta">
+            Deshi • New
+          </div>
+
+          <button class="play">
+            ▶ Play
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- VIRAL -->
+  <div id="viral" class="page">
+
+    <header>
+      <h1>🔥 Viral</h1>
+      <p>Trending Videos</p>
+    </header>
+
+    <div class="section">
+      Viral Videos
+    </div>
+
+    <div class="videos">
+
+      <div class="video">
+
+        <div class="thumb">
+          🔥
+        </div>
+
+        <div class="video-info">
+
+          <div class="video-title">
+            Viral Video
+          </div>
+
+          <div class="video-meta">
+            Trending Now
+          </div>
+
+          <button class="play">
+            ▶ Play
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- DESHI -->
+  <div id="deshi" class="page">
+
+    <header>
+      <h1>🇧🇩 Deshi</h1>
+      <p>Bangladesh Trending Content</p>
+    </header>
+
+    <div class="section">
+      Deshi Videos
+    </div>
+
+    <div class="videos">
+
+      <div class="video">
+
+        <div class="thumb">
+          🇧🇩
+        </div>
+
+        <div class="video-info">
+
+          <div class="video-title">
+            Deshi Video
+          </div>
+
+          <div class="video-meta">
+            Bangladesh
+          </div>
+
+          <button class="play">
+            ▶ Play
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- INSTAGRAM -->
+  <div id="instagram" class="page">
+
+    <header>
+      <h1>📸 Instagram</h1>
+      <p>Instagram Viral Content</p>
+    </header>
+
+    <div class="section">
+      Instagram Viral
+    </div>
+
+    <div class="videos">
+
+      <div class="video">
+
+        <div class="thumb">
+          📸
+        </div>
+
+        <div class="video-info">
+
+          <div class="video-title">
+            Instagram Viral
+          </div>
+
+          <div class="video-meta">
+            Instagram
+          </div>
+
+          <button class="play">
+            ▶ Play
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- TIKTOK -->
+  <div id="tiktok" class="page">
+
+    <header>
+      <h1>🎵 TikTok</h1>
+      <p>TikTok Viral Content</p>
+    </header>
+
+    <div class="section">
+      TikTok Viral
+    </div>
+
+    <div class="videos">
+
+      <div class="video">
+
+        <div class="thumb">
+          🎵
+        </div>
+
+        <div class="video-info">
+
+          <div class="video-title">
+            TikTok Viral
+          </div>
+
+          <div class="video-meta">
+            TikTok
+          </div>
+
+          <button class="play">
+            ▶ Play
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav">
+
+    <button
+      class="nav-btn active"
+      onclick="openPage('home', this)"
+    >
+      <span>🏠</span>
+      Home
+    </button>
+
+    <button
+      class="nav-btn"
+      onclick="openPage('viral', this)"
+    >
+      <span>🔥</span>
+      Viral
+    </button>
+
+    <button
+      class="nav-btn"
+      onclick="openPage('deshi', this)"
+    >
+      <span>🇧🇩</span>
+      Deshi
+    </button>
+
+    <button
+      class="nav-btn"
+      onclick="openPage('instagram', this)"
+    >
+      <span>📸</span>
+      Instagram
+    </button>
+
+    <button
+      class="nav-btn"
+      onclick="openPage('tiktok', this)"
+    >
+      <span>🎵</span>
+      TikTok
+    </button>
+
+  </nav>
+
+
+  <script>
+
+    const tg = window.Telegram.WebApp;
+
+    tg.ready();
+    tg.expand();
+
+
+    function openPage(page, button) {
+
+      document
+        .querySelectorAll(".page")
+        .forEach(function(pageElement) {
+
+          pageElement.classList.remove("active");
+
+        });
+
+
+      document
+        .getElementById(page)
+        .classList.add("active");
+
+
+      document
+        .querySelectorAll(".nav-btn")
+        .forEach(function(navButton) {
+
+          navButton.classList.remove("active");
+
+        });
+
+
+      button.classList.add("active");
+
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+
+  </script>
+
+</body>
+</html>

@@ -22,11 +22,15 @@ export default async function handler(req, res) {
     const message = update?.message;
 
     if (!message) {
-      return res.status(200).json({ ok: true });
+      return res.status(200).json({
+        ok: true
+      });
     }
 
     if (!message.video) {
-      return res.status(200).json({ ok: true });
+      return res.status(200).json({
+        ok: true
+      });
     }
 
     if (!BOT_TOKEN) {
@@ -41,10 +45,21 @@ export default async function handler(req, res) {
       throw new Error("SUPABASE_ANON_KEY is missing");
     }
 
+    // Telegram video information
     const fileId = message.video.file_id;
-    const title = message.caption || "Untitled Video";
 
-    const caption = title.toLowerCase();
+    const title =
+      message.caption || "Untitled Video";
+
+    // Telegram thumbnail information
+    const thumbnailFileId =
+      message.video.thumbnail?.file_id ||
+      message.video.thumb?.file_id ||
+      null;
+
+    // Detect category from caption
+    const caption =
+      title.toLowerCase();
 
     let category = "Viral";
 
@@ -58,28 +73,42 @@ export default async function handler(req, res) {
       category = "Viral";
     }
 
+    // Save video to Supabase
     const supabaseResponse = await fetch(
       `${SUPABASE_URL}/rest/v1/videos`,
       {
         method: "POST",
+
         headers: {
           "apikey": SUPABASE_KEY,
           "Authorization": `Bearer ${SUPABASE_KEY}`,
           "Content-Type": "application/json",
           "Prefer": "return=representation"
         },
+
         body: JSON.stringify({
           file_id: fileId,
           title: title,
-          category: category
+          category: category,
+          thumbnail_file_id: thumbnailFileId,
+          views: 0,
+          likes: 0
         })
       }
     );
 
-    const supabaseText = await supabaseResponse.text();
+    const supabaseText =
+      await supabaseResponse.text();
 
-    console.log("SUPABASE STATUS:", supabaseResponse.status);
-    console.log("SUPABASE RESPONSE:", supabaseText);
+    console.log(
+      "SUPABASE STATUS:",
+      supabaseResponse.status
+    );
+
+    console.log(
+      "SUPABASE RESPONSE:",
+      supabaseText
+    );
 
     if (!supabaseResponse.ok) {
       throw new Error(
@@ -87,19 +116,28 @@ export default async function handler(req, res) {
       );
     }
 
+    // Confirmation message
     await fetch(
       `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json"
         },
+
         body: JSON.stringify({
           chat_id: message.chat.id,
+
           text:
             `✅ Video Saved!\n\n` +
             `📂 Category: ${category}\n` +
-            `🎬 Title: ${title}`
+            `🎬 Title: ${title}\n` +
+            `🖼️ Thumbnail: ${
+              thumbnailFileId
+                ? "Available"
+                : "Not available"
+            }`
         })
       }
     );
@@ -107,11 +145,16 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       saved: true,
-      category: category
+      category: category,
+      thumbnail: !!thumbnailFileId
     });
 
   } catch (error) {
-    console.error("BOT ERROR:", error);
+
+    console.error(
+      "BOT ERROR:",
+      error
+    );
 
     return res.status(500).json({
       ok: false,

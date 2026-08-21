@@ -12,54 +12,61 @@ export default async function handler(req, res) {
 
     if (!botToken) {
       return res.status(500).json({
-        error: "BOT_TOKEN is missing"
+        error: "BOT_TOKEN environment variable is missing"
       });
     }
 
-    const fileResponse = await fetch(
-      `https://api.telegram.org/bot${botToken}/getFile?file_id=${encodeURIComponent(fileId)}`
-    );
+    const getFileUrl =
+      `https://api.telegram.org/bot${botToken}/getFile?file_id=${encodeURIComponent(fileId)}`;
 
+    const fileResponse = await fetch(getFileUrl);
     const fileData = await fileResponse.json();
+
+    console.log("TELEGRAM GETFILE STATUS:", fileResponse.status);
+    console.log("TELEGRAM GETFILE RESPONSE:", JSON.stringify(fileData));
 
     if (!fileResponse.ok || !fileData.ok) {
       return res.status(500).json({
-        error: "Telegram getFile failed"
+        error: "Telegram getFile failed",
+        telegram: fileData
       });
     }
 
     const filePath = fileData.result.file_path;
 
-    const telegramVideo = await fetch(
-      `https://api.telegram.org/file/bot${botToken}/${filePath}`
-    );
+    const downloadUrl =
+      `https://api.telegram.org/file/bot${botToken}/${filePath}`;
 
-    if (!telegramVideo.ok) {
+    const videoResponse = await fetch(downloadUrl);
+
+    console.log("TELEGRAM VIDEO STATUS:", videoResponse.status);
+
+    if (!videoResponse.ok) {
       return res.status(500).json({
-        error: "Unable to fetch Telegram video"
+        error: "Telegram video download failed"
       });
     }
 
-    res.setHeader(
-      "Content-Type",
-      telegramVideo.headers.get("content-type") || "video/mp4"
-    );
+    const contentType =
+      videoResponse.headers.get("content-type") || "video/mp4";
 
-    const contentLength = telegramVideo.headers.get("content-length");
+    res.setHeader("Content-Type", contentType);
+    res.setHeader("Cache-Control", "public, max-age=3600");
+
+    const contentLength =
+      videoResponse.headers.get("content-length");
 
     if (contentLength) {
       res.setHeader("Content-Length", contentLength);
     }
 
-    res.setHeader("Cache-Control", "public, max-age=3600");
-
-    const buffer = await telegramVideo.arrayBuffer();
+    const buffer = await videoResponse.arrayBuffer();
 
     return res.status(200).send(Buffer.from(buffer));
 
   } catch (error) {
 
-    console.error("VIDEO STREAM ERROR:", error);
+    console.error("VIDEO API ERROR:", error);
 
     return res.status(500).json({
       error: error.message

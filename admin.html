@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Desi Hub TV - Admin</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#07080c;
+  --card:#11131a;
+  --card2:#171923;
+  --border:rgba(255,255,255,.08);
+  --text:#fff;
+  --muted:#858895;
+  --pink:#ff3158;
+  --pink2:#ff6683;
+  --green:#35d58a;
+  --red:#ff4d68;
+}
+
+html,body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  min-height:100vh;
+}
+
+body{
+  padding-bottom:40px;
+}
+
+button,input,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.container{
+  width:100%;
+  max-width:1000px;
+  margin:auto;
+  padding:18px 14px 50px;
+}
+
+/* HEADER */
+
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.logo{
+  width:45px;
+  height:45px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#ff3158,#ff1748);
+  font-weight:900;
+}
+
+.brand h1{
+  font-size:20px;
+}
+
+.brand p{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+.admin-badge{
+  padding:7px 10px;
+  border-radius:20px;
+  color:#ff7892;
+  background:rgba(255,49,88,.1);
+  border:1px solid rgba(255,49,88,.2);
+  font-size:10px;
+  font-weight:800;
+}
+
+/* ACCESS */
+
+.access-denied{
+  min-height:70vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.access-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:35px 25px;
+  max-width:430px;
+  width:100%;
+}
+
+.access-icon{
+  font-size:45px;
+  margin-bottom:15px;
+}
+
+.access-box h2{
+  margin-bottom:8px;
+}
+
+.access-box p{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+}
+
+/* STATS */
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:22px;
+}
+
+.stat-card{
+  background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:17px;
+}
+
+.stat-icon{
+  font-size:20px;
+  margin-bottom:12px;
+}
+
+.stat-card strong{
+  display:block;
+  font-size:24px;
+  margin-bottom:4px;
+}
+
+.stat-card span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* PANELS */
+
+.panel{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:18px;
+  margin-bottom:18px;
+}
+
+.panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.panel-head h2{
+  font-size:17px;
+}
+
+.panel-head span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* CONTROLS */
+
+.controls{
+  display:grid;
+  grid-template-columns:1fr 170px auto;
+  gap:9px;
+  margin-bottom:15px;
+}
+
+.input,
+.select{
+  width:100%;
+  height:44px;
+  border-radius:13px;
+  border:1px solid var(--border);
+  outline:none;
+  background:rgba(255,255,255,.045);
+  color:#fff;
+  padding:0 13px;
+}
+
+.select option{
+  background:#11131a;
+}
+
+.btn{
+  min-height:44px;
+  border:0;
+  border-radius:13px;
+  padding:0 15px;
+  font-weight:750;
+  color:#fff;
+}
+
+.btn-primary{
+  background:var(--pink);
+}
+
+.btn-secondary{
+  background:rgba(255,255,255,.07);
+  border:1px solid var(--border);
+}
+
+.btn-danger{
+  background:rgba(255,77,104,.12);
+  color:#ff7085;
+  border:1px solid rgba(255,77,104,.2);
+}
+
+/* TRENDING */
+
+.trending-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.trending-item{
+  display:grid;
+  grid-template-columns:38px 1fr auto;
+  align-items:center;
+  gap:11px;
+  padding:11px;
+  border-radius:13px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+}
+
+.rank{
+  width:32px;
+  height:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:rgba(255,49,88,.1);
+  color:#ff6b85;
+  font-weight:800;
+}
+
+.trending-title{
+  font-size:12px;
+  font-weight:700;
+}
+
+.trending-meta{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+}
+
+.trending-score{
+  color:#ff6b85;
+  font-size:10px;
+  font-weight:750;
+}
+
+/* VIDEO TABLE */
+
+.video-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.video-row{
+  display:grid;
+  grid-template-columns:70px 1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:10px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.025);
+  border-radius:15px;
+}
+
+.video-thumb{
+  width:70px;
+  height:82px;
+  border-radius:10px;
+  overflow:hidden;
+  background:#1a1b22;
+}
+
+.video-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.video-thumb-placeholder{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+}
+
+.video-title{
+  font-size:13px;
+  font-weight:750;
+  margin-bottom:5px;
+}
+
+.video-category{
+  color:#ff6380;
+  font-size:9px;
+  text-transform:uppercase;
+  font-weight:800;
+}
+
+.video-stats{
+  display:flex;
+  gap:10px;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:7px;
+}
+
+.video-actions{
+  display:flex;
+  gap:7px;
+}
+
+.small-btn{
+  height:34px;
+  padding:0 10px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+}
+
+.small-btn.delete{
+  color:#ff6b80;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(8px);
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-box{
+  width:100%;
+  max-width:520px;
+  max-height:90vh;
+  overflow:auto;
+  background:#11131a;
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:20px;
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.modal-head h2{
+  font-size:18px;
+}
+
+.close{
+  width:35px;
+  height:35px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  font-size:20px;
+}
+
+.form-group{
+  margin-bottom:13px;
+}
+
+.form-group label{
+  display:block;
+  color:#aaaeba;
+  font-size:11px;
+  margin-bottom:6px;
+}
+
+.form-group input,
+.form-group select{
+  width:100%;
+  height:44px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.045);
+  color:#fff;
+  padding:0 12px;
+  outline:none;
+}
+
+.form-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:17px;
+}
+
+/* EMPTY */
+
+.empty{
+  padding:35px 10px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%) translateY(20px);
+  background:#20222b;
+  border:1px solid var(--border);
+  color:#fff;
+  padding:11px 16px;
+  border-radius:12px;
+  font-size:12px;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  z-index:20000;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* MOBILE */
+
+@media(max-width:720px){
+
+  .stats-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .controls{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .controls .btn{
+    grid-column:1/-1;
+  }
+
+  .video-row{
+    grid-template-columns:60px 1fr;
+  }
+
+  .video-thumb{
+    width:60px;
+    height:72px;
+  }
+
+  .video-actions{
+    grid-column:1/-1;
+    padding-top:3px;
+  }
+
+  .video-actions button{
+    flex:1;
+  }
+}
+
+@media(max-width:380px){
+
+  .container{
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .stat-card{
+    padding:13px;
+  }
+
+  .stat-card strong{
+    font-size:20px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<div id="modal" class="modal">
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h2 id="modalTitle">Add Video</h2>
+
+      <button
+        class="close"
+        onclick="closeModal()"
+      >×</button>
+    </div>
+
+    <form id="videoForm">
+
+      <input
+        type="hidden"
+        id="editId"
+      >
+
+      <div class="form-group">
+        <label>Video Title</label>
+        <input
+          id="videoTitle"
+          required
+          placeholder="Enter video title"
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+
+        <select id="videoCategory">
+          <option value="Instagram">Instagram</option>
+          <option value="TikTok">TikTok</option>
+          <option value="Viral">Viral</option>
+          <option value="Deshi">Deshi</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Telegram File ID</label>
+
+        <input
+          id="videoFileId"
+          required
+          placeholder="BAACAg..."
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Thumbnail File ID</label>
+
+        <input
+          id="thumbnailFileId"
+          placeholder="BAACAg..."
+        >
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          onclick="closeModal()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Save Video
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+
+const SUPABASE_URL =
+"https://icievlmrfbanhoaqvtwz.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_CgovIrCCYoka2GeHzjgLZg_lYbdy-D8";
+
+const ADMIN_ID =
+"1395435702";
+
+const tg =
+window.Telegram?.WebApp;
+
+if(tg){
+  tg.ready();
+  tg.expand();
+}
+
+const telegramUser =
+tg?.initDataUnsafe?.user || null;
+
+const userId =
+String(telegramUser?.id || "");
+
+let videos = [];
+let savedCount = 0;
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function isAdmin(){
+
+  return userId === ADMIN_ID;
+}
+
+
+/* =========================
+   API HEADERS
+========================= */
+
+function headers(extra = {}){
+
+  return {
+    "apikey":SUPABASE_KEY,
+    "Authorization":`Bearer ${SUPABASE_KEY}`,
+    ...extra
+  };
+}
+
+
+/* =========================
+   LOAD VIDEOS
+========================= */
+
+async function loadVideos(){
+
+  const response =
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/videos?select=*&order=created_at.desc`,
+    {
+      headers:headers()
+    }
+  );
+
+  if(!response.ok){
+
+    throw new Error(
+      await response.text()
+    );
+
+  }
+
+  videos =
+  await response.json();
+}
+
+
+/* =========================
+   LOAD SAVED COUNT
+========================= */
+
+async function loadSavedCount(){
+
+  try{
+
+    const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/saved_videos?select=id`,
+      {
+        headers:{
+          ...headers(),
+          "Prefer":"count=exact"
+        }
+      }
+    );
+
+    const range =
+    response.headers.get(
+      "content-range"
+    );
+
+    if(range){
+
+      const total =
+      range.split("/")[1];
+
+      savedCount =
+      Number(total || 0);
+
+    }else{
+
+      const data =
+      await response.json();
+
+      savedCount =
+      data.length;
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "SAVED COUNT ERROR",
+      error
+    );
+
+    savedCount = 0;
+  }
+}
+
+
+/* =========================
+   FORMAT
+========================= */
+
+function formatNumber(value){
+
+  const number =
+  Number(value || 0);
+
+  if(number >= 1000000)
+    return (number / 1000000).toFixed(1)+"M";
+
+  if(number >= 1000)
+    return (number / 1000).toFixed(1)+"K";
+
+  return String(number);
+}
+
+
+/* =========================
+   ESCAPE
+========================= */
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/* =========================
+   THUMBNAIL
+========================= */
+
+function thumbnailUrl(fileId){
+
+  if(!fileId)
+    return "";
+
+  return `/api/thumbnail?file_id=${
+    encodeURIComponent(fileId)
+  }`;
+}
+
+
+/* =========================
+   TRENDING SCORE
+========================= */
+
+function trendingScore(video){
+
+  return (
+    Number(video.views || 0) +
+    Number(video.likes || 0) * 5
+  );
+}
+
+
+function getTopTrending(){
+
+  return [...videos]
+    .sort(
+      (a,b) =>
+        trendingScore(b) -
+        trendingScore(a)
+    )
+    .slice(0,5);
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderDashboard(){
+
+  const totalVideos =
+  videos.length;
+
+  const totalViews =
+  videos.reduce(
+    (sum,v) =>
+      sum + Number(v.views || 0),
+    0
+  );
+
+  const totalLikes =
+  videos.reduce(
+    (sum,v) =>
+      sum + Number(v.likes || 0),
+    0
+  );
+
+  const trending =
+  getTopTrending();
+
+
+  return `
+
+    <div class="stats-grid">
+
+      <div class="stat-card">
+        <div class="stat-icon">🎬</div>
+
+        <strong>
+          ${formatNumber(totalVideos)}
+        </strong>
+
+        <span>Total Videos</span>
+      </div>
+
+
+      <div class="stat-card">
+        <div class="stat-icon">👁</div>
+
+        <strong>
+          ${formatNumber(totalViews)}
+        </strong>
+
+        <span>Total Views</span>
+      </div>
+
+
+      <div class="stat-card">
+        <div class="stat-icon">❤️</div>
+
+        <strong>
+          ${formatNumber(totalLikes)}
+        </strong>
+
+        <span>Total Likes</span>
+      </div>
+
+
+      <div class="stat-card">
+        <div class="stat-icon">🔖</div>
+
+        <strong>
+          ${formatNumber(savedCount)}
+        </strong>
+
+        <span>Total Saved</span>
+      </div>
+
+    </div>
+
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <h2>
+          🔥 Top 5 Trending Videos
+        </h2>
+
+        <span>
+          Views + Likes
+        </span>
+
+      </div>
+
+
+      <div class="trending-list">
+
+        ${
+          trending.length
+          ? trending.map(
+              (video,index) => `
+
+                <div class="trending-item">
+
+                  <div class="rank">
+                    #${index + 1}
+                  </div>
+
+                  <div>
+
+                    <div class="trending-title">
+                      ${escapeHtml(
+                        video.title ||
+                        "Untitled Video"
+                      )}
+                    </div>
+
+                    <div class="trending-meta">
+                      👁 ${formatNumber(video.views)}
+                      &nbsp; ❤️ ${formatNumber(video.likes)}
+                    </div>
+
+                  </div>
+
+                  <div class="trending-score">
+                    ${formatNumber(
+                      trendingScore(video)
+                    )}
+                  </div>
+
+                </div>
+
+              `
+            ).join("")
+          : `
+            <div class="empty">
+              No videos available.
+            </div>
+          `
+        }
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================
+   VIDEO MANAGEMENT
+========================= */
+
+function renderVideoManagement(){
+
+  return `
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <h2>
+          🎬 Video Management
+        </h2>
+
+        <span>
+          ${videos.length} videos
+        </span>
+
+      </div>
+
+
+      <div class="controls">
+
+        <input
+          id="searchVideos"
+          class="input"
+          placeholder="🔎 Search videos..."
+        >
+
+
+        <select
+          id="filterCategory"
+          class="select"
+        >
+
+          <option value="All">
+            All Categories
+          </option>
+
+          <option value="Instagram">
+            Instagram
+          </option>
+
+          <option value="TikTok">
+            TikTok
+          </option>
+
+          <option value="Viral">
+            Viral
+          </option>
+
+          <option value="Deshi">
+            Deshi
+          </option>
+
+          <option value="Other">
+            Other
+          </option>
+
+        </select>
+
+
+        <button
+          class="btn btn-primary"
+          onclick="openAddModal()"
+        >
+          + Add Video
+        </button>
+
+      </div>
+
+
+      <div
+        id="videoList"
+        class="video-list"
+      ></div>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================
+   RENDER VIDEO LIST
+========================= */
+
+function renderVideoList(){
+
+  const container =
+  document.getElementById(
+    "videoList"
+  );
+
+  if(!container)
+    return;
+
+
+  const search =
+  (
+    document.getElementById(
+      "searchVideos"
+    )?.value || ""
+  )
+  .toLowerCase()
+  .trim();
+
+
+  const category =
+  document.getElementById(
+    "filterCategory"
+  )?.value || "All";
+
+
+  const filtered =
+  videos.filter(video => {
+
+    const title =
+    String(
+      video.title || ""
+    ).toLowerCase();
+
+    const matchesSearch =
+    !search ||
+    title.includes(search);
+
+    const matchesCategory =
+    category === "All" ||
+    video.category === category;
+
+    return (
+      matchesSearch &&
+      matchesCategory
+    );
+
+  });
+
+
+  if(!filtered.length){
+
+    container.innerHTML = `
+      <div class="empty">
+        🎬<br><br>
+        No videos found.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML =
+  filtered.map(video => {
+
+    const thumb =
+    thumbnailUrl(
+      video.thumbnail_file_id
+    );
+
+
+    return `
+
+      <div class="video-row">
+
+        <div class="video-thumb">
+
+          ${
+            thumb
+            ? `
+              <img
+                src="${escapeHtml(thumb)}"
+                loading="lazy"
+                alt=""
+              >
+            `
+            : `
+              <div class="video-thumb-placeholder">
+                🎬
+              </div>
+            `
+          }
+
+        </div>
+
+
+        <div>
+
+          <div class="video-title">
+            ${escapeHtml(
+              video.title ||
+              "Untitled Video"
+            )}
+          </div>
+
+          <div class="video-category">
+            ${escapeHtml(
+              video.category ||
+              "Other"
+            )}
+          </div>
+
+          <div class="video-stats">
+
+            <span>
+              👁 ${formatNumber(
+                video.views
+              )}
+            </span>
+
+            <span>
+              ❤️ ${formatNumber(
+                video.likes
+              )}
+            </span>
+
+            <span>
+              ID: ${video.id}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="video-actions">
+
+          <button
+            class="small-btn"
+            onclick="openEditModal(${video.id})"
+          >
+            ✏️ Edit
+          </button>
+
+          <button
+            class="small-btn delete"
+            onclick="deleteVideo(${video.id})"
+          >
+            🗑 Delete
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+}
+
+
+/* =========================
+   FULL ADMIN UI
+========================= */
+
+function renderAdmin(){
+
+  const app =
+  document.getElementById("app");
+
+
+  if(!isAdmin()){
+
+    app.innerHTML = `
+
+      <div class="container">
+
+        <div class="access-denied">
+
+          <div class="access-box">
+
+            <div class="access-icon">
+              🔒
+            </div>
+
+            <h2>
+              Access Denied
+            </h2>
+
+            <p>
+              This Video Management System
+              is available only to the
+              authorized administrator.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  app.innerHTML = `
+
+    <div class="container">
+
+      <div class="header">
+
+        <div class="brand">
+
+          <div class="logo">
+            DH
+          </div>
+
+          <div>
+            <h1>
+              Desi Hub TV
+            </h1>
+
+            <p>
+              Video Management System V3.1
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="admin-badge">
+          👑 ADMIN
+        </div>
+
+      </div>
+
+
+      ${renderDashboard()}
+
+      ${renderVideoManagement()}
+
+    </div>
+
+  `;
+
+
+  const search =
+  document.getElementById(
+    "searchVideos"
+  );
+
+  const filter =
+  document.getElementById(
+    "filterCategory"
+  );
+
+
+  search?.addEventListener(
+    "input",
+    renderVideoList
+  );
+
+  filter?.addEventListener(
+    "change",
+    renderVideoList
+  );
+
+
+  renderVideoList();
+}
+
+
+/* =========================
+   ADD MODAL
+========================= */
+
+function openAddModal(){
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+  "Add Video";
+
+  document.getElementById(
+    "editId"
+  ).value = "";
+
+  document.getElementById(
+    "videoTitle"
+  ).value = "";
+
+  document.getElementById(
+    "videoCategory"
+  ).value = "Instagram";
+
+  document.getElementById(
+    "videoFileId"
+  ).value = "";
+
+  document.getElementById(
+    "thumbnailFileId"
+  ).value = "";
+
+
+  document.getElementById(
+    "modal"
+  ).classList.add("show");
+}
+
+
+/* =========================
+   EDIT MODAL
+========================= */
+
+function openEditModal(id){
+
+  const video =
+  videos.find(
+    v => Number(v.id) === Number(id)
+  );
+
+  if(!video)
+    return;
+
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+  "Edit Video";
+
+
+  document.getElementById(
+    "editId"
+  ).value =
+  video.id;
+
+
+  document.getElementById(
+    "videoTitle"
+  ).value =
+  video.title || "";
+
+
+  document.getElementById(
+    "videoCategory"
+  ).value =
+  video.category || "Other";
+
+
+  document.getElementById(
+    "videoFileId"
+  ).value =
+  video.file_id || "";
+
+
+  document.getElementById(
+    "thumbnailFileId"
+  ).value =
+  video.thumbnail_file_id || "";
+
+
+  document.getElementById(
+    "modal"
+  ).classList.add("show");
+}
+
+
+/* =========================
+   CLOSE MODAL
+========================= */
+
+function closeModal(){
+
+  document.getElementById(
+    "modal"
+  ).classList.remove("show");
+}
+
+
+/* =========================
+   SAVE VIDEO
+========================= */
+
+document
+.getElementById("videoForm")
+.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    if(!isAdmin()){
+
+      showToast(
+        "Access denied"
+      );
+
+      return;
+    }
+
+
+    const editId =
+    document.getElementById(
+      "editId"
+    ).value;
+
+
+    const title =
+    document.getElementById(
+      "videoTitle"
+    ).value.trim();
+
+
+    const category =
+    document.getElementById(
+      "videoCategory"
+    ).value;
+
+
+    const fileId =
+    document.getElementById(
+      "videoFileId"
+    ).value.trim();
+
+
+    const thumbnailFileId =
+    document.getElementById(
+      "thumbnailFileId"
+    ).value.trim();
+
+
+    const payload = {
+
+      title,
+
+      category,
+
+      file_id:fileId,
+
+      thumbnail_file_id:
+        thumbnailFileId
+
+    };
+
+
+    try{
+
+      let response;
+
+
+      if(editId){
+
+        response =
+        await fetch(
+          `${SUPABASE_URL}/rest/v1/videos?id=eq.${editId}`,
+          {
+            method:"PATCH",
+
+            headers:headers({
+              "Content-Type":
+                "application/json",
+
+              "Prefer":
+                "return=minimal"
+            }),
+
+            body:
+              JSON.stringify(payload)
+          }
+        );
+
+      }else{
+
+        response =
+        await fetch(
+          `${SUPABASE_URL}/rest/v1/videos`,
+          {
+            method:"POST",
+
+            headers:headers({
+              "Content-Type":
+                "application/json",
+
+              "Prefer":
+                "return=minimal"
+            }),
+
+            body:
+              JSON.stringify({
+                ...payload,
+                views:0,
+                likes:0
+              })
+          }
+        );
+
+      }
+
+
+      if(!response.ok){
+
+        throw new Error(
+          await response.text()
+        );
+
+      }
+
+
+      closeModal();
+
+      showToast(
+        editId
+        ? "Video updated successfully"
+        : "Video added successfully"
+      );
+
+
+      await loadVideos();
+
+      renderAdmin();
+
+
+    }catch(error){
+
+      console.error(
+        "SAVE VIDEO ERROR:",
+        error
+      );
+
+      showToast(
+        "Failed to save video"
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================
+   DELETE VIDEO
+========================= */
+
+async function deleteVideo(id){
+
+  if(!isAdmin())
+    return;
+
+
+  const video =
+  videos.find(
+    v => Number(v.id) === Number(id)
+  );
+
+
+  if(!video)
+    return;
+
+
+  const confirmed =
+  confirm(
+    `Delete "${video.title || "this video"}"?`
+  );
+
+
+  if(!confirmed)
+    return;
+
+
+  try{
+
+    const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/videos?id=eq.${id}`,
+      {
+        method:"DELETE",
+        headers:headers({
+          "Prefer":"return=minimal"
+        })
+      }
+    );
+
+
+    if(!response.ok){
+
+      throw new Error(
+        await response.text()
+      );
+
+    }
+
+
+    showToast(
+      "Video deleted successfully"
+    );
+
+
+    await loadVideos();
+
+    renderAdmin();
+
+
+  }catch(error){
+
+    console.error(
+      "DELETE ERROR:",
+      error
+    );
+
+    showToast(
+      "Failed to delete video"
+    );
+
+  }
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+let toastTimer;
+
+
+function showToast(message){
+
+  const toast =
+  document.getElementById(
+    "toast"
+  );
+
+  toast.textContent =
+  message;
+
+  toast.classList.add("show");
+
+
+  clearTimeout(toastTimer);
+
+
+  toastTimer =
+  setTimeout(
+    () => {
+      toast.classList.remove(
+        "show"
+      );
+    },
+    2500
+  );
+}
+
+
+/* =========================
+   START
+========================= */
+
+async function startApp(){
+
+  if(!isAdmin()){
+
+    renderAdmin();
+
+    return;
+  }
+
+
+  try{
+
+    await loadVideos();
+
+    await loadSavedCount();
+
+    renderAdmin();
+
+  }catch(error){
+
+    console.error(
+      "ADMIN LOAD ERROR:",
+      error
+    );
+
+
+    document.getElementById(
+      "app"
+    ).innerHTML = `
+
+      <div class="container">
+
+        <div class="access-denied">
+
+          <div class="access-box">
+
+            <div class="access-icon">
+              ⚠️
+            </div>
+
+            <h2>
+              Database Error
+            </h2>
+
+            <p>
+              Could not load the video
+              database. Check your
+              Supabase RLS policies.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+startApp();
+
+</script>
+
+</body>
+</html>

@@ -1564,65 +1564,121 @@ document
 
     event.preventDefault();
 
-
     if(!isAdmin()){
 
-      showToast(
-        "Access denied"
-      );
+      showToast("Access denied");
+
+      return;
+    }
+
+    const editId =
+    document.getElementById("editId").value;
+
+    const title =
+    document.getElementById("videoTitle").value.trim();
+
+    const category =
+    document.getElementById("videoCategory").value;
+
+    const fileId =
+    document.getElementById("videoFileId").value.trim();
+
+    const thumbnailFileId =
+    document.getElementById("thumbnailFileId").value.trim();
+
+
+    if(!title){
+
+      showToast("Video title is required");
 
       return;
     }
 
 
-    const editId =
-    document.getElementById(
-      "editId"
-    ).value;
+    if(!fileId){
 
+      showToast("Telegram File ID is required");
 
-    const title =
-    document.getElementById(
-      "videoTitle"
-    ).value.trim();
-
-
-    const category =
-    document.getElementById(
-      "videoCategory"
-    ).value;
-
-
-    const fileId =
-    document.getElementById(
-      "videoFileId"
-    ).value.trim();
-
-
-    const thumbnailFileId =
-    document.getElementById(
-      "thumbnailFileId"
-    ).value.trim();
-
-
-    const payload = {
-
-      title,
-
-      category,
-
-      file_id:fileId,
-
-      thumbnail_file_id:
-        thumbnailFileId
-
-    };
+      return;
+    }
 
 
     try{
 
+      showToast("Checking Telegram video...");
+
+
+      /* =========================
+         VERIFY TELEGRAM FILE
+      ========================= */
+
+      const telegramResponse =
+      await fetch(
+        "/api/telegram-upload",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:
+            JSON.stringify({
+
+              telegramUserId:
+                userId,
+
+              videoFileId:
+                fileId,
+
+              thumbnailFileId:
+                thumbnailFileId
+
+            })
+        }
+      );
+
+
+      const telegramData =
+      await telegramResponse.json();
+
+
+      if(!telegramResponse.ok ||
+         !telegramData.success){
+
+        throw new Error(
+          telegramData.error ||
+          "Telegram file verification failed"
+        );
+
+      }
+
+
+      /* =========================
+         SUPABASE PAYLOAD
+      ========================= */
+
+      const payload = {
+
+        title:title,
+
+        category:category,
+
+        file_id:fileId,
+
+        thumbnail_file_id:
+          thumbnailFileId
+
+      };
+
+
       let response;
 
+
+      /* =========================
+         EDIT VIDEO
+      ========================= */
 
       if(editId){
 
@@ -1633,19 +1689,29 @@ document
             method:"PATCH",
 
             headers:headers({
+
               "Content-Type":
                 "application/json",
 
               "Prefer":
                 "return=minimal"
+
             }),
 
             body:
               JSON.stringify(payload)
+
           }
         );
 
-      }else{
+      }
+
+
+      /* =========================
+         ADD VIDEO
+      ========================= */
+
+      else{
 
         response =
         await fetch(
@@ -1654,24 +1720,35 @@ document
             method:"POST",
 
             headers:headers({
+
               "Content-Type":
                 "application/json",
 
               "Prefer":
                 "return=minimal"
+
             }),
 
             body:
               JSON.stringify({
+
                 ...payload,
+
                 views:0,
+
                 likes:0
+
               })
+
           }
         );
 
       }
 
+
+      /* =========================
+         SUPABASE ERROR
+      ========================= */
 
       if(!response.ok){
 
@@ -1682,7 +1759,12 @@ document
       }
 
 
+      /* =========================
+         SUCCESS
+      ========================= */
+
       closeModal();
+
 
       showToast(
         editId
@@ -1703,7 +1785,9 @@ document
         error
       );
 
+
       showToast(
+        error.message ||
         "Failed to save video"
       );
 

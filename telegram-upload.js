@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
-      error: "Method not allowed",
+      error: "Method not allowed"
     });
   }
 
@@ -23,15 +23,14 @@ export default async function handler(req, res) {
     if (!BOT_TOKEN) {
       return res.status(500).json({
         success: false,
-        error: "TELEGRAM_BOT_TOKEN is not configured",
+        error: "TELEGRAM_BOT_TOKEN is not configured"
       });
     }
 
 
-    const busboy =
-      Busboy({
-        headers: req.headers,
-      });
+    const busboy = Busboy({
+      headers: req.headers
+    });
 
 
     let telegramUserId = "";
@@ -65,17 +64,14 @@ export default async function handler(req, res) {
 
         const {
           filename,
-          mimeType,
+          mimeType
         } = info;
 
-
         const chunks = [];
-
 
         file.on("data", chunk => {
           chunks.push(chunk);
         });
-
 
         file.on("end", () => {
 
@@ -88,7 +84,7 @@ export default async function handler(req, res) {
             videoFile = {
               buffer,
               filename,
-              mimeType,
+              mimeType
             };
 
           }
@@ -99,7 +95,7 @@ export default async function handler(req, res) {
             thumbnailFile = {
               buffer,
               filename,
-              mimeType,
+              mimeType
             };
 
           }
@@ -110,246 +106,239 @@ export default async function handler(req, res) {
     );
 
 
-    busboy.on(
-      "finish",
-      async () => {
+    busboy.on("finish", async () => {
 
-        try {
+      try {
 
-          /* =========================
-             ADMIN ONLY
-          ========================= */
+        /* =========================
+           ADMIN SECURITY
+        ========================= */
 
-          if (
-            String(telegramUserId) !==
-            "1395435702"
-          ) {
+        if (
+          String(telegramUserId) !==
+          "1395435702"
+        ) {
 
-            return res.status(403).json({
-              success: false,
-              error: "Unauthorized",
-            });
+          return res.status(403).json({
+            success: false,
+            error: "Unauthorized"
+          });
 
-          }
+        }
 
 
-          /* =========================
-             VIDEO REQUIRED
-          ========================= */
+        /* =========================
+           VIDEO REQUIRED
+        ========================= */
 
-          if (!videoFile) {
+        if (!videoFile) {
 
-            return res.status(400).json({
-              success: false,
-              error: "Video file is required",
-            });
+          return res.status(400).json({
+            success: false,
+            error: "Video file is required"
+          });
 
-          }
+        }
 
 
-          /* =========================
-             SEND VIDEO TO TELEGRAM
-          ========================= */
+        /* =========================
+           UPLOAD VIDEO TO TELEGRAM
+        ========================= */
 
-          const videoForm =
+        const videoForm =
+          new FormData();
+
+
+        videoForm.append(
+          "chat_id",
+          telegramUserId
+        );
+
+
+        const videoBlob =
+          new Blob(
+            [videoFile.buffer],
+            {
+              type:
+                videoFile.mimeType ||
+                "video/mp4"
+            }
+          );
+
+
+        videoForm.append(
+          "video",
+          videoBlob,
+          videoFile.filename
+        );
+
+
+        if (title) {
+
+          videoForm.append(
+            "caption",
+            title
+          );
+
+        }
+
+
+        const videoResponse =
+          await fetch(
+            `https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`,
+            {
+              method: "POST",
+              body: videoForm
+            }
+          );
+
+
+        const videoData =
+          await videoResponse.json();
+
+
+        if (
+          !videoResponse.ok ||
+          !videoData.ok
+        ) {
+
+          return res.status(400).json({
+            success: false,
+            error:
+              videoData.description ||
+              "Telegram video upload failed"
+          });
+
+        }
+
+
+        const telegramVideo =
+          videoData.result.video;
+
+
+        const videoFileId =
+          telegramVideo.file_id;
+
+
+        /* =========================
+           UPLOAD THUMBNAIL
+        ========================= */
+
+        let thumbnailFileId = null;
+
+
+        if (thumbnailFile) {
+
+          const thumbnailForm =
             new FormData();
 
 
-          const videoBlob =
-            new Blob(
-              [
-                videoFile.buffer
-              ],
-              {
-                type:
-                  videoFile.mimeType ||
-                  "video/mp4",
-              }
-            );
-
-
-          videoForm.append(
+          thumbnailForm.append(
             "chat_id",
             telegramUserId
           );
 
 
-          videoForm.append(
-            "video",
-            videoBlob,
-            videoFile.filename
+          const thumbnailBlob =
+            new Blob(
+              [thumbnailFile.buffer],
+              {
+                type:
+                  thumbnailFile.mimeType ||
+                  "image/jpeg"
+              }
+            );
+
+
+          thumbnailForm.append(
+            "photo",
+            thumbnailBlob,
+            thumbnailFile.filename
           );
 
 
-          if (title) {
-
-            videoForm.append(
-              "caption",
-              title
-            );
-
-          }
-
-
-          const telegramVideoResponse =
+          const thumbnailResponse =
             await fetch(
-              `https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`,
+              `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,
               {
                 method: "POST",
-                body: videoForm,
+                body: thumbnailForm
               }
             );
 
 
-          const telegramVideoData =
-            await telegramVideoResponse.json();
+          const thumbnailData =
+            await thumbnailResponse.json();
 
 
           if (
-            !telegramVideoResponse.ok ||
-            !telegramVideoData.ok
+            thumbnailResponse.ok &&
+            thumbnailData.ok
           ) {
 
-            return res.status(400).json({
-              success: false,
-              error:
-                telegramVideoData.description ||
-                "Telegram video upload failed",
-            });
-
-          }
-
-
-          const telegramVideo =
-            telegramVideoData.result.video;
-
-
-          const videoFileId =
-            telegramVideo.file_id;
-
-
-          /* =========================
-             THUMBNAIL
-          ========================= */
-
-          let thumbnailFileId = null;
-
-
-          if (thumbnailFile) {
-
-            const photoForm =
-              new FormData();
-
-
-            const photoBlob =
-              new Blob(
-                [
-                  thumbnailFile.buffer
-                ],
-                {
-                  type:
-                    thumbnailFile.mimeType ||
-                    "image/jpeg",
-                }
-              );
-
-
-            photoForm.append(
-              "chat_id",
-              telegramUserId
-            );
-
-
-            photoForm.append(
-              "photo",
-              photoBlob,
-              thumbnailFile.filename
-            );
-
-
-            const telegramPhotoResponse =
-              await fetch(
-                `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,
-                {
-                  method: "POST",
-                  body: photoForm,
-                }
-              );
-
-
-            const telegramPhotoData =
-              await telegramPhotoResponse.json();
+            const photos =
+              thumbnailData.result.photo;
 
 
             if (
-              telegramPhotoResponse.ok &&
-              telegramPhotoData.ok
+              Array.isArray(photos) &&
+              photos.length
             ) {
 
-              const photos =
-                telegramPhotoData.result.photo;
-
-
-              if (
-                Array.isArray(photos) &&
-                photos.length
-              ) {
-
-                thumbnailFileId =
-                  photos[
-                    photos.length - 1
-                  ].file_id;
-
-              }
+              thumbnailFileId =
+                photos[
+                  photos.length - 1
+                ].file_id;
 
             }
 
           }
 
-
-          /* =========================
-             SUCCESS
-          ========================= */
-
-          return res.status(200).json({
-
-            success: true,
-
-            title,
-
-            category,
-
-            video_file_id:
-              videoFileId,
-
-            thumbnail_file_id:
-              thumbnailFileId,
-
-          });
-
-
-        } catch (error) {
-
-          console.error(
-            "TELEGRAM UPLOAD ERROR:",
-            error
-          );
-
-
-          return res.status(500).json({
-
-            success: false,
-
-            error:
-              error.message ||
-              "Telegram upload failed",
-
-          });
-
         }
 
+
+        /* =========================
+           SUCCESS
+        ========================= */
+
+        return res.status(200).json({
+
+          success: true,
+
+          title,
+
+          category,
+
+          video_file_id:
+            videoFileId,
+
+          thumbnail_file_id:
+            thumbnailFileId
+
+        });
+
+
+      } catch (error) {
+
+        console.error(
+          "TELEGRAM UPLOAD ERROR:",
+          error
+        );
+
+
+        return res.status(500).json({
+
+          success: false,
+
+          error:
+            error.message ||
+            "Telegram upload failed"
+
+        });
+
       }
-    );
+
+    });
 
 
     req.pipe(busboy);
@@ -369,7 +358,7 @@ export default async function handler(req, res) {
 
       error:
         error.message ||
-        "Server error",
+        "Server error"
 
     });
 

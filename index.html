@@ -1656,6 +1656,17 @@ function renderProfile(){
   }
 
 
+  /*
+    ADMIN ACCESS
+    Telegram ID: 1395435702
+  */
+
+  const isAdmin =
+    String(
+      telegramUser?.id || ""
+    ) === "1395435702";
+
+
   content.innerHTML = `
 
     <div class="profile">
@@ -1684,6 +1695,7 @@ function renderProfile(){
           <strong>
             ${savedIds.size}
           </strong>
+
           <span>
             Saved Videos
           </span>
@@ -1694,12 +1706,40 @@ function renderProfile(){
           <strong>
             ${videos.length}
           </strong>
+
           <span>
             Total Videos
           </span>
         </div>
 
       </div>
+
+
+      ${
+        isAdmin
+        ? `
+
+          <button
+            onclick="openAdminDashboard()"
+            style="
+              width:100%;
+              margin-top:15px;
+              height:48px;
+              border:0;
+              border-radius:14px;
+              background:linear-gradient(135deg,#ff3158,#ff1748);
+              color:#fff;
+              font-size:13px;
+              font-weight:800;
+              cursor:pointer;
+            "
+          >
+            👑 Admin Dashboard
+          </button>
+
+        `
+        : ""
+      }
 
     </div>
 

@@ -46,12 +46,50 @@ button{
   width:100%;
   max-width:1000px;
   margin:auto;
-  padding:18px 14px 50px;
+  padding:14px 14px 50px;
 }
 
 /* =========================
-   HEADER
+   TOP BAR
 ========================= */
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.back-btn{
+  height:40px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:12px;
+  font-weight:750;
+}
+
+.back-btn:active{
+  transform:scale(.97);
+}
+
+.menu-btn{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:20px;
+}
+
+/* HEADER */
 
 .header{
   display:flex;
@@ -87,12 +125,6 @@ button{
   margin-top:3px;
 }
 
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
 .admin-badge{
   padding:7px 10px;
   border-radius:20px;
@@ -103,115 +135,7 @@ button{
   font-weight:800;
 }
 
-.menu-button{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  font-size:23px;
-  line-height:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.menu-button:hover{
-  background:rgba(255,49,88,.15);
-  border-color:rgba(255,49,88,.3);
-}
-
-/* =========================
-   SIDE MENU
-========================= */
-
-.menu-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.65);
-  backdrop-filter:blur(5px);
-  -webkit-backdrop-filter:blur(5px);
-  z-index:9990;
-  display:none;
-}
-
-.menu-overlay.show{
-  display:block;
-}
-
-.side-menu{
-  position:fixed;
-  top:0;
-  right:-340px;
-  width:min(320px,88vw);
-  height:100vh;
-  background:#11131a;
-  border-left:1px solid var(--border);
-  z-index:9995;
-  padding:20px;
-  transition:right .25s ease;
-  box-shadow:-20px 0 60px rgba(0,0,0,.45);
-  overflow-y:auto;
-}
-
-.side-menu.show{
-  right:0;
-}
-
-.side-menu-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:22px;
-}
-
-.side-menu-head h2{
-  font-size:18px;
-}
-
-.side-menu-close{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.06);
-  color:#fff;
-  font-size:20px;
-}
-
-.menu-item{
-  width:100%;
-  min-height:48px;
-  border:1px solid var(--border);
-  border-radius:13px;
-  background:rgba(255,255,255,.045);
-  color:#fff;
-  padding:0 14px;
-  margin-bottom:9px;
-  display:flex;
-  align-items:center;
-  gap:11px;
-  text-align:left;
-  font-weight:700;
-}
-
-.menu-item:hover{
-  background:rgba(255,49,88,.12);
-  border-color:rgba(255,49,88,.25);
-}
-
-.menu-section-title{
-  color:var(--muted);
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:.8px;
-  margin:20px 2px 10px;
-}
-
-/* =========================
-   ACCESS
-========================= */
+/* ACCESS */
 
 .access-denied{
   min-height:70vh;
@@ -245,9 +169,7 @@ button{
   line-height:1.5;
 }
 
-/* =========================
-   STATS
-========================= */
+/* STATS */
 
 .stats-grid{
   display:grid;
@@ -279,9 +201,7 @@ button{
   font-size:11px;
 }
 
-/* =========================
-   PANELS
-========================= */
+/* PANELS */
 
 .panel{
   background:var(--card);
@@ -308,13 +228,11 @@ button{
   font-size:11px;
 }
 
-/* =========================
-   CONTROLS
-========================= */
+/* CONTROLS */
 
 .controls{
   display:grid;
-  grid-template-columns:1fr 190px auto;
+  grid-template-columns:1fr 170px auto;
   gap:9px;
   margin-bottom:15px;
 }
@@ -329,11 +247,6 @@ button{
   background:rgba(255,255,255,.045);
   color:#fff;
   padding:0 13px;
-}
-
-.input:focus,
-.select:focus{
-  border-color:rgba(255,49,88,.6);
 }
 
 .select option{
@@ -353,10 +266,6 @@ button{
   background:var(--pink);
 }
 
-.btn-primary:hover{
-  background:#ff1748;
-}
-
 .btn-secondary{
   background:rgba(255,255,255,.07);
   border:1px solid var(--border);
@@ -368,15 +277,7 @@ button{
   border:1px solid rgba(255,77,104,.2);
 }
 
-.btn-success{
-  background:rgba(53,213,138,.12);
-  color:#5be5a1;
-  border:1px solid rgba(53,213,138,.2);
-}
-
-/* =========================
-   TRENDING
-========================= */
+/* TRENDING */
 
 .trending-list{
   display:flex;
@@ -424,9 +325,7 @@ button{
   font-weight:750;
 }
 
-/* =========================
-   VIDEO TABLE
-========================= */
+/* VIDEO TABLE */
 
 .video-list{
   display:flex;
@@ -487,7 +386,6 @@ button{
   color:var(--muted);
   font-size:10px;
   margin-top:7px;
-  flex-wrap:wrap;
 }
 
 .video-actions{
@@ -511,76 +409,85 @@ button{
 }
 
 /* =========================
-   CATEGORY PANEL
+   MENU
 ========================= */
 
-.category-add{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:9px;
-  margin-bottom:14px;
+.menu-panel{
+  display:none;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:8px;
+  margin-bottom:18px;
 }
+
+.menu-panel.show{
+  display:block;
+}
+
+.menu-item{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px 12px;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:#fff;
+  text-align:left;
+  font-size:12px;
+  font-weight:700;
+}
+
+.menu-item:hover{
+  background:rgba(255,255,255,.06);
+}
+
+/* =========================
+   CATEGORY MANAGEMENT
+========================= */
 
 .category-list{
   display:flex;
   flex-direction:column;
-  gap:8px;
+  gap:9px;
 }
 
-.category-item{
+.category-row{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  min-height:48px;
-  padding:8px 10px;
+  padding:11px 12px;
   border:1px solid var(--border);
-  background:rgba(255,255,255,.035);
-  border-radius:13px;
-}
-
-.category-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width:0;
-}
-
-.category-dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--pink);
-  flex:none;
+  background:rgba(255,255,255,.025);
+  border-radius:14px;
 }
 
 .category-name{
   font-size:12px;
-  font-weight:700;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  font-weight:750;
 }
 
-.category-default{
+.category-count{
   color:var(--muted);
-  font-size:9px;
-  margin-left:5px;
+  font-size:10px;
 }
 
-.category-delete{
-  width:32px;
-  height:32px;
-  border-radius:9px;
-  border:1px solid rgba(255,77,104,.2);
-  background:rgba(255,77,104,.08);
-  color:#ff6b80;
-  flex:none;
+.category-actions{
+  display:flex;
+  gap:6px;
 }
 
-/* =========================
-   MODAL
-========================= */
+.category-add{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  margin-bottom:14px;
+}
+
+/* MODAL */
 
 .modal{
   position:fixed;
@@ -654,11 +561,6 @@ button{
   line-height:1;
 }
 
-.close:hover{
-  background:rgba(255,49,88,.18);
-  border-color:rgba(255,49,88,.35);
-}
-
 .form-group{
   margin-bottom:15px;
 }
@@ -705,13 +607,7 @@ button{
   margin-top:20px;
 }
 
-.form-actions .btn{
-  min-height:46px;
-}
-
-/* =========================
-   EMPTY
-========================= */
+/* EMPTY */
 
 .empty{
   padding:35px 10px;
@@ -720,9 +616,7 @@ button{
   font-size:12px;
 }
 
-/* =========================
-   TOAST
-========================= */
+/* TOAST */
 
 .toast{
   position:fixed;
@@ -739,8 +633,6 @@ button{
   pointer-events:none;
   transition:.2s;
   z-index:20000;
-  max-width:90%;
-  text-align:center;
 }
 
 .toast.show{
@@ -748,9 +640,7 @@ button{
   transform:translateX(-50%) translateY(0);
 }
 
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:720px){
 
@@ -783,10 +673,6 @@ button{
   .video-actions button{
     flex:1;
   }
-
-  .admin-badge{
-    display:none;
-  }
 }
 
 @media(max-width:520px){
@@ -806,7 +692,6 @@ button{
   .category-add{
     grid-template-columns:1fr;
   }
-
 }
 
 @media(max-width:380px){
@@ -824,10 +709,9 @@ button{
     font-size:20px;
   }
 
-  .brand h1{
-    font-size:17px;
+  .back-btn{
+    padding:0 10px;
   }
-
 }
 </style>
 </head>
@@ -836,96 +720,9 @@ button{
 
 <div id="app"></div>
 
-<!-- =========================
-     MENU OVERLAY
-========================= -->
+<!-- VIDEO MODAL -->
 
-<div
-  id="menuOverlay"
-  class="menu-overlay"
-  onclick="closeSideMenu()"
-></div>
-
-
-<!-- =========================
-     SIDE MENU
-========================= -->
-
-<aside
-  id="sideMenu"
-  class="side-menu"
->
-
-  <div class="side-menu-head">
-
-    <h2>Admin Menu</h2>
-
-    <button
-      class="side-menu-close"
-      onclick="closeSideMenu()"
-    >
-      ×
-    </button>
-
-  </div>
-
-
-  <div class="menu-section-title">
-    Management
-  </div>
-
-
-  <button
-    class="menu-item"
-    onclick="openCategoryManager()"
-  >
-    📁
-    <span>Category Management</span>
-  </button>
-
-
-  <button
-    class="menu-item"
-    onclick="openAddModal();closeSideMenu()"
-  >
-    🎬
-    <span>Add New Video</span>
-  </button>
-
-
-  <button
-    class="menu-item"
-    onclick="scrollToVideos()"
-  >
-    📋
-    <span>Video Management</span>
-  </button>
-
-
-  <div class="menu-section-title">
-    Quick Actions
-  </div>
-
-
-  <button
-    class="menu-item"
-    onclick="refreshAdmin()"
-  >
-    🔄
-    <span>Refresh Dashboard</span>
-  </button>
-
-</aside>
-
-
-<!-- =========================
-     VIDEO MODAL
-========================= -->
-
-<div
-  id="modal"
-  class="modal"
->
+<div id="modal" class="modal">
 
   <div class="modal-box">
 
@@ -938,12 +735,9 @@ button{
       <button
         class="close"
         onclick="closeModal()"
-      >
-        ×
-      </button>
+      >×</button>
 
     </div>
-
 
     <form id="videoForm">
 
@@ -952,12 +746,9 @@ button{
         id="editId"
       >
 
-
       <div class="form-group">
 
-        <label>
-          Video Title
-        </label>
+        <label>Video Title</label>
 
         <input
           id="videoTitle"
@@ -967,26 +758,17 @@ button{
 
       </div>
 
-
       <div class="form-group">
 
-        <label>
-          Category
-        </label>
+        <label>Category</label>
 
-        <select
-          id="videoCategory"
-          required
-        ></select>
+        <select id="videoCategory"></select>
 
       </div>
 
-
       <div class="form-group">
 
-        <label>
-          Telegram File ID
-        </label>
+        <label>Telegram File ID</label>
 
         <input
           id="videoFileId"
@@ -996,12 +778,9 @@ button{
 
       </div>
 
-
       <div class="form-group">
 
-        <label>
-          Thumbnail File ID
-        </label>
+        <label>Thumbnail File ID</label>
 
         <input
           id="thumbnailFileId"
@@ -1009,7 +788,6 @@ button{
         >
 
       </div>
-
 
       <div class="form-actions">
 
@@ -1020,7 +798,6 @@ button{
         >
           Cancel
         </button>
-
 
         <button
           type="submit"
@@ -1037,69 +814,59 @@ button{
 
 </div>
 
+<!-- CATEGORY MODAL -->
 
-<!-- =========================
-     CATEGORY MODAL
-========================= -->
-
-<div
-  id="categoryModal"
-  class="modal"
->
+<div id="categoryModal" class="modal">
 
   <div class="modal-box">
 
     <div class="modal-head">
 
       <h2>
-        📁 Categories
+        Add Category
       </h2>
 
       <button
         class="close"
-        onclick="closeCategoryManager()"
-      >
-        ×
-      </button>
+        onclick="closeCategoryModal()"
+      >×</button>
 
     </div>
 
+    <div class="form-group">
 
-    <div class="category-add">
+      <label>Category Name</label>
 
       <input
-        id="newCategoryInput"
-        class="input"
-        placeholder="Enter category name"
-        maxlength="40"
+        id="newCategoryName"
+        placeholder="Example: Bangladesh"
       >
 
+    </div>
+
+    <div class="form-actions">
+
+      <button
+        class="btn btn-secondary"
+        onclick="closeCategoryModal()"
+      >
+        Cancel
+      </button>
 
       <button
         class="btn btn-primary"
         onclick="addCategory()"
       >
-        + Add
+        Add Category
       </button>
 
     </div>
-
-
-    <div
-      id="categoryList"
-      class="category-list"
-    ></div>
 
   </div>
 
 </div>
 
-
-<div
-  id="toast"
-  class="toast"
-></div>
-
+<div id="toast" class="toast"></div>
 
 <script>
 
@@ -1132,15 +899,11 @@ if(tg){
 
 }
 
-
 const telegramUser =
 tg?.initDataUnsafe?.user || null;
 
-
 const userId =
-String(
-  telegramUser?.id || ""
-);
+String(telegramUser?.id || "");
 
 
 /* =========================
@@ -1151,526 +914,18 @@ let videos = [];
 
 let savedCount = 0;
 
-
-/*
-  Default categories.
-  এগুলো delete করা যাবে না।
-*/
-
-const DEFAULT_CATEGORIES = [
-  "All",
+let categories = [
   "Bangladesh",
   "India",
   "Pakistan",
   "Saudi Arabia",
-  "Brazil"
+  "Brazil",
+  "Instagram",
+  "TikTok",
+  "Viral",
+  "Deshi",
+  "Other"
 ];
-
-
-let categories = [];
-
-
-/* =========================
-   CATEGORY STORAGE
-========================= */
-
-function loadCategories(){
-
-  try{
-
-    const stored =
-    localStorage.getItem(
-      "desiHubTV_categories"
-    );
-
-
-    if(stored){
-
-      const parsed =
-      JSON.parse(stored);
-
-
-      if(
-        Array.isArray(parsed) &&
-        parsed.length
-      ){
-
-        categories =
-        parsed;
-
-      }
-
-    }
-
-  }catch(error){
-
-    console.error(
-      "CATEGORY STORAGE ERROR:",
-      error
-    );
-
-  }
-
-
-  /*
-    Make sure default categories
-    always exist.
-  */
-
-  DEFAULT_CATEGORIES
-  .forEach(defaultCategory => {
-
-    const exists =
-    categories.some(
-      category =>
-        category.toLowerCase() ===
-        defaultCategory.toLowerCase()
-    );
-
-
-    if(!exists){
-
-      categories.push(
-        defaultCategory
-      );
-
-    }
-
-  });
-
-
-  /*
-    Remove duplicate categories.
-  */
-
-  const unique = [];
-
-  categories.forEach(category => {
-
-    const name =
-    String(category).trim();
-
-    if(!name)
-      return;
-
-
-    const exists =
-    unique.some(
-      item =>
-        item.toLowerCase() ===
-        name.toLowerCase()
-    );
-
-
-    if(!exists){
-
-      unique.push(name);
-
-    }
-
-  });
-
-
-  /*
-    Always keep All first.
-  */
-
-  const withoutAll =
-  unique.filter(
-    category =>
-      category.toLowerCase() !== "all"
-  );
-
-
-  categories = [
-    "All",
-    ...withoutAll
-  ];
-
-
-  saveCategories();
-
-}
-
-
-function saveCategories(){
-
-  localStorage.setItem(
-    "desiHubTV_categories",
-    JSON.stringify(categories)
-  );
-
-}
-
-
-/* =========================
-   CATEGORY UI
-========================= */
-
-function renderCategoryList(){
-
-  const list =
-  document.getElementById(
-    "categoryList"
-  );
-
-
-  if(!list)
-    return;
-
-
-  list.innerHTML =
-  categories.map(
-    (category,index) => {
-
-      const isDefault =
-      DEFAULT_CATEGORIES.some(
-        item =>
-          item.toLowerCase() ===
-          category.toLowerCase()
-      );
-
-
-      return `
-
-        <div class="category-item">
-
-          <div class="category-left">
-
-            <span class="category-dot"></span>
-
-            <span class="category-name">
-
-              ${escapeHtml(category)}
-
-              ${
-                isDefault
-                ?
-                `<span class="category-default">
-                  DEFAULT
-                </span>`
-                :
-                ""
-              }
-
-            </span>
-
-          </div>
-
-
-          ${
-            category === "All" ||
-            isDefault
-            ?
-            ""
-            :
-            `
-              <button
-                class="category-delete"
-                onclick="deleteCategory(${index})"
-                title="Delete category"
-              >
-                🗑
-              </button>
-            `
-          }
-
-        </div>
-
-      `;
-
-    }
-  ).join("");
-
-
-  updateCategorySelect();
-
-  updateCategoryFilter();
-
-}
-
-
-function openCategoryManager(){
-
-  closeSideMenu();
-
-  renderCategoryList();
-
-  document
-  .getElementById("categoryModal")
-  .classList.add("show");
-
-
-  setTimeout(
-    () => {
-
-      document
-      .getElementById(
-        "newCategoryInput"
-      )
-      ?.focus();
-
-    },
-    150
-  );
-
-}
-
-
-function closeCategoryManager(){
-
-  document
-  .getElementById("categoryModal")
-  .classList.remove("show");
-
-}
-
-
-function addCategory(){
-
-  if(!isAdmin())
-    return;
-
-
-  const input =
-  document.getElementById(
-    "newCategoryInput"
-  );
-
-
-  const name =
-  input.value.trim();
-
-
-  if(!name){
-
-    showToast(
-      "Enter a category name"
-    );
-
-    return;
-  }
-
-
-  if(name.length > 40){
-
-    showToast(
-      "Category name is too long"
-    );
-
-    return;
-  }
-
-
-  const exists =
-  categories.some(
-    category =>
-      category.toLowerCase() ===
-      name.toLowerCase()
-  );
-
-
-  if(exists){
-
-    showToast(
-      "This category already exists"
-    );
-
-    return;
-  }
-
-
-  categories.push(name);
-
-  saveCategories();
-
-  input.value = "";
-
-
-  renderCategoryList();
-
-  renderVideoList();
-
-
-  showToast(
-    `"${name}" category added`
-  );
-
-}
-
-
-function deleteCategory(index){
-
-  if(!isAdmin())
-    return;
-
-
-  const category =
-  categories[index];
-
-
-  if(!category)
-    return;
-
-
-  const isDefault =
-  DEFAULT_CATEGORIES.some(
-    item =>
-      item.toLowerCase() ===
-      category.toLowerCase()
-  );
-
-
-  if(isDefault){
-
-    showToast(
-      "Default categories cannot be deleted"
-    );
-
-    return;
-  }
-
-
-  const confirmed =
-  confirm(
-    `Delete "${category}" category?`
-  );
-
-
-  if(!confirmed)
-    return;
-
-
-  categories.splice(
-    index,
-    1
-  );
-
-
-  saveCategories();
-
-  renderCategoryList();
-
-  renderVideoList();
-
-
-  showToast(
-    "Category deleted"
-  );
-
-}
-
-
-/* =========================
-   UPDATE VIDEO CATEGORY
-========================= */
-
-function updateCategorySelect(){
-
-  const select =
-  document.getElementById(
-    "videoCategory"
-  );
-
-
-  if(!select)
-    return;
-
-
-  const current =
-  select.value;
-
-
-  select.innerHTML =
-  categories
-  .filter(
-    category =>
-      category !== "All"
-  )
-  .map(
-    category => `
-
-      <option value="${escapeHtml(category)}">
-        ${escapeHtml(category)}
-      </option>
-
-    `
-  ).join("");
-
-
-  if(
-    current &&
-    categories.includes(current) &&
-    current !== "All"
-  ){
-
-    select.value =
-    current;
-
-  }
-
-}
-
-
-function updateCategoryFilter(){
-
-  const filter =
-  document.getElementById(
-    "filterCategory"
-  );
-
-
-  if(!filter)
-    return;
-
-
-  const current =
-  filter.value || "All";
-
-
-  filter.innerHTML = `
-
-    <option value="All">
-      All Categories
-    </option>
-
-    ${
-      categories
-      .filter(
-        category =>
-          category !== "All"
-      )
-      .map(
-        category => `
-
-          <option
-            value="${escapeHtml(category)}"
-          >
-            ${escapeHtml(category)}
-          </option>
-
-        `
-      ).join("")
-    }
-
-  `;
-
-
-  if(
-    categories.includes(current)
-  ){
-
-    filter.value =
-    current;
-
-  }else{
-
-    filter.value =
-    "All";
-
-  }
-
-}
 
 
 /* =========================
@@ -1685,19 +940,63 @@ function isAdmin(){
 
 
 /* =========================
+   BACK BUTTON
+========================= */
+
+function goBack(){
+
+  try{
+
+    if(window.history.length > 1){
+
+      window.history.back();
+
+      return;
+
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+  if(tg){
+
+    try{
+
+      tg.close();
+
+      return;
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+  }
+
+  window.location.href = "/";
+
+}
+
+
+/* =========================
    API HEADERS
 ========================= */
 
 function headers(extra = {}){
 
   return {
-    "apikey":
-      SUPABASE_KEY,
+
+    "apikey":SUPABASE_KEY,
 
     "Authorization":
       `Bearer ${SUPABASE_KEY}`,
 
     ...extra
+
   };
 
 }
@@ -1713,11 +1012,9 @@ async function loadVideos(){
   await fetch(
     `${SUPABASE_URL}/rest/v1/videos?select=*&order=created_at.desc`,
     {
-      headers:
-        headers()
+      headers:headers()
     }
   );
-
 
   if(!response.ok){
 
@@ -1727,7 +1024,6 @@ async function loadVideos(){
 
   }
 
-
   videos =
   await response.json();
 
@@ -1735,7 +1031,7 @@ async function loadVideos(){
 
 
 /* =========================
-   LOAD SAVED COUNT
+   SAVED COUNT
 ========================= */
 
 async function loadSavedCount(){
@@ -1753,12 +1049,10 @@ async function loadSavedCount(){
       }
     );
 
-
     const range =
     response.headers.get(
       "content-range"
     );
-
 
     if(range){
 
@@ -1766,9 +1060,7 @@ async function loadSavedCount(){
       range.split("/")[1];
 
       savedCount =
-      Number(
-        total || 0
-      );
+      Number(total || 0);
 
     }else{
 
@@ -1787,8 +1079,7 @@ async function loadSavedCount(){
       error
     );
 
-    savedCount =
-    0;
+    savedCount = 0;
 
   }
 
@@ -1796,28 +1087,23 @@ async function loadSavedCount(){
 
 
 /* =========================
-   FORMAT NUMBER
+   FORMAT
 ========================= */
 
 function formatNumber(value){
 
   const number =
-  Number(
-    value || 0
-  );
-
+  Number(value || 0);
 
   if(number >= 1000000)
     return (
       number / 1000000
-    ).toFixed(1) + "M";
-
+    ).toFixed(1)+"M";
 
   if(number >= 1000)
     return (
       number / 1000
-    ).toFixed(1) + "K";
-
+    ).toFixed(1)+"K";
 
   return String(number);
 
@@ -1830,29 +1116,32 @@ function formatNumber(value){
 
 function escapeHtml(value){
 
-  return String(
-    value ?? ""
-  )
-  .replaceAll(
-    "&",
-    "&amp;"
-  )
-  .replaceAll(
-    "<",
-    "&lt;"
-  )
-  .replaceAll(
-    ">",
-    "&gt;"
-  )
-  .replaceAll(
-    '"',
-    "&quot;"
-  )
-  .replaceAll(
-    "'",
-    "&#039;"
-  );
+  return String(value ?? "")
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
 
@@ -1866,7 +1155,6 @@ function thumbnailUrl(fileId){
   if(!fileId)
     return "";
 
-
   return `/api/thumbnail?file_id=${
     encodeURIComponent(fileId)
   }`;
@@ -1875,7 +1163,7 @@ function thumbnailUrl(fileId){
 
 
 /* =========================
-   TRENDING SCORE
+   TRENDING
 ========================= */
 
 function trendingScore(video){
@@ -1891,12 +1179,101 @@ function trendingScore(video){
 function getTopTrending(){
 
   return [...videos]
-  .sort(
-    (a,b) =>
-      trendingScore(b) -
-      trendingScore(a)
-  )
-  .slice(0,5);
+
+    .sort(
+      (a,b) =>
+        trendingScore(b) -
+        trendingScore(a)
+    )
+
+    .slice(0,5);
+
+}
+
+
+/* =========================
+   CATEGORY SAVE
+========================= */
+
+function saveCategories(){
+
+  try{
+
+    localStorage.setItem(
+      "desiHubAdminCategories",
+      JSON.stringify(categories)
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+function loadCategories(){
+
+  try{
+
+    const saved =
+    localStorage.getItem(
+      "desiHubAdminCategories"
+    );
+
+    if(saved){
+
+      const parsed =
+      JSON.parse(saved);
+
+      if(
+        Array.isArray(parsed) &&
+        parsed.length
+      ){
+
+        categories = parsed;
+
+      }
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "CATEGORY LOAD ERROR",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================
+   CATEGORY SELECT
+========================= */
+
+function renderCategorySelect(){
+
+  const select =
+  document.getElementById(
+    "videoCategory"
+  );
+
+  if(!select)
+    return;
+
+  select.innerHTML =
+  categories.map(
+    category => `
+
+      <option value="${escapeHtml(category)}">
+        ${escapeHtml(category)}
+      </option>
+
+    `
+  ).join("");
 
 }
 
@@ -1910,24 +1287,19 @@ function renderDashboard(){
   const totalVideos =
   videos.length;
 
-
   const totalViews =
   videos.reduce(
     (sum,v) =>
-      sum +
-      Number(v.views || 0),
+      sum + Number(v.views || 0),
     0
   );
-
 
   const totalLikes =
   videos.reduce(
     (sum,v) =>
-      sum +
-      Number(v.likes || 0),
+      sum + Number(v.likes || 0),
     0
   );
-
 
   const trending =
   getTopTrending();
@@ -1944,9 +1316,7 @@ function renderDashboard(){
         </div>
 
         <strong>
-          ${formatNumber(
-            totalVideos
-          )}
+          ${formatNumber(totalVideos)}
         </strong>
 
         <span>
@@ -1963,9 +1333,7 @@ function renderDashboard(){
         </div>
 
         <strong>
-          ${formatNumber(
-            totalViews
-          )}
+          ${formatNumber(totalViews)}
         </strong>
 
         <span>
@@ -1982,9 +1350,7 @@ function renderDashboard(){
         </div>
 
         <strong>
-          ${formatNumber(
-            totalLikes
-          )}
+          ${formatNumber(totalLikes)}
         </strong>
 
         <span>
@@ -2001,9 +1367,7 @@ function renderDashboard(){
         </div>
 
         <strong>
-          ${formatNumber(
-            savedCount
-          )}
+          ${formatNumber(savedCount)}
         </strong>
 
         <span>
@@ -2034,56 +1398,60 @@ function renderDashboard(){
 
         ${
           trending.length
-          ?
-          trending.map(
-            (video,index) => `
 
-              <div class="trending-item">
+          ? trending.map(
+              (video,index) => `
 
-                <div class="rank">
-                  #${index + 1}
-                </div>
+                <div class="trending-item">
 
-
-                <div>
-
-                  <div class="trending-title">
-                    ${escapeHtml(
-                      video.title ||
-                      "Untitled Video"
-                    )}
+                  <div class="rank">
+                    #${index + 1}
                   </div>
 
-                  <div class="trending-meta">
-                    👁 ${formatNumber(
-                      video.views
+                  <div>
+
+                    <div class="trending-title">
+                      ${escapeHtml(
+                        video.title ||
+                        "Untitled Video"
+                      )}
+                    </div>
+
+                    <div class="trending-meta">
+
+                      👁 ${formatNumber(
+                        video.views
+                      )}
+
+                      &nbsp;
+
+                      ❤️ ${formatNumber(
+                        video.likes
+                      )}
+
+                    </div>
+
+                  </div>
+
+                  <div class="trending-score">
+
+                    ${formatNumber(
+                      trendingScore(video)
                     )}
 
-                    &nbsp;
-
-                    ❤️ ${formatNumber(
-                      video.likes
-                    )}
                   </div>
 
                 </div>
 
+              `
+            ).join("")
 
-                <div class="trending-score">
-                  ${formatNumber(
-                    trendingScore(video)
-                  )}
-                </div>
+          : `
 
-              </div>
-
-            `
-          ).join("")
-          :
-          `
             <div class="empty">
               No videos available.
             </div>
+
           `
         }
 
@@ -2104,10 +1472,7 @@ function renderVideoManagement(){
 
   return `
 
-    <div
-      class="panel"
-      id="videoManagement"
-    >
+    <div class="panel">
 
       <div class="panel-head">
 
@@ -2134,7 +1499,25 @@ function renderVideoManagement(){
         <select
           id="filterCategory"
           class="select"
-        ></select>
+        >
+
+          <option value="All">
+            All Categories
+          </option>
+
+          ${
+            categories.map(
+              category => `
+
+                <option value="${escapeHtml(category)}">
+                  ${escapeHtml(category)}
+                </option>
+
+              `
+            ).join("")
+          }
+
+        </select>
 
 
         <button
@@ -2160,7 +1543,120 @@ function renderVideoManagement(){
 
 
 /* =========================
-   RENDER VIDEO LIST
+   CATEGORY MANAGEMENT
+========================= */
+
+function renderCategoryManagement(){
+
+  return `
+
+    <div class="panel">
+
+      <div class="panel-head">
+
+        <h2>
+          📂 Categories
+        </h2>
+
+        <span>
+          ${categories.length} categories
+        </span>
+
+      </div>
+
+
+      <div class="category-add">
+
+        <input
+          id="categoryInput"
+          class="input"
+          placeholder="Add new category..."
+        >
+
+        <button
+          class="btn btn-primary"
+          onclick="addCategoryFromInput()"
+        >
+          + Add
+        </button>
+
+      </div>
+
+
+      <div class="category-list">
+
+        ${
+          categories.map(
+            (category,index) => {
+
+              const count =
+              videos.filter(
+                v =>
+                  String(
+                    v.category || ""
+                  ).toLowerCase() ===
+                  category.toLowerCase()
+              ).length;
+
+
+              return `
+
+                <div class="category-row">
+
+                  <div>
+
+                    <div class="category-name">
+                      ${escapeHtml(category)}
+                    </div>
+
+                    <div class="category-count">
+                      ${count} videos
+                    </div>
+
+                  </div>
+
+
+                  <div class="category-actions">
+
+                    ${
+                      categories.length > 1
+
+                      ? `
+
+                        <button
+                          class="small-btn delete"
+                          onclick="deleteCategory(${index})"
+                        >
+                          🗑
+                        </button>
+
+                      `
+
+                      : ""
+
+                    }
+
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          ).join("")
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================
+   VIDEO LIST
 ========================= */
 
 function renderVideoList(){
@@ -2170,7 +1666,6 @@ function renderVideoList(){
     "videoList"
   );
 
-
   if(!container)
     return;
 
@@ -2179,8 +1674,7 @@ function renderVideoList(){
   (
     document.getElementById(
       "searchVideos"
-    )?.value ||
-    ""
+    )?.value || ""
   )
   .toLowerCase()
   .trim();
@@ -2189,44 +1683,34 @@ function renderVideoList(){
   const category =
   document.getElementById(
     "filterCategory"
-  )?.value ||
-  "All";
+  )?.value || "All";
 
 
   const filtered =
-  videos.filter(
-    video => {
+  videos.filter(video => {
 
-      const title =
-      String(
-        video.title || ""
-      )
-      .toLowerCase();
+    const title =
+    String(
+      video.title || ""
+    ).toLowerCase();
 
 
-      const videoCategory =
-      String(
-        video.category || ""
-      );
+    const matchesSearch =
+    !search ||
+    title.includes(search);
 
 
-      const matchesSearch =
-      !search ||
-      title.includes(search);
+    const matchesCategory =
+    category === "All" ||
+    video.category === category;
 
 
-      const matchesCategory =
-      category === "All" ||
-      videoCategory === category;
+    return (
+      matchesSearch &&
+      matchesCategory
+    );
 
-
-      return (
-        matchesSearch &&
-        matchesCategory
-      );
-
-    }
-  );
+  });
 
 
   if(!filtered.length){
@@ -2235,9 +1719,7 @@ function renderVideoList(){
 
       <div class="empty">
 
-        🎬
-
-        <br><br>
+        🎬<br><br>
 
         No videos found.
 
@@ -2251,119 +1733,136 @@ function renderVideoList(){
 
 
   container.innerHTML =
-  filtered.map(
-    video => {
+  filtered.map(video => {
 
-      const thumb =
-      thumbnailUrl(
-        video.thumbnail_file_id
-      );
-
-
-      return `
-
-        <div class="video-row">
-
-          <div class="video-thumb">
-
-            ${
-              thumb
-              ?
-              `
-                <img
-                  src="${escapeHtml(thumb)}"
-                  loading="lazy"
-                  alt=""
-                  onerror="this.style.display='none'"
-                >
-              `
-              :
-              `
-                <div
-                  class="video-thumb-placeholder"
-                >
-                  🎬
-                </div>
-              `
-            }
-
-          </div>
+    const thumb =
+    thumbnailUrl(
+      video.thumbnail_file_id
+    );
 
 
-          <div>
+    return `
 
-            <div class="video-title">
+      <div class="video-row">
 
-              ${escapeHtml(
-                video.title ||
-                "Untitled Video"
-              )}
+        <div class="video-thumb">
 
-            </div>
+          ${
+            thumb
 
+            ? `
 
-            <div class="video-category">
+              <img
+                src="${escapeHtml(thumb)}"
+                loading="lazy"
+                alt=""
+              >
 
-              ${escapeHtml(
-                video.category ||
-                "Other"
-              )}
+            `
 
-            </div>
+            : `
 
+              <div class="video-thumb-placeholder">
+                🎬
+              </div>
 
-            <div class="video-stats">
+            `
+          }
 
-              <span>
-                👁 ${formatNumber(
-                  video.views
-                )}
-              </span>
-
-
-              <span>
-                ❤️ ${formatNumber(
-                  video.likes
-                )}
-              </span>
+        </div>
 
 
-              <span>
-                ID: ${escapeHtml(
-                  video.id
-                )}
-              </span>
+        <div>
 
-            </div>
+          <div class="video-title">
+
+            ${escapeHtml(
+              video.title ||
+              "Untitled Video"
+            )}
 
           </div>
 
 
-          <div class="video-actions">
+          <div class="video-category">
 
-            <button
-              class="small-btn"
-              onclick="openEditModal(${video.id})"
-            >
-              ✏️ Edit
-            </button>
+            ${escapeHtml(
+              video.category ||
+              "Other"
+            )}
+
+          </div>
 
 
-            <button
-              class="small-btn delete"
-              onclick="deleteVideo(${video.id})"
-            >
-              🗑 Delete
-            </button>
+          <div class="video-stats">
+
+            <span>
+              👁 ${formatNumber(
+                video.views
+              )}
+            </span>
+
+            <span>
+              ❤️ ${formatNumber(
+                video.likes
+              )}
+            </span>
+
+            <span>
+              ID: ${video.id}
+            </span>
 
           </div>
 
         </div>
 
-      `;
 
-    }
-  ).join("");
+        <div class="video-actions">
+
+          <button
+            class="small-btn"
+            onclick="openEditModal(${video.id})"
+          >
+            ✏️ Edit
+          </button>
+
+
+          <button
+            class="small-btn delete"
+            onclick="deleteVideo(${video.id})"
+          >
+            🗑 Delete
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+function toggleMenu(){
+
+  document
+    .getElementById("menuPanel")
+    ?.classList.toggle("show");
+
+}
+
+
+function closeMenu(){
+
+  document
+    .getElementById("menuPanel")
+    ?.classList.remove("show");
 
 }
 
@@ -2375,9 +1874,7 @@ function renderVideoList(){
 function renderAdmin(){
 
   const app =
-  document.getElementById(
-    "app"
-  );
+  document.getElementById("app");
 
 
   if(!isAdmin()){
@@ -2394,11 +1891,9 @@ function renderAdmin(){
               🔒
             </div>
 
-
             <h2>
               Access Denied
             </h2>
-
 
             <p>
               This Video Management System
@@ -2423,6 +1918,72 @@ function renderAdmin(){
 
     <div class="container">
 
+      <!-- BACK BAR -->
+
+      <div class="topbar">
+
+        <button
+          class="back-btn"
+          onclick="goBack()"
+        >
+          ← Back
+        </button>
+
+
+        <button
+          class="menu-btn"
+          onclick="toggleMenu()"
+          aria-label="Menu"
+        >
+          ⋮
+        </button>
+
+      </div>
+
+
+      <!-- MENU -->
+
+      <div
+        id="menuPanel"
+        class="menu-panel"
+      >
+
+        <button
+          class="menu-item"
+          onclick="showCategories()"
+        >
+          📂 Category Management
+        </button>
+
+
+        <button
+          class="menu-item"
+          onclick="openAddModal();closeMenu()"
+        >
+          ➕ Add New Video
+        </button>
+
+
+        <button
+          class="menu-item"
+          onclick="loadAndRefresh();closeMenu()"
+        >
+          🔄 Refresh Dashboard
+        </button>
+
+
+        <button
+          class="menu-item"
+          onclick="goBack()"
+        >
+          ← Back to App
+        </button>
+
+      </div>
+
+
+      <!-- HEADER -->
+
       <div class="header">
 
         <div class="brand">
@@ -2430,7 +1991,6 @@ function renderAdmin(){
           <div class="logo">
             DH
           </div>
-
 
           <div>
 
@@ -2447,21 +2007,8 @@ function renderAdmin(){
         </div>
 
 
-        <div class="header-right">
-
-          <div class="admin-badge">
-            👑 ADMIN
-          </div>
-
-
-          <button
-            class="menu-button"
-            onclick="openSideMenu()"
-            aria-label="Admin Menu"
-          >
-            ⋮
-          </button>
-
+        <div class="admin-badge">
+          👑 ADMIN
         </div>
 
       </div>
@@ -2469,29 +2016,19 @@ function renderAdmin(){
 
       ${renderDashboard()}
 
-
       ${renderVideoManagement()}
+
+      <div id="categorySection"></div>
 
     </div>
 
   `;
 
 
-  /*
-    Category system must be
-    refreshed after UI render.
-  */
-
-  updateCategoryFilter();
-
-  updateCategorySelect();
-
-
   const search =
   document.getElementById(
     "searchVideos"
   );
-
 
   const filter =
   document.getElementById(
@@ -2513,80 +2050,240 @@ function renderAdmin(){
 
   renderVideoList();
 
+  renderCategorySelect();
+
 }
 
 
 /* =========================
-   SIDE MENU
+   SHOW CATEGORIES
 ========================= */
 
-function openSideMenu(){
+function showCategories(){
 
-  document
-  .getElementById(
-    "sideMenu"
-  )
-  .classList.add("show");
+  closeMenu();
 
+  const section =
+  document.getElementById(
+    "categorySection"
+  );
 
-  document
-  .getElementById(
-    "menuOverlay"
-  )
-  .classList.add("show");
-
-}
+  if(!section)
+    return;
 
 
-function closeSideMenu(){
-
-  document
-  .getElementById(
-    "sideMenu"
-  )
-  .classList.remove("show");
+  section.innerHTML =
+  renderCategoryManagement();
 
 
-  document
-  .getElementById(
-    "menuOverlay"
-  )
-  .classList.remove("show");
+  section.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
 
 }
 
 
-function scrollToVideos(){
+/* =========================
+   ADD CATEGORY
+========================= */
 
-  closeSideMenu();
+function openCategoryModal(){
+
+  document
+    .getElementById("newCategoryName")
+    .value = "";
+
+
+  document
+    .getElementById("categoryModal")
+    .classList.add("show");
 
 
   setTimeout(
-    () => {
-
+    () =>
       document
-      .getElementById(
-        "videoManagement"
-      )
-      ?.scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
-
-    },
+        .getElementById("newCategoryName")
+        ?.focus(),
     100
   );
 
 }
 
 
+function closeCategoryModal(){
+
+  document
+    .getElementById("categoryModal")
+    .classList.remove("show");
+
+}
+
+
+function addCategoryFromInput(){
+
+  const input =
+  document.getElementById(
+    "categoryInput"
+  );
+
+  const name =
+  input?.value.trim() || "";
+
+
+  if(!name){
+
+    showToast(
+      "Category name is required"
+    );
+
+    return;
+
+  }
+
+
+  addCategoryName(name);
+
+  input.value = "";
+
+}
+
+
+function addCategory(){
+
+  const input =
+  document.getElementById(
+    "newCategoryName"
+  );
+
+  const name =
+  input?.value.trim() || "";
+
+
+  if(!name){
+
+    showToast(
+      "Category name is required"
+    );
+
+    return;
+
+  }
+
+
+  addCategoryName(name);
+
+  closeCategoryModal();
+
+}
+
+
+function addCategoryName(name){
+
+  const exists =
+  categories.some(
+    category =>
+      category.toLowerCase() ===
+      name.toLowerCase()
+  );
+
+
+  if(exists){
+
+    showToast(
+      "Category already exists"
+    );
+
+    return;
+
+  }
+
+
+  categories.push(name);
+
+  saveCategories();
+
+  renderAdmin();
+
+  showCategories();
+
+  showToast(
+    "Category added successfully"
+  );
+
+}
+
+
 /* =========================
-   VIDEO MODAL
+   DELETE CATEGORY
+========================= */
+
+function deleteCategory(index){
+
+  const category =
+  categories[index];
+
+
+  if(!category)
+    return;
+
+
+  const used =
+  videos.some(
+    video =>
+      String(
+        video.category || ""
+      ).toLowerCase() ===
+      category.toLowerCase()
+  );
+
+
+  if(used){
+
+    showToast(
+      "This category has videos. Change their category first."
+    );
+
+    return;
+
+  }
+
+
+  if(!confirm(
+    `Delete "${category}" category?`
+  )){
+
+    return;
+
+  }
+
+
+  categories.splice(
+    index,
+    1
+  );
+
+
+  saveCategories();
+
+  renderAdmin();
+
+  showCategories();
+
+  showToast(
+    "Category deleted"
+  );
+
+}
+
+
+/* =========================
+   ADD MODAL
 ========================= */
 
 function openAddModal(){
 
-  closeCategoryManager();
+  renderCategorySelect();
 
 
   document.getElementById(
@@ -2597,54 +2294,45 @@ function openAddModal(){
 
   document.getElementById(
     "editId"
-  ).value =
-  "";
+  ).value = "";
 
 
   document.getElementById(
     "videoTitle"
-  ).value =
-  "";
-
-
-  updateCategorySelect();
-
-
-  const firstCategory =
-  categories.find(
-    category =>
-      category !== "All"
-  );
+  ).value = "";
 
 
   document.getElementById(
     "videoCategory"
   ).value =
-  firstCategory || "";
+  categories[0] || "Other";
 
 
   document.getElementById(
     "videoFileId"
-  ).value =
-  "";
+  ).value = "";
 
 
   document.getElementById(
     "thumbnailFileId"
-  ).value =
-  "";
+  ).value = "";
 
 
-  document
-  .getElementById(
+  document.getElementById(
     "modal"
-  )
-  .classList.add("show");
+  ).classList.add("show");
 
 }
 
 
+/* =========================
+   EDIT MODAL
+========================= */
+
 function openEditModal(id){
+
+  renderCategorySelect();
+
 
   const video =
   videos.find(
@@ -2676,34 +2364,20 @@ function openEditModal(id){
   video.title || "";
 
 
-  updateCategorySelect();
-
-
-  /*
-    If old video has a category
-    that is no longer in the list,
-    temporarily add it so the
-    existing video is not broken.
-  */
-
-  const existingCategory =
-  video.category || "";
-
-
   if(
-    existingCategory &&
     !categories.includes(
-      existingCategory
-    )
+      video.category
+    ) &&
+    video.category
   ){
 
     categories.push(
-      existingCategory
+      video.category
     );
 
     saveCategories();
 
-    updateCategorySelect();
+    renderCategorySelect();
 
   }
 
@@ -2711,12 +2385,9 @@ function openEditModal(id){
   document.getElementById(
     "videoCategory"
   ).value =
-  existingCategory ||
-  categories.find(
-    category =>
-      category !== "All"
-  ) ||
-  "";
+  video.category ||
+  categories[0] ||
+  "Other";
 
 
   document.getElementById(
@@ -2731,22 +2402,22 @@ function openEditModal(id){
   video.thumbnail_file_id || "";
 
 
-  document
-  .getElementById(
+  document.getElementById(
     "modal"
-  )
-  .classList.add("show");
+  ).classList.add("show");
 
 }
 
 
+/* =========================
+   CLOSE VIDEO MODAL
+========================= */
+
 function closeModal(){
 
   document
-  .getElementById(
-    "modal"
-  )
-  .classList.remove("show");
+    .getElementById("modal")
+    .classList.remove("show");
 
 }
 
@@ -2756,292 +2427,252 @@ function closeModal(){
 ========================= */
 
 document
-.getElementById(
-  "videoForm"
-)
-.addEventListener(
-  "submit",
-  async event => {
+  .getElementById("videoForm")
+  .addEventListener(
+    "submit",
+    async event => {
 
-    event.preventDefault();
+      event.preventDefault();
 
 
-    if(!isAdmin()){
+      if(!isAdmin()){
 
-      showToast(
-        "Access denied"
-      );
-
-      return;
-
-    }
-
-
-    const editId =
-    document.getElementById(
-      "editId"
-    ).value;
-
-
-    const title =
-    document.getElementById(
-      "videoTitle"
-    ).value.trim();
-
-
-    const category =
-    document.getElementById(
-      "videoCategory"
-    ).value;
-
-
-    const fileId =
-    document.getElementById(
-      "videoFileId"
-    ).value.trim();
-
-
-    const thumbnailFileId =
-    document.getElementById(
-      "thumbnailFileId"
-    ).value.trim();
-
-
-    if(!title){
-
-      showToast(
-        "Video title is required"
-      );
-
-      return;
-
-    }
-
-
-    if(!category){
-
-      showToast(
-        "Please select a category"
-      );
-
-      return;
-
-    }
-
-
-    if(!fileId){
-
-      showToast(
-        "Telegram File ID is required"
-      );
-
-      return;
-
-    }
-
-
-    try{
-
-      showToast(
-        "Checking Telegram video..."
-      );
-
-
-      /*
-        VERIFY TELEGRAM FILE
-      */
-
-      const telegramResponse =
-      await fetch(
-        "/api/telegram-upload",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body:
-            JSON.stringify({
-
-              telegramUserId:
-                userId,
-
-              videoFileId:
-                fileId,
-
-              thumbnailFileId:
-                thumbnailFileId
-
-            })
-        }
-      );
-
-
-      const telegramData =
-      await telegramResponse.json();
-
-
-      if(
-        !telegramResponse.ok ||
-        !telegramData.success
-      ){
-
-        throw new Error(
-          telegramData.error ||
-          "Telegram file verification failed"
+        showToast(
+          "Access denied"
         );
+
+        return;
 
       }
 
 
-      /*
-        SUPABASE PAYLOAD
-      */
-
-      const payload = {
-
-        title:
-          title,
-
-        category:
-          category,
-
-        file_id:
-          fileId,
-
-        thumbnail_file_id:
-          thumbnailFileId
-
-      };
+      const editId =
+      document
+        .getElementById("editId")
+        .value;
 
 
-      let response;
+      const title =
+      document
+        .getElementById("videoTitle")
+        .value
+        .trim();
 
 
-      /*
-        EDIT VIDEO
-      */
+      const category =
+      document
+        .getElementById("videoCategory")
+        .value;
 
-      if(editId){
 
-        response =
-        await fetch(
-          `${SUPABASE_URL}/rest/v1/videos?id=eq.${encodeURIComponent(editId)}`,
-          {
-            method:"PATCH",
+      const fileId =
+      document
+        .getElementById("videoFileId")
+        .value
+        .trim();
 
-            headers:
-              headers({
 
-                "Content-Type":
-                  "application/json",
+      const thumbnailFileId =
+      document
+        .getElementById("thumbnailFileId")
+        .value
+        .trim();
 
-                "Prefer":
-                  "return=minimal"
 
-              }),
+      if(!title){
 
-            body:
-              JSON.stringify(
-                payload
-              )
-
-          }
+        showToast(
+          "Video title is required"
         );
+
+        return;
 
       }
 
 
-      /*
-        ADD VIDEO
-      */
+      if(!fileId){
 
-      else{
+        showToast(
+          "Telegram File ID is required"
+        );
 
-        response =
+        return;
+
+      }
+
+
+      try{
+
+        showToast(
+          "Checking Telegram video..."
+        );
+
+
+        const telegramResponse =
         await fetch(
-          `${SUPABASE_URL}/rest/v1/videos`,
+          "/api/telegram-upload",
           {
             method:"POST",
 
-            headers:
-              headers({
-
-                "Content-Type":
-                  "application/json",
-
-                "Prefer":
-                  "return=minimal"
-
-              }),
+            headers:{
+              "Content-Type":
+                "application/json"
+            },
 
             body:
               JSON.stringify({
 
-                ...payload,
+                telegramUserId:
+                  userId,
 
-                views:0,
+                videoFileId:
+                  fileId,
 
-                likes:0
+                thumbnailFileId:
+                  thumbnailFileId
 
               })
 
           }
         );
 
-      }
+
+        const telegramData =
+        await telegramResponse.json();
 
 
-      /*
-        SUPABASE ERROR
-      */
+        if(
+          !telegramResponse.ok ||
+          !telegramData.success
+        ){
 
-      if(!response.ok){
+          throw new Error(
+            telegramData.error ||
+            "Telegram file verification failed"
+          );
 
-        throw new Error(
-          await response.text()
+        }
+
+
+        const payload = {
+
+          title:title,
+
+          category:category,
+
+          file_id:fileId,
+
+          thumbnail_file_id:
+            thumbnailFileId
+
+        };
+
+
+        let response;
+
+
+        if(editId){
+
+          response =
+          await fetch(
+            `${SUPABASE_URL}/rest/v1/videos?id=eq.${editId}`,
+            {
+              method:"PATCH",
+
+              headers:headers({
+
+                "Content-Type":
+                  "application/json",
+
+                "Prefer":
+                  "return=minimal"
+
+              }),
+
+              body:
+                JSON.stringify(
+                  payload
+                )
+
+            }
+          );
+
+        }else{
+
+          response =
+          await fetch(
+            `${SUPABASE_URL}/rest/v1/videos`,
+            {
+              method:"POST",
+
+              headers:headers({
+
+                "Content-Type":
+                  "application/json",
+
+                "Prefer":
+                  "return=minimal"
+
+              }),
+
+              body:
+                JSON.stringify({
+
+                  ...payload,
+
+                  views:0,
+
+                  likes:0
+
+                })
+
+            }
+          );
+
+        }
+
+
+        if(!response.ok){
+
+          throw new Error(
+            await response.text()
+          );
+
+        }
+
+
+        closeModal();
+
+
+        showToast(
+          editId
+          ? "Video updated successfully"
+          : "Video added successfully"
+        );
+
+
+        await loadVideos();
+
+        renderAdmin();
+
+
+      }catch(error){
+
+        console.error(
+          "SAVE VIDEO ERROR:",
+          error
+        );
+
+
+        showToast(
+          error.message ||
+          "Failed to save video"
         );
 
       }
 
-
-      closeModal();
-
-
-      showToast(
-        editId
-        ?
-        "Video updated successfully"
-        :
-        "Video added successfully"
-      );
-
-
-      await loadVideos();
-
-
-      renderAdmin();
-
-
-    }catch(error){
-
-      console.error(
-        "SAVE VIDEO ERROR:",
-        error
-      );
-
-
-      showToast(
-        error.message ||
-        "Failed to save video"
-      );
-
     }
-
-  }
-);
+  );
 
 
 /* =========================
@@ -3080,17 +2711,16 @@ async function deleteVideo(id){
 
     const response =
     await fetch(
-      `${SUPABASE_URL}/rest/v1/videos?id=eq.${encodeURIComponent(id)}`,
+      `${SUPABASE_URL}/rest/v1/videos?id=eq.${id}`,
       {
         method:"DELETE",
 
         headers:
           headers({
-
             "Prefer":
               "return=minimal"
-
           })
+
       }
     );
 
@@ -3110,7 +2740,6 @@ async function deleteVideo(id){
 
 
     await loadVideos();
-
 
     renderAdmin();
 
@@ -3136,16 +2765,14 @@ async function deleteVideo(id){
    REFRESH
 ========================= */
 
-async function refreshAdmin(){
-
-  closeSideMenu();
-
-  showToast(
-    "Refreshing..."
-  );
-
+async function loadAndRefresh(){
 
   try{
+
+    showToast(
+      "Refreshing..."
+    );
+
 
     await loadVideos();
 
@@ -3153,16 +2780,14 @@ async function refreshAdmin(){
 
     renderAdmin();
 
+
     showToast(
       "Dashboard refreshed"
     );
 
   }catch(error){
 
-    console.error(
-      "REFRESH ERROR:",
-      error
-    );
+    console.error(error);
 
     showToast(
       "Refresh failed"
@@ -3211,126 +2836,20 @@ function showToast(message){
       );
 
     },
-    2800
+    2500
   );
 
 }
 
 
 /* =========================
-   CLOSE MODALS BY BACKDROP
-========================= */
-
-document
-.getElementById("modal")
-.addEventListener(
-  "click",
-  event => {
-
-    if(
-      event.target ===
-      document.getElementById(
-        "modal"
-      )
-    ){
-
-      closeModal();
-
-    }
-
-  }
-);
-
-
-document
-.getElementById("categoryModal")
-.addEventListener(
-  "click",
-  event => {
-
-    if(
-      event.target ===
-      document.getElementById(
-        "categoryModal"
-      )
-    ){
-
-      closeCategoryManager();
-
-    }
-
-  }
-);
-
-
-/* =========================
-   ENTER KEY FOR CATEGORY
-========================= */
-
-document
-.getElementById(
-  "newCategoryInput"
-)
-.addEventListener(
-  "keydown",
-  event => {
-
-    if(
-      event.key ===
-      "Enter"
-    ){
-
-      event.preventDefault();
-
-      addCategory();
-
-    }
-
-  }
-);
-
-
-/* =========================
-   ESCAPE KEY
-========================= */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if(
-      event.key ===
-      "Escape"
-    ){
-
-      closeModal();
-
-      closeCategoryManager();
-
-      closeSideMenu();
-
-    }
-
-  }
-);
-
-
-/* =========================
-   START APP
+   START
 ========================= */
 
 async function startApp(){
 
-  /*
-    Load categories first.
-  */
-
   loadCategories();
 
-
-  /*
-    Security check.
-  */
 
   if(!isAdmin()){
 
@@ -3363,6 +2882,18 @@ async function startApp(){
 
       <div class="container">
 
+        <div class="topbar">
+
+          <button
+            class="back-btn"
+            onclick="goBack()"
+          >
+            ← Back
+          </button>
+
+        </div>
+
+
         <div class="access-denied">
 
           <div class="access-box">
@@ -3380,15 +2911,6 @@ async function startApp(){
               database. Check your
               Supabase RLS policies.
             </p>
-
-            <br>
-
-            <button
-              class="btn btn-primary"
-              onclick="startApp()"
-            >
-              🔄 Try Again
-            </button>
 
           </div>
 

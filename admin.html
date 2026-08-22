@@ -49,7 +49,9 @@ button{
   padding:18px 14px 50px;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 .header{
   display:flex;
@@ -85,6 +87,12 @@ button{
   margin-top:3px;
 }
 
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
 .admin-badge{
   padding:7px 10px;
   border-radius:20px;
@@ -95,7 +103,115 @@ button{
   font-weight:800;
 }
 
-/* ACCESS */
+.menu-button{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:23px;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.menu-button:hover{
+  background:rgba(255,49,88,.15);
+  border-color:rgba(255,49,88,.3);
+}
+
+/* =========================
+   SIDE MENU
+========================= */
+
+.menu-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+  z-index:9990;
+  display:none;
+}
+
+.menu-overlay.show{
+  display:block;
+}
+
+.side-menu{
+  position:fixed;
+  top:0;
+  right:-340px;
+  width:min(320px,88vw);
+  height:100vh;
+  background:#11131a;
+  border-left:1px solid var(--border);
+  z-index:9995;
+  padding:20px;
+  transition:right .25s ease;
+  box-shadow:-20px 0 60px rgba(0,0,0,.45);
+  overflow-y:auto;
+}
+
+.side-menu.show{
+  right:0;
+}
+
+.side-menu-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:22px;
+}
+
+.side-menu-head h2{
+  font-size:18px;
+}
+
+.side-menu-close{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:20px;
+}
+
+.menu-item{
+  width:100%;
+  min-height:48px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:rgba(255,255,255,.045);
+  color:#fff;
+  padding:0 14px;
+  margin-bottom:9px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  text-align:left;
+  font-weight:700;
+}
+
+.menu-item:hover{
+  background:rgba(255,49,88,.12);
+  border-color:rgba(255,49,88,.25);
+}
+
+.menu-section-title{
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  margin:20px 2px 10px;
+}
+
+/* =========================
+   ACCESS
+========================= */
 
 .access-denied{
   min-height:70vh;
@@ -129,7 +245,9 @@ button{
   line-height:1.5;
 }
 
-/* STATS */
+/* =========================
+   STATS
+========================= */
 
 .stats-grid{
   display:grid;
@@ -161,7 +279,9 @@ button{
   font-size:11px;
 }
 
-/* PANELS */
+/* =========================
+   PANELS
+========================= */
 
 .panel{
   background:var(--card);
@@ -188,11 +308,13 @@ button{
   font-size:11px;
 }
 
-/* CONTROLS */
+/* =========================
+   CONTROLS
+========================= */
 
 .controls{
   display:grid;
-  grid-template-columns:1fr 170px auto;
+  grid-template-columns:1fr 190px auto;
   gap:9px;
   margin-bottom:15px;
 }
@@ -207,6 +329,11 @@ button{
   background:rgba(255,255,255,.045);
   color:#fff;
   padding:0 13px;
+}
+
+.input:focus,
+.select:focus{
+  border-color:rgba(255,49,88,.6);
 }
 
 .select option{
@@ -226,6 +353,10 @@ button{
   background:var(--pink);
 }
 
+.btn-primary:hover{
+  background:#ff1748;
+}
+
 .btn-secondary{
   background:rgba(255,255,255,.07);
   border:1px solid var(--border);
@@ -237,7 +368,15 @@ button{
   border:1px solid rgba(255,77,104,.2);
 }
 
-/* TRENDING */
+.btn-success{
+  background:rgba(53,213,138,.12);
+  color:#5be5a1;
+  border:1px solid rgba(53,213,138,.2);
+}
+
+/* =========================
+   TRENDING
+========================= */
 
 .trending-list{
   display:flex;
@@ -285,7 +424,9 @@ button{
   font-weight:750;
 }
 
-/* VIDEO TABLE */
+/* =========================
+   VIDEO TABLE
+========================= */
 
 .video-list{
   display:flex;
@@ -346,6 +487,7 @@ button{
   color:var(--muted);
   font-size:10px;
   margin-top:7px;
+  flex-wrap:wrap;
 }
 
 .video-actions{
@@ -369,7 +511,75 @@ button{
 }
 
 /* =========================
-   PREMIUM MODAL
+   CATEGORY PANEL
+========================= */
+
+.category-add{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:9px;
+  margin-bottom:14px;
+}
+
+.category-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.category-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-height:48px;
+  padding:8px 10px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.035);
+  border-radius:13px;
+}
+
+.category-left{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.category-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--pink);
+  flex:none;
+}
+
+.category-name{
+  font-size:12px;
+  font-weight:700;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.category-default{
+  color:var(--muted);
+  font-size:9px;
+  margin-left:5px;
+}
+
+.category-delete{
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  border:1px solid rgba(255,77,104,.2);
+  background:rgba(255,77,104,.08);
+  color:#ff6b80;
+  flex:none;
+}
+
+/* =========================
+   MODAL
 ========================= */
 
 .modal{
@@ -391,12 +601,8 @@ button{
 }
 
 @keyframes modalFade{
-  from{
-    opacity:0;
-  }
-  to{
-    opacity:1;
-  }
+  from{opacity:0}
+  to{opacity:1}
 }
 
 .modal-box{
@@ -404,17 +610,11 @@ button{
   max-width:520px;
   max-height:90vh;
   overflow-y:auto;
-  background:
-    linear-gradient(
-      145deg,
-      #181a23,
-      #0f1016
-    );
+  background:linear-gradient(145deg,#181a23,#0f1016);
   border:1px solid rgba(255,255,255,.1);
   border-radius:24px;
   padding:22px;
-  box-shadow:
-    0 25px 80px rgba(0,0,0,.65);
+  box-shadow:0 25px 80px rgba(0,0,0,.65);
   animation:modalSlide .25s ease;
 }
 
@@ -440,7 +640,6 @@ button{
 .modal-head h2{
   font-size:19px;
   font-weight:800;
-  letter-spacing:.2px;
 }
 
 .close{
@@ -453,13 +652,11 @@ button{
   color:#fff;
   font-size:22px;
   line-height:1;
-  transition:.2s;
 }
 
 .close:hover{
   background:rgba(255,49,88,.18);
   border-color:rgba(255,49,88,.35);
-  transform:rotate(90deg);
 }
 
 .form-group{
@@ -484,7 +681,6 @@ button{
   color:#fff;
   padding:0 13px;
   outline:none;
-  transition:.2s;
 }
 
 .form-group input::placeholder{
@@ -494,9 +690,7 @@ button{
 .form-group input:focus,
 .form-group select:focus{
   border-color:rgba(255,49,88,.65);
-  background:rgba(255,255,255,.06);
-  box-shadow:
-    0 0 0 3px rgba(255,49,88,.08);
+  box-shadow:0 0 0 3px rgba(255,49,88,.08);
 }
 
 .form-group select option{
@@ -513,45 +707,11 @@ button{
 
 .form-actions .btn{
   min-height:46px;
-  border-radius:13px;
 }
 
-/* MOBILE MODAL */
-
-@media(max-width:520px){
-
-  .modal{
-    align-items:flex-end;
-    padding:0;
-  }
-
-  .modal-box{
-    max-width:none;
-    max-height:92vh;
-    border-radius:24px 24px 0 0;
-    padding:20px 16px 25px;
-  }
-
-  .modal-head{
-    margin-bottom:18px;
-  }
-
-  .modal-head h2{
-    font-size:18px;
-  }
-
-  .form-group input,
-  .form-group select{
-    height:48px;
-  }
-
-  .form-actions{
-    grid-template-columns:1fr 1fr;
-  }
-
-}
-
-/* EMPTY */
+/* =========================
+   EMPTY
+========================= */
 
 .empty{
   padding:35px 10px;
@@ -560,7 +720,9 @@ button{
   font-size:12px;
 }
 
-/* TOAST */
+/* =========================
+   TOAST
+========================= */
 
 .toast{
   position:fixed;
@@ -577,6 +739,8 @@ button{
   pointer-events:none;
   transition:.2s;
   z-index:20000;
+  max-width:90%;
+  text-align:center;
 }
 
 .toast.show{
@@ -584,7 +748,9 @@ button{
   transform:translateX(-50%) translateY(0);
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:720px){
 
@@ -617,6 +783,30 @@ button{
   .video-actions button{
     flex:1;
   }
+
+  .admin-badge{
+    display:none;
+  }
+}
+
+@media(max-width:520px){
+
+  .modal{
+    align-items:flex-end;
+    padding:0;
+  }
+
+  .modal-box{
+    max-width:none;
+    max-height:92vh;
+    border-radius:24px 24px 0 0;
+    padding:20px 16px 25px;
+  }
+
+  .category-add{
+    grid-template-columns:1fr;
+  }
+
 }
 
 @media(max-width:380px){
@@ -633,6 +823,11 @@ button{
   .stat-card strong{
     font-size:20px;
   }
+
+  .brand h1{
+    font-size:17px;
+  }
+
 }
 </style>
 </head>
@@ -641,17 +836,114 @@ button{
 
 <div id="app"></div>
 
-<div id="modal" class="modal">
+<!-- =========================
+     MENU OVERLAY
+========================= -->
+
+<div
+  id="menuOverlay"
+  class="menu-overlay"
+  onclick="closeSideMenu()"
+></div>
+
+
+<!-- =========================
+     SIDE MENU
+========================= -->
+
+<aside
+  id="sideMenu"
+  class="side-menu"
+>
+
+  <div class="side-menu-head">
+
+    <h2>Admin Menu</h2>
+
+    <button
+      class="side-menu-close"
+      onclick="closeSideMenu()"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div class="menu-section-title">
+    Management
+  </div>
+
+
+  <button
+    class="menu-item"
+    onclick="openCategoryManager()"
+  >
+    📁
+    <span>Category Management</span>
+  </button>
+
+
+  <button
+    class="menu-item"
+    onclick="openAddModal();closeSideMenu()"
+  >
+    🎬
+    <span>Add New Video</span>
+  </button>
+
+
+  <button
+    class="menu-item"
+    onclick="scrollToVideos()"
+  >
+    📋
+    <span>Video Management</span>
+  </button>
+
+
+  <div class="menu-section-title">
+    Quick Actions
+  </div>
+
+
+  <button
+    class="menu-item"
+    onclick="refreshAdmin()"
+  >
+    🔄
+    <span>Refresh Dashboard</span>
+  </button>
+
+</aside>
+
+
+<!-- =========================
+     VIDEO MODAL
+========================= -->
+
+<div
+  id="modal"
+  class="modal"
+>
+
   <div class="modal-box">
 
     <div class="modal-head">
-      <h2 id="modalTitle">Add Video</h2>
+
+      <h2 id="modalTitle">
+        Add Video
+      </h2>
 
       <button
         class="close"
         onclick="closeModal()"
-      >×</button>
+      >
+        ×
+      </button>
+
     </div>
+
 
     <form id="videoForm">
 
@@ -660,45 +952,64 @@ button{
         id="editId"
       >
 
+
       <div class="form-group">
-        <label>Video Title</label>
+
+        <label>
+          Video Title
+        </label>
+
         <input
           id="videoTitle"
           required
           placeholder="Enter video title"
         >
+
       </div>
 
-      <div class="form-group">
-        <label>Category</label>
 
-        <select id="videoCategory">
-          <option value="Instagram">Instagram</option>
-          <option value="TikTok">TikTok</option>
-          <option value="Viral">Viral</option>
-          <option value="Deshi">Deshi</option>
-          <option value="Other">Other</option>
-        </select>
+      <div class="form-group">
+
+        <label>
+          Category
+        </label>
+
+        <select
+          id="videoCategory"
+          required
+        ></select>
+
       </div>
 
+
       <div class="form-group">
-        <label>Telegram File ID</label>
+
+        <label>
+          Telegram File ID
+        </label>
 
         <input
           id="videoFileId"
           required
           placeholder="BAACAg..."
         >
+
       </div>
 
+
       <div class="form-group">
-        <label>Thumbnail File ID</label>
+
+        <label>
+          Thumbnail File ID
+        </label>
 
         <input
           id="thumbnailFileId"
           placeholder="BAACAg..."
         >
+
       </div>
+
 
       <div class="form-actions">
 
@@ -709,6 +1020,7 @@ button{
         >
           Cancel
         </button>
+
 
         <button
           type="submit"
@@ -722,11 +1034,78 @@ button{
     </form>
 
   </div>
+
 </div>
 
-<div id="toast" class="toast"></div>
+
+<!-- =========================
+     CATEGORY MODAL
+========================= -->
+
+<div
+  id="categoryModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2>
+        📁 Categories
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeCategoryManager()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="category-add">
+
+      <input
+        id="newCategoryInput"
+        class="input"
+        placeholder="Enter category name"
+        maxlength="40"
+      >
+
+
+      <button
+        class="btn btn-primary"
+        onclick="addCategory()"
+      >
+        + Add
+      </button>
+
+    </div>
+
+
+    <div
+      id="categoryList"
+      class="category-list"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<div
+  id="toast"
+  class="toast"
+></div>
+
 
 <script>
+
+/* =========================
+   CONFIG
+========================= */
 
 const SUPABASE_URL =
 "https://icievlmrfbanhoaqvtwz.supabase.co";
@@ -737,22 +1116,561 @@ const SUPABASE_KEY =
 const ADMIN_ID =
 "1395435702";
 
+
+/* =========================
+   TELEGRAM
+========================= */
+
 const tg =
 window.Telegram?.WebApp;
 
 if(tg){
+
   tg.ready();
+
   tg.expand();
+
 }
+
 
 const telegramUser =
 tg?.initDataUnsafe?.user || null;
 
+
 const userId =
-String(telegramUser?.id || "");
+String(
+  telegramUser?.id || ""
+);
+
+
+/* =========================
+   DATA
+========================= */
 
 let videos = [];
+
 let savedCount = 0;
+
+
+/*
+  Default categories.
+  এগুলো delete করা যাবে না।
+*/
+
+const DEFAULT_CATEGORIES = [
+  "All",
+  "Bangladesh",
+  "India",
+  "Pakistan",
+  "Saudi Arabia",
+  "Brazil"
+];
+
+
+let categories = [];
+
+
+/* =========================
+   CATEGORY STORAGE
+========================= */
+
+function loadCategories(){
+
+  try{
+
+    const stored =
+    localStorage.getItem(
+      "desiHubTV_categories"
+    );
+
+
+    if(stored){
+
+      const parsed =
+      JSON.parse(stored);
+
+
+      if(
+        Array.isArray(parsed) &&
+        parsed.length
+      ){
+
+        categories =
+        parsed;
+
+      }
+
+    }
+
+  }catch(error){
+
+    console.error(
+      "CATEGORY STORAGE ERROR:",
+      error
+    );
+
+  }
+
+
+  /*
+    Make sure default categories
+    always exist.
+  */
+
+  DEFAULT_CATEGORIES
+  .forEach(defaultCategory => {
+
+    const exists =
+    categories.some(
+      category =>
+        category.toLowerCase() ===
+        defaultCategory.toLowerCase()
+    );
+
+
+    if(!exists){
+
+      categories.push(
+        defaultCategory
+      );
+
+    }
+
+  });
+
+
+  /*
+    Remove duplicate categories.
+  */
+
+  const unique = [];
+
+  categories.forEach(category => {
+
+    const name =
+    String(category).trim();
+
+    if(!name)
+      return;
+
+
+    const exists =
+    unique.some(
+      item =>
+        item.toLowerCase() ===
+        name.toLowerCase()
+    );
+
+
+    if(!exists){
+
+      unique.push(name);
+
+    }
+
+  });
+
+
+  /*
+    Always keep All first.
+  */
+
+  const withoutAll =
+  unique.filter(
+    category =>
+      category.toLowerCase() !== "all"
+  );
+
+
+  categories = [
+    "All",
+    ...withoutAll
+  ];
+
+
+  saveCategories();
+
+}
+
+
+function saveCategories(){
+
+  localStorage.setItem(
+    "desiHubTV_categories",
+    JSON.stringify(categories)
+  );
+
+}
+
+
+/* =========================
+   CATEGORY UI
+========================= */
+
+function renderCategoryList(){
+
+  const list =
+  document.getElementById(
+    "categoryList"
+  );
+
+
+  if(!list)
+    return;
+
+
+  list.innerHTML =
+  categories.map(
+    (category,index) => {
+
+      const isDefault =
+      DEFAULT_CATEGORIES.some(
+        item =>
+          item.toLowerCase() ===
+          category.toLowerCase()
+      );
+
+
+      return `
+
+        <div class="category-item">
+
+          <div class="category-left">
+
+            <span class="category-dot"></span>
+
+            <span class="category-name">
+
+              ${escapeHtml(category)}
+
+              ${
+                isDefault
+                ?
+                `<span class="category-default">
+                  DEFAULT
+                </span>`
+                :
+                ""
+              }
+
+            </span>
+
+          </div>
+
+
+          ${
+            category === "All" ||
+            isDefault
+            ?
+            ""
+            :
+            `
+              <button
+                class="category-delete"
+                onclick="deleteCategory(${index})"
+                title="Delete category"
+              >
+                🗑
+              </button>
+            `
+          }
+
+        </div>
+
+      `;
+
+    }
+  ).join("");
+
+
+  updateCategorySelect();
+
+  updateCategoryFilter();
+
+}
+
+
+function openCategoryManager(){
+
+  closeSideMenu();
+
+  renderCategoryList();
+
+  document
+  .getElementById("categoryModal")
+  .classList.add("show");
+
+
+  setTimeout(
+    () => {
+
+      document
+      .getElementById(
+        "newCategoryInput"
+      )
+      ?.focus();
+
+    },
+    150
+  );
+
+}
+
+
+function closeCategoryManager(){
+
+  document
+  .getElementById("categoryModal")
+  .classList.remove("show");
+
+}
+
+
+function addCategory(){
+
+  if(!isAdmin())
+    return;
+
+
+  const input =
+  document.getElementById(
+    "newCategoryInput"
+  );
+
+
+  const name =
+  input.value.trim();
+
+
+  if(!name){
+
+    showToast(
+      "Enter a category name"
+    );
+
+    return;
+  }
+
+
+  if(name.length > 40){
+
+    showToast(
+      "Category name is too long"
+    );
+
+    return;
+  }
+
+
+  const exists =
+  categories.some(
+    category =>
+      category.toLowerCase() ===
+      name.toLowerCase()
+  );
+
+
+  if(exists){
+
+    showToast(
+      "This category already exists"
+    );
+
+    return;
+  }
+
+
+  categories.push(name);
+
+  saveCategories();
+
+  input.value = "";
+
+
+  renderCategoryList();
+
+  renderVideoList();
+
+
+  showToast(
+    `"${name}" category added`
+  );
+
+}
+
+
+function deleteCategory(index){
+
+  if(!isAdmin())
+    return;
+
+
+  const category =
+  categories[index];
+
+
+  if(!category)
+    return;
+
+
+  const isDefault =
+  DEFAULT_CATEGORIES.some(
+    item =>
+      item.toLowerCase() ===
+      category.toLowerCase()
+  );
+
+
+  if(isDefault){
+
+    showToast(
+      "Default categories cannot be deleted"
+    );
+
+    return;
+  }
+
+
+  const confirmed =
+  confirm(
+    `Delete "${category}" category?`
+  );
+
+
+  if(!confirmed)
+    return;
+
+
+  categories.splice(
+    index,
+    1
+  );
+
+
+  saveCategories();
+
+  renderCategoryList();
+
+  renderVideoList();
+
+
+  showToast(
+    "Category deleted"
+  );
+
+}
+
+
+/* =========================
+   UPDATE VIDEO CATEGORY
+========================= */
+
+function updateCategorySelect(){
+
+  const select =
+  document.getElementById(
+    "videoCategory"
+  );
+
+
+  if(!select)
+    return;
+
+
+  const current =
+  select.value;
+
+
+  select.innerHTML =
+  categories
+  .filter(
+    category =>
+      category !== "All"
+  )
+  .map(
+    category => `
+
+      <option value="${escapeHtml(category)}">
+        ${escapeHtml(category)}
+      </option>
+
+    `
+  ).join("");
+
+
+  if(
+    current &&
+    categories.includes(current) &&
+    current !== "All"
+  ){
+
+    select.value =
+    current;
+
+  }
+
+}
+
+
+function updateCategoryFilter(){
+
+  const filter =
+  document.getElementById(
+    "filterCategory"
+  );
+
+
+  if(!filter)
+    return;
+
+
+  const current =
+  filter.value || "All";
+
+
+  filter.innerHTML = `
+
+    <option value="All">
+      All Categories
+    </option>
+
+    ${
+      categories
+      .filter(
+        category =>
+          category !== "All"
+      )
+      .map(
+        category => `
+
+          <option
+            value="${escapeHtml(category)}"
+          >
+            ${escapeHtml(category)}
+          </option>
+
+        `
+      ).join("")
+    }
+
+  `;
+
+
+  if(
+    categories.includes(current)
+  ){
+
+    filter.value =
+    current;
+
+  }else{
+
+    filter.value =
+    "All";
+
+  }
+
+}
 
 
 /* =========================
@@ -762,6 +1680,7 @@ let savedCount = 0;
 function isAdmin(){
 
   return userId === ADMIN_ID;
+
 }
 
 
@@ -772,10 +1691,15 @@ function isAdmin(){
 function headers(extra = {}){
 
   return {
-    "apikey":SUPABASE_KEY,
-    "Authorization":`Bearer ${SUPABASE_KEY}`,
+    "apikey":
+      SUPABASE_KEY,
+
+    "Authorization":
+      `Bearer ${SUPABASE_KEY}`,
+
     ...extra
   };
+
 }
 
 
@@ -789,9 +1713,11 @@ async function loadVideos(){
   await fetch(
     `${SUPABASE_URL}/rest/v1/videos?select=*&order=created_at.desc`,
     {
-      headers:headers()
+      headers:
+        headers()
     }
   );
+
 
   if(!response.ok){
 
@@ -801,8 +1727,10 @@ async function loadVideos(){
 
   }
 
+
   videos =
   await response.json();
+
 }
 
 
@@ -825,10 +1753,12 @@ async function loadSavedCount(){
       }
     );
 
+
     const range =
     response.headers.get(
       "content-range"
     );
+
 
     if(range){
 
@@ -836,7 +1766,9 @@ async function loadSavedCount(){
       range.split("/")[1];
 
       savedCount =
-      Number(total || 0);
+      Number(
+        total || 0
+      );
 
     }else{
 
@@ -855,27 +1787,40 @@ async function loadSavedCount(){
       error
     );
 
-    savedCount = 0;
+    savedCount =
+    0;
+
   }
+
 }
 
 
 /* =========================
-   FORMAT
+   FORMAT NUMBER
 ========================= */
 
 function formatNumber(value){
 
   const number =
-  Number(value || 0);
+  Number(
+    value || 0
+  );
+
 
   if(number >= 1000000)
-    return (number / 1000000).toFixed(1)+"M";
+    return (
+      number / 1000000
+    ).toFixed(1) + "M";
+
 
   if(number >= 1000)
-    return (number / 1000).toFixed(1)+"K";
+    return (
+      number / 1000
+    ).toFixed(1) + "K";
+
 
   return String(number);
+
 }
 
 
@@ -885,12 +1830,30 @@ function formatNumber(value){
 
 function escapeHtml(value){
 
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  return String(
+    value ?? ""
+  )
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
+
 }
 
 
@@ -903,9 +1866,11 @@ function thumbnailUrl(fileId){
   if(!fileId)
     return "";
 
+
   return `/api/thumbnail?file_id=${
     encodeURIComponent(fileId)
   }`;
+
 }
 
 
@@ -919,18 +1884,20 @@ function trendingScore(video){
     Number(video.views || 0) +
     Number(video.likes || 0) * 5
   );
+
 }
 
 
 function getTopTrending(){
 
   return [...videos]
-    .sort(
-      (a,b) =>
-        trendingScore(b) -
-        trendingScore(a)
-    )
-    .slice(0,5);
+  .sort(
+    (a,b) =>
+      trendingScore(b) -
+      trendingScore(a)
+  )
+  .slice(0,5);
+
 }
 
 
@@ -943,19 +1910,24 @@ function renderDashboard(){
   const totalVideos =
   videos.length;
 
+
   const totalViews =
   videos.reduce(
     (sum,v) =>
-      sum + Number(v.views || 0),
+      sum +
+      Number(v.views || 0),
     0
   );
+
 
   const totalLikes =
   videos.reduce(
     (sum,v) =>
-      sum + Number(v.likes || 0),
+      sum +
+      Number(v.likes || 0),
     0
   );
+
 
   const trending =
   getTopTrending();
@@ -966,46 +1938,78 @@ function renderDashboard(){
     <div class="stats-grid">
 
       <div class="stat-card">
-        <div class="stat-icon">🎬</div>
+
+        <div class="stat-icon">
+          🎬
+        </div>
 
         <strong>
-          ${formatNumber(totalVideos)}
+          ${formatNumber(
+            totalVideos
+          )}
         </strong>
 
-        <span>Total Videos</span>
+        <span>
+          Total Videos
+        </span>
+
       </div>
 
 
       <div class="stat-card">
-        <div class="stat-icon">👁</div>
+
+        <div class="stat-icon">
+          👁
+        </div>
 
         <strong>
-          ${formatNumber(totalViews)}
+          ${formatNumber(
+            totalViews
+          )}
         </strong>
 
-        <span>Total Views</span>
+        <span>
+          Total Views
+        </span>
+
       </div>
 
 
       <div class="stat-card">
-        <div class="stat-icon">❤️</div>
+
+        <div class="stat-icon">
+          ❤️
+        </div>
 
         <strong>
-          ${formatNumber(totalLikes)}
+          ${formatNumber(
+            totalLikes
+          )}
         </strong>
 
-        <span>Total Likes</span>
+        <span>
+          Total Likes
+        </span>
+
       </div>
 
 
       <div class="stat-card">
-        <div class="stat-icon">🔖</div>
+
+        <div class="stat-icon">
+          🔖
+        </div>
 
         <strong>
-          ${formatNumber(savedCount)}
+          ${formatNumber(
+            savedCount
+          )}
         </strong>
 
-        <span>Total Saved</span>
+        <span>
+          Total Saved
+        </span>
+
       </div>
 
     </div>
@@ -1030,42 +2034,53 @@ function renderDashboard(){
 
         ${
           trending.length
-          ? trending.map(
-              (video,index) => `
+          ?
+          trending.map(
+            (video,index) => `
 
-                <div class="trending-item">
+              <div class="trending-item">
 
-                  <div class="rank">
-                    #${index + 1}
+                <div class="rank">
+                  #${index + 1}
+                </div>
+
+
+                <div>
+
+                  <div class="trending-title">
+                    ${escapeHtml(
+                      video.title ||
+                      "Untitled Video"
+                    )}
                   </div>
 
-                  <div>
+                  <div class="trending-meta">
+                    👁 ${formatNumber(
+                      video.views
+                    )}
 
-                    <div class="trending-title">
-                      ${escapeHtml(
-                        video.title ||
-                        "Untitled Video"
-                      )}
-                    </div>
+                    &nbsp;
 
-                    <div class="trending-meta">
-                      👁 ${formatNumber(video.views)}
-                      &nbsp; ❤️ ${formatNumber(video.likes)}
-                    </div>
-
-                  </div>
-
-                  <div class="trending-score">
-                    ${formatNumber(
-                      trendingScore(video)
+                    ❤️ ${formatNumber(
+                      video.likes
                     )}
                   </div>
 
                 </div>
 
-              `
-            ).join("")
-          : `
+
+                <div class="trending-score">
+                  ${formatNumber(
+                    trendingScore(video)
+                  )}
+                </div>
+
+              </div>
+
+            `
+          ).join("")
+          :
+          `
             <div class="empty">
               No videos available.
             </div>
@@ -1077,6 +2092,7 @@ function renderDashboard(){
     </div>
 
   `;
+
 }
 
 
@@ -1088,7 +2104,10 @@ function renderVideoManagement(){
 
   return `
 
-    <div class="panel">
+    <div
+      class="panel"
+      id="videoManagement"
+    >
 
       <div class="panel-head">
 
@@ -1115,33 +2134,7 @@ function renderVideoManagement(){
         <select
           id="filterCategory"
           class="select"
-        >
-
-          <option value="All">
-            All Categories
-          </option>
-
-          <option value="Instagram">
-            Instagram
-          </option>
-
-          <option value="TikTok">
-            TikTok
-          </option>
-
-          <option value="Viral">
-            Viral
-          </option>
-
-          <option value="Deshi">
-            Deshi
-          </option>
-
-          <option value="Other">
-            Other
-          </option>
-
-        </select>
+        ></select>
 
 
         <button
@@ -1162,6 +2155,7 @@ function renderVideoManagement(){
     </div>
 
   `;
+
 }
 
 
@@ -1176,6 +2170,7 @@ function renderVideoList(){
     "videoList"
   );
 
+
   if(!container)
     return;
 
@@ -1184,7 +2179,8 @@ function renderVideoList(){
   (
     document.getElementById(
       "searchVideos"
-    )?.value || ""
+    )?.value ||
+    ""
   )
   .toLowerCase()
   .trim();
@@ -1193,142 +2189,182 @@ function renderVideoList(){
   const category =
   document.getElementById(
     "filterCategory"
-  )?.value || "All";
+  )?.value ||
+  "All";
 
 
   const filtered =
-  videos.filter(video => {
+  videos.filter(
+    video => {
 
-    const title =
-    String(
-      video.title || ""
-    ).toLowerCase();
+      const title =
+      String(
+        video.title || ""
+      )
+      .toLowerCase();
 
-    const matchesSearch =
-    !search ||
-    title.includes(search);
 
-    const matchesCategory =
-    category === "All" ||
-    video.category === category;
+      const videoCategory =
+      String(
+        video.category || ""
+      );
 
-    return (
-      matchesSearch &&
-      matchesCategory
-    );
 
-  });
+      const matchesSearch =
+      !search ||
+      title.includes(search);
+
+
+      const matchesCategory =
+      category === "All" ||
+      videoCategory === category;
+
+
+      return (
+        matchesSearch &&
+        matchesCategory
+      );
+
+    }
+  );
 
 
   if(!filtered.length){
 
     container.innerHTML = `
+
       <div class="empty">
-        🎬<br><br>
+
+        🎬
+
+        <br><br>
+
         No videos found.
+
       </div>
+
     `;
 
     return;
+
   }
 
 
   container.innerHTML =
-  filtered.map(video => {
+  filtered.map(
+    video => {
 
-    const thumb =
-    thumbnailUrl(
-      video.thumbnail_file_id
-    );
-
-
-    return `
-
-      <div class="video-row">
-
-        <div class="video-thumb">
-
-          ${
-            thumb
-            ? `
-              <img
-                src="${escapeHtml(thumb)}"
-                loading="lazy"
-                alt=""
-              >
-            `
-            : `
-              <div class="video-thumb-placeholder">
-                🎬
-              </div>
-            `
-          }
-
-        </div>
+      const thumb =
+      thumbnailUrl(
+        video.thumbnail_file_id
+      );
 
 
-        <div>
+      return `
 
-          <div class="video-title">
-            ${escapeHtml(
-              video.title ||
-              "Untitled Video"
-            )}
+        <div class="video-row">
+
+          <div class="video-thumb">
+
+            ${
+              thumb
+              ?
+              `
+                <img
+                  src="${escapeHtml(thumb)}"
+                  loading="lazy"
+                  alt=""
+                  onerror="this.style.display='none'"
+                >
+              `
+              :
+              `
+                <div
+                  class="video-thumb-placeholder"
+                >
+                  🎬
+                </div>
+              `
+            }
+
           </div>
 
-          <div class="video-category">
-            ${escapeHtml(
-              video.category ||
-              "Other"
-            )}
-          </div>
 
-          <div class="video-stats">
+          <div>
 
-            <span>
-              👁 ${formatNumber(
-                video.views
+            <div class="video-title">
+
+              ${escapeHtml(
+                video.title ||
+                "Untitled Video"
               )}
-            </span>
 
-            <span>
-              ❤️ ${formatNumber(
-                video.likes
+            </div>
+
+
+            <div class="video-category">
+
+              ${escapeHtml(
+                video.category ||
+                "Other"
               )}
-            </span>
 
-            <span>
-              ID: ${video.id}
-            </span>
+            </div>
+
+
+            <div class="video-stats">
+
+              <span>
+                👁 ${formatNumber(
+                  video.views
+                )}
+              </span>
+
+
+              <span>
+                ❤️ ${formatNumber(
+                  video.likes
+                )}
+              </span>
+
+
+              <span>
+                ID: ${escapeHtml(
+                  video.id
+                )}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="video-actions">
+
+            <button
+              class="small-btn"
+              onclick="openEditModal(${video.id})"
+            >
+              ✏️ Edit
+            </button>
+
+
+            <button
+              class="small-btn delete"
+              onclick="deleteVideo(${video.id})"
+            >
+              🗑 Delete
+            </button>
 
           </div>
 
         </div>
 
+      `;
 
-        <div class="video-actions">
+    }
+  ).join("");
 
-          <button
-            class="small-btn"
-            onclick="openEditModal(${video.id})"
-          >
-            ✏️ Edit
-          </button>
-
-          <button
-            class="small-btn delete"
-            onclick="deleteVideo(${video.id})"
-          >
-            🗑 Delete
-          </button>
-
-        </div>
-
-      </div>
-
-    `;
-
-  }).join("");
 }
 
 
@@ -1339,7 +2375,9 @@ function renderVideoList(){
 function renderAdmin(){
 
   const app =
-  document.getElementById("app");
+  document.getElementById(
+    "app"
+  );
 
 
   if(!isAdmin()){
@@ -1356,9 +2394,11 @@ function renderAdmin(){
               🔒
             </div>
 
+
             <h2>
               Access Denied
             </h2>
+
 
             <p>
               This Video Management System
@@ -1375,6 +2415,7 @@ function renderAdmin(){
     `;
 
     return;
+
   }
 
 
@@ -1390,7 +2431,9 @@ function renderAdmin(){
             DH
           </div>
 
+
           <div>
+
             <h1>
               Desi Hub TV
             </h1>
@@ -1398,19 +2441,34 @@ function renderAdmin(){
             <p>
               Video Management System V3.1
             </p>
+
           </div>
 
         </div>
 
 
-        <div class="admin-badge">
-          👑 ADMIN
+        <div class="header-right">
+
+          <div class="admin-badge">
+            👑 ADMIN
+          </div>
+
+
+          <button
+            class="menu-button"
+            onclick="openSideMenu()"
+            aria-label="Admin Menu"
+          >
+            ⋮
+          </button>
+
         </div>
 
       </div>
 
 
       ${renderDashboard()}
+
 
       ${renderVideoManagement()}
 
@@ -1419,10 +2477,21 @@ function renderAdmin(){
   `;
 
 
+  /*
+    Category system must be
+    refreshed after UI render.
+  */
+
+  updateCategoryFilter();
+
+  updateCategorySelect();
+
+
   const search =
   document.getElementById(
     "searchVideos"
   );
+
 
   const filter =
   document.getElementById(
@@ -1435,6 +2504,7 @@ function renderAdmin(){
     renderVideoList
   );
 
+
   filter?.addEventListener(
     "change",
     renderVideoList
@@ -1442,57 +2512,147 @@ function renderAdmin(){
 
 
   renderVideoList();
+
 }
 
 
 /* =========================
-   ADD MODAL
+   SIDE MENU
+========================= */
+
+function openSideMenu(){
+
+  document
+  .getElementById(
+    "sideMenu"
+  )
+  .classList.add("show");
+
+
+  document
+  .getElementById(
+    "menuOverlay"
+  )
+  .classList.add("show");
+
+}
+
+
+function closeSideMenu(){
+
+  document
+  .getElementById(
+    "sideMenu"
+  )
+  .classList.remove("show");
+
+
+  document
+  .getElementById(
+    "menuOverlay"
+  )
+  .classList.remove("show");
+
+}
+
+
+function scrollToVideos(){
+
+  closeSideMenu();
+
+
+  setTimeout(
+    () => {
+
+      document
+      .getElementById(
+        "videoManagement"
+      )
+      ?.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+    },
+    100
+  );
+
+}
+
+
+/* =========================
+   VIDEO MODAL
 ========================= */
 
 function openAddModal(){
+
+  closeCategoryManager();
+
 
   document.getElementById(
     "modalTitle"
   ).textContent =
   "Add Video";
 
+
   document.getElementById(
     "editId"
-  ).value = "";
+  ).value =
+  "";
+
 
   document.getElementById(
     "videoTitle"
-  ).value = "";
+  ).value =
+  "";
+
+
+  updateCategorySelect();
+
+
+  const firstCategory =
+  categories.find(
+    category =>
+      category !== "All"
+  );
+
 
   document.getElementById(
     "videoCategory"
-  ).value = "Instagram";
+  ).value =
+  firstCategory || "";
+
 
   document.getElementById(
     "videoFileId"
-  ).value = "";
+  ).value =
+  "";
+
 
   document.getElementById(
     "thumbnailFileId"
-  ).value = "";
+  ).value =
+  "";
 
 
-  document.getElementById(
+  document
+  .getElementById(
     "modal"
-  ).classList.add("show");
+  )
+  .classList.add("show");
+
 }
 
-
-/* =========================
-   EDIT MODAL
-========================= */
 
 function openEditModal(id){
 
   const video =
   videos.find(
-    v => Number(v.id) === Number(id)
+    v =>
+      Number(v.id) ===
+      Number(id)
   );
+
 
   if(!video)
     return;
@@ -1516,10 +2676,47 @@ function openEditModal(id){
   video.title || "";
 
 
+  updateCategorySelect();
+
+
+  /*
+    If old video has a category
+    that is no longer in the list,
+    temporarily add it so the
+    existing video is not broken.
+  */
+
+  const existingCategory =
+  video.category || "";
+
+
+  if(
+    existingCategory &&
+    !categories.includes(
+      existingCategory
+    )
+  ){
+
+    categories.push(
+      existingCategory
+    );
+
+    saveCategories();
+
+    updateCategorySelect();
+
+  }
+
+
   document.getElementById(
     "videoCategory"
   ).value =
-  video.category || "Other";
+  existingCategory ||
+  categories.find(
+    category =>
+      category !== "All"
+  ) ||
+  "";
 
 
   document.getElementById(
@@ -1534,21 +2731,23 @@ function openEditModal(id){
   video.thumbnail_file_id || "";
 
 
-  document.getElementById(
+  document
+  .getElementById(
     "modal"
-  ).classList.add("show");
+  )
+  .classList.add("show");
+
 }
 
 
-/* =========================
-   CLOSE MODAL
-========================= */
-
 function closeModal(){
 
-  document.getElementById(
+  document
+  .getElementById(
     "modal"
-  ).classList.remove("show");
+  )
+  .classList.remove("show");
+
 }
 
 
@@ -1557,60 +2756,100 @@ function closeModal(){
 ========================= */
 
 document
-.getElementById("videoForm")
+.getElementById(
+  "videoForm"
+)
 .addEventListener(
   "submit",
   async event => {
 
     event.preventDefault();
 
+
     if(!isAdmin()){
 
-      showToast("Access denied");
+      showToast(
+        "Access denied"
+      );
 
       return;
+
     }
 
+
     const editId =
-    document.getElementById("editId").value;
+    document.getElementById(
+      "editId"
+    ).value;
+
 
     const title =
-    document.getElementById("videoTitle").value.trim();
+    document.getElementById(
+      "videoTitle"
+    ).value.trim();
+
 
     const category =
-    document.getElementById("videoCategory").value;
+    document.getElementById(
+      "videoCategory"
+    ).value;
+
 
     const fileId =
-    document.getElementById("videoFileId").value.trim();
+    document.getElementById(
+      "videoFileId"
+    ).value.trim();
+
 
     const thumbnailFileId =
-    document.getElementById("thumbnailFileId").value.trim();
+    document.getElementById(
+      "thumbnailFileId"
+    ).value.trim();
 
 
     if(!title){
 
-      showToast("Video title is required");
+      showToast(
+        "Video title is required"
+      );
 
       return;
+
+    }
+
+
+    if(!category){
+
+      showToast(
+        "Please select a category"
+      );
+
+      return;
+
     }
 
 
     if(!fileId){
 
-      showToast("Telegram File ID is required");
+      showToast(
+        "Telegram File ID is required"
+      );
 
       return;
+
     }
 
 
     try{
 
-      showToast("Checking Telegram video...");
+      showToast(
+        "Checking Telegram video..."
+      );
 
 
-      /* =========================
-         VERIFY TELEGRAM FILE
-      ========================= */
+      /*
+        VERIFY TELEGRAM FILE
+      */
 
       const telegramResponse =
       await fetch(
@@ -1644,8 +2883,10 @@ document
       await telegramResponse.json();
 
 
-      if(!telegramResponse.ok ||
-         !telegramData.success){
+      if(
+        !telegramResponse.ok ||
+        !telegramData.success
+      ){
 
         throw new Error(
           telegramData.error ||
@@ -1655,17 +2896,20 @@ document
       }
 
 
-      /* =========================
-         SUPABASE PAYLOAD
-      ========================= */
+      /*
+        SUPABASE PAYLOAD
+      */
 
       const payload = {
 
-        title:title,
+        title:
+          title,
 
-        category:category,
+        category:
+          category,
 
-        file_id:fileId,
+        file_id:
+          fileId,
 
         thumbnail_file_id:
           thumbnailFileId
@@ -1676,30 +2920,33 @@ document
       let response;
 
 
-      /* =========================
-         EDIT VIDEO
-      ========================= */
+      /*
+        EDIT VIDEO
+      */
 
       if(editId){
 
         response =
         await fetch(
-          `${SUPABASE_URL}/rest/v1/videos?id=eq.${editId}`,
+          `${SUPABASE_URL}/rest/v1/videos?id=eq.${encodeURIComponent(editId)}`,
           {
             method:"PATCH",
 
-            headers:headers({
+            headers:
+              headers({
 
-              "Content-Type":
-                "application/json",
+                "Content-Type":
+                  "application/json",
 
-              "Prefer":
-                "return=minimal"
+                "Prefer":
+                  "return=minimal"
 
-            }),
+              }),
 
             body:
-              JSON.stringify(payload)
+              JSON.stringify(
+                payload
+              )
 
           }
         );
@@ -1707,9 +2954,9 @@ document
       }
 
 
-      /* =========================
-         ADD VIDEO
-      ========================= */
+      /*
+        ADD VIDEO
+      */
 
       else{
 
@@ -1719,15 +2966,16 @@ document
           {
             method:"POST",
 
-            headers:headers({
+            headers:
+              headers({
 
-              "Content-Type":
-                "application/json",
+                "Content-Type":
+                  "application/json",
 
-              "Prefer":
-                "return=minimal"
+                "Prefer":
+                  "return=minimal"
 
-            }),
+              }),
 
             body:
               JSON.stringify({
@@ -1746,9 +2994,9 @@ document
       }
 
 
-      /* =========================
-         SUPABASE ERROR
-      ========================= */
+      /*
+        SUPABASE ERROR
+      */
 
       if(!response.ok){
 
@@ -1759,21 +3007,20 @@ document
       }
 
 
-      /* =========================
-         SUCCESS
-      ========================= */
-
       closeModal();
 
 
       showToast(
         editId
-        ? "Video updated successfully"
-        : "Video added successfully"
+        ?
+        "Video updated successfully"
+        :
+        "Video added successfully"
       );
 
 
       await loadVideos();
+
 
       renderAdmin();
 
@@ -1809,7 +3056,9 @@ async function deleteVideo(id){
 
   const video =
   videos.find(
-    v => Number(v.id) === Number(id)
+    v =>
+      Number(v.id) ===
+      Number(id)
   );
 
 
@@ -1831,12 +3080,17 @@ async function deleteVideo(id){
 
     const response =
     await fetch(
-      `${SUPABASE_URL}/rest/v1/videos?id=eq.${id}`,
+      `${SUPABASE_URL}/rest/v1/videos?id=eq.${encodeURIComponent(id)}`,
       {
         method:"DELETE",
-        headers:headers({
-          "Prefer":"return=minimal"
-        })
+
+        headers:
+          headers({
+
+            "Prefer":
+              "return=minimal"
+
+          })
       }
     );
 
@@ -1857,6 +3111,7 @@ async function deleteVideo(id){
 
     await loadVideos();
 
+
     renderAdmin();
 
 
@@ -1867,11 +3122,54 @@ async function deleteVideo(id){
       error
     );
 
+
     showToast(
       "Failed to delete video"
     );
 
   }
+
+}
+
+
+/* =========================
+   REFRESH
+========================= */
+
+async function refreshAdmin(){
+
+  closeSideMenu();
+
+  showToast(
+    "Refreshing..."
+  );
+
+
+  try{
+
+    await loadVideos();
+
+    await loadSavedCount();
+
+    renderAdmin();
+
+    showToast(
+      "Dashboard refreshed"
+    );
+
+  }catch(error){
+
+    console.error(
+      "REFRESH ERROR:",
+      error
+    );
+
+    showToast(
+      "Refresh failed"
+    );
+
+  }
+
 }
 
 
@@ -1889,38 +3187,157 @@ function showToast(message){
     "toast"
   );
 
+
   toast.textContent =
   message;
 
-  toast.classList.add("show");
+
+  toast.classList.add(
+    "show"
+  );
 
 
-  clearTimeout(toastTimer);
+  clearTimeout(
+    toastTimer
+  );
 
 
   toastTimer =
   setTimeout(
     () => {
+
       toast.classList.remove(
         "show"
       );
+
     },
-    2500
+    2800
   );
+
 }
 
 
 /* =========================
-   START
+   CLOSE MODALS BY BACKDROP
+========================= */
+
+document
+.getElementById("modal")
+.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      document.getElementById(
+        "modal"
+      )
+    ){
+
+      closeModal();
+
+    }
+
+  }
+);
+
+
+document
+.getElementById("categoryModal")
+.addEventListener(
+  "click",
+  event => {
+
+    if(
+      event.target ===
+      document.getElementById(
+        "categoryModal"
+      )
+    ){
+
+      closeCategoryManager();
+
+    }
+
+  }
+);
+
+
+/* =========================
+   ENTER KEY FOR CATEGORY
+========================= */
+
+document
+.getElementById(
+  "newCategoryInput"
+)
+.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key ===
+      "Enter"
+    ){
+
+      event.preventDefault();
+
+      addCategory();
+
+    }
+
+  }
+);
+
+
+/* =========================
+   ESCAPE KEY
+========================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key ===
+      "Escape"
+    ){
+
+      closeModal();
+
+      closeCategoryManager();
+
+      closeSideMenu();
+
+    }
+
+  }
+);
+
+
+/* =========================
+   START APP
 ========================= */
 
 async function startApp(){
+
+  /*
+    Load categories first.
+  */
+
+  loadCategories();
+
+
+  /*
+    Security check.
+  */
 
   if(!isAdmin()){
 
     renderAdmin();
 
     return;
+
   }
 
 
@@ -1963,6 +3380,15 @@ async function startApp(){
               database. Check your
               Supabase RLS policies.
             </p>
+
+            <br>
+
+            <button
+              class="btn btn-primary"
+              onclick="startApp()"
+            >
+              🔄 Try Again
+            </button>
 
           </div>
 

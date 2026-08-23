@@ -2428,213 +2428,180 @@ document
 
 
       const editId =
-      document
-        .getElementById("editId")
-        .value;
+  document
+    .getElementById("editId")
+    .value;
 
 
-      const title =
-      document
-        .getElementById("videoTitle")
-        .value
-        .trim();
+const title =
+  document
+    .getElementById("videoTitle")
+    .value
+    .trim();
 
 
-      const category =
-      document
-        .getElementById("videoCategory")
-        .value;
+const category =
+  document
+    .getElementById("videoCategory")
+    .value;
 
 
-      const fileId =
-      document
-        .getElementById("videoFileId")
-        .value
-        .trim();
+const videoFile =
+  document
+    .getElementById("videoFile")
+    .files[0];
 
 
-      const thumbnailFileId =
-      document
-        .getElementById("thumbnailFileId")
-        .value
-        .trim();
+const thumbnailFile =
+  document
+    .getElementById("thumbnailFile")
+    .files[0];
 
 
-      if(!title){
+if(!title){
 
-        showToast(
-          "Video title is required"
-        );
+  showToast(
+    "Video title is required"
+  );
 
-        return;
+  return;
 
+}
+
+
+/* =========================
+   VIDEO REQUIRED FOR NEW
+========================= */
+
+if(!editId && !videoFile){
+
+  showToast(
+    "Please select a video"
+  );
+
+  return;
+
+}
+
+
+/* =========================
+   FILE SIZE CHECK
+========================= */
+
+if(videoFile){
+
+  const maxSize =
+    50 * 1024 * 1024;
+
+  if(
+    videoFile.size >
+    maxSize
+  ){
+
+    showToast(
+      "Video must be 50 MB or smaller"
+    );
+
+    return;
+
+  }
+
+}
+
+
+/* =========================
+   UPLOAD
+========================= */
+
+try{
+
+  showToast(
+    "Uploading video..."
+  );
+
+
+  const formData =
+    new FormData();
+
+
+  formData.append(
+    "telegramUserId",
+    userId
+  );
+
+
+  formData.append(
+    "title",
+    title
+  );
+
+
+  formData.append(
+    "category",
+    category
+  );
+
+
+  if(videoFile){
+
+    formData.append(
+      "video",
+      videoFile,
+      videoFile.name
+    );
+
+  }
+
+
+  if(thumbnailFile){
+
+    formData.append(
+      "thumbnail",
+      thumbnailFile,
+      thumbnailFile.name
+    );
+
+  }
+
+
+  const uploadResponse =
+    await fetch(
+      "/api/telegram-upload",
+      {
+        method:"POST",
+        body:formData
       }
+    );
 
 
-      if(!fileId){
+  const uploadData =
+    await uploadResponse.json();
 
-        showToast(
-          "Telegram File ID is required"
-        );
 
-        return;
+  if(
+    !uploadResponse.ok ||
+    !uploadData.success
+  ){
 
-      }
+    throw new Error(
+      uploadData.error ||
+      "Video upload failed"
+    );
 
+  }
 
-      try{
 
-        showToast(
-          "Checking Telegram video..."
-        );
+  closeModal();
 
 
-        const telegramResponse =
-        await fetch(
-          "/api/telegram-upload",
-          {
-            method:"POST",
+  showToast(
+    "Video uploaded successfully"
+  );
 
-            headers:{
-              "Content-Type":
-                "application/json"
-            },
 
-            body:
-              JSON.stringify({
+  await loadVideos();
 
-                telegramUserId:
-                  userId,
-
-                videoFileId:
-                  fileId,
-
-                thumbnailFileId:
-                  thumbnailFileId
-
-              })
-
-          }
-        );
-
-
-        const telegramData =
-        await telegramResponse.json();
-
-
-        if(
-          !telegramResponse.ok ||
-          !telegramData.success
-        ){
-
-          throw new Error(
-            telegramData.error ||
-            "Telegram file verification failed"
-          );
-
-        }
-
-
-        const payload = {
-
-          title:title,
-
-          category:category,
-
-          file_id:fileId,
-
-          thumbnail_file_id:
-            thumbnailFileId
-
-        };
-
-
-        let response;
-
-
-        if(editId){
-
-          response =
-          await fetch(
-            `${SUPABASE_URL}/rest/v1/videos?id=eq.${editId}`,
-            {
-              method:"PATCH",
-
-              headers:headers({
-
-                "Content-Type":
-                  "application/json",
-
-                "Prefer":
-                  "return=minimal"
-
-              }),
-
-              body:
-                JSON.stringify(
-                  payload
-                )
-
-            }
-          );
-
-        }else{
-
-          response =
-          await fetch(
-            `${SUPABASE_URL}/rest/v1/videos`,
-            {
-              method:"POST",
-
-              headers:headers({
-
-                "Content-Type":
-                  "application/json",
-
-                "Prefer":
-                  "return=minimal"
-
-              }),
-
-              body:
-                JSON.stringify({
-
-                  ...payload,
-
-                  views:0,
-
-                  likes:0
-
-                })
-
-            }
-          );
-
-        }
-
-
-        if(!response.ok){
-
-          throw new Error(
-            await response.text()
-          );
-
-        }
-
-
-        closeModal();
-
-
-        showToast(
-          editId
-          ? "Video updated successfully"
-          : "Video added successfully"
-        );
-
-
-        await loadVideos();
-
-        renderAdmin();
+  renderAdmin();
 
 
       }catch(error){

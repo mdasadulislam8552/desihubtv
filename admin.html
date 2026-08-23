@@ -2868,7 +2868,23 @@ async function startApp(){
   }
 
 }
+/* =========================
+   IOS TELEGRAM FILE PICKER FIX
+========================= */
 
+["videoFile", "thumbnailFile"].forEach(id => {
+  const input = document.getElementById(id);
+
+  if (!input) return;
+
+  input.addEventListener("click", () => {
+    input.value = "";
+  });
+
+  input.addEventListener("change", () => {
+    console.log(id, input.files[0]);
+  });
+});
 
 startApp();
 

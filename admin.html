@@ -2519,7 +2519,15 @@ try{
     "Uploading video..."
   );
 
+const videoFile =
+  document
+    .getElementById("videoFile")
+    .files[0];
 
+const thumbnailFile =
+  document
+    .getElementById("thumbnailFile")
+    .files[0];
   const formData =
     new FormData();
 

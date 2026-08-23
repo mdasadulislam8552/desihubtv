@@ -2293,18 +2293,18 @@ function deleteCategory(index){
 function openAddModal(){
 
   renderCategorySelect();
+  document.getElementById("videoTitle").value = "";
+  document.getElementById("videoCategory").value =
+    categories[0] || "Other";
 
+  document.getElementById("videoFile").value = "";
+  document.getElementById("thumbnailFile").value = "";
 
-  document.getElementById(
-    "modalTitle"
-  ).textContent =
-  "Add Video";
+  document.getElementById("modal").classList.add("show");
 
+}
 
-  document.getElementById(
-  "editId"
-).value = "";
-
+ 
 
 /* =========================
    EDIT MODAL
@@ -2314,42 +2314,61 @@ function openEditModal(id){
 
   renderCategorySelect();
 
-
   const video =
-  videos.find(
-    v =>
-      Number(v.id) ===
-      Number(id)
-  );
+    videos.find(
+      v =>
+        Number(v.id) ===
+        Number(id)
+    );
 
+  if(!video){
 
-  if(!video)
+    showToast("Video not found");
+
     return;
 
+  }
+
+
+  /* =========================
+     MODAL TITLE
+  ========================= */
 
   document.getElementById(
     "modalTitle"
   ).textContent =
-  "Edit Video";
+    "Edit Video";
 
+
+  /* =========================
+     EDIT ID
+  ========================= */
 
   document.getElementById(
     "editId"
   ).value =
-  video.id;
+    video.id;
 
+
+  /* =========================
+     VIDEO TITLE
+  ========================= */
 
   document.getElementById(
     "videoTitle"
   ).value =
-  video.title || "";
+    video.title || "";
 
+
+  /* =========================
+     CATEGORY
+  ========================= */
 
   if(
+    video.category &&
     !categories.includes(
       video.category
-    ) &&
-    video.category
+    )
   ){
 
     categories.push(
@@ -2366,26 +2385,41 @@ function openEditModal(id){
   document.getElementById(
     "videoCategory"
   ).value =
-  video.category ||
-  categories[0] ||
-  "Other";
+    video.category ||
+    categories[0] ||
+    "Other";
 
+
+  /* =========================
+     FILE INPUTS
+     
+     Browser security does not
+     allow existing files to be
+     placed into file inputs.
+     
+     Leave them empty so the admin
+     can optionally select a new
+     video or thumbnail.
+  ========================= */
 
   document.getElementById(
-    "videoFileId"
-  ).value =
-  video.file_id || "";
-
+    "videoFile"
+  ).value = "";
 
   document.getElementById(
-    "thumbnailFileId"
-  ).value =
-  video.thumbnail_file_id || "";
+    "thumbnailFile"
+  ).value = "";
 
+
+  /* =========================
+     SHOW MODAL
+  ========================= */
 
   document.getElementById(
     "modal"
-  ).classList.add("show");
+  ).classList.add(
+    "show"
+  );
 
 }
 

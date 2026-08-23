@@ -7,31 +7,28 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
-      error: "Method not allowed"
+      error: "Method not allowed",
+    });
+  }
+
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_KEY =
+    process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    return res.status(500).json({
+      success: false,
+      error: "Supabase server configuration is missing",
     });
   }
 
   try {
-
-    const BOT_TOKEN =
-      process.env.TELEGRAM_BOT_TOKEN;
-
-    if (!BOT_TOKEN) {
-      return res.status(500).json({
-        success: false,
-        error: "TELEGRAM_BOT_TOKEN is not configured"
-      });
-    }
-
-
     const busboy = Busboy({
-      headers: req.headers
+      headers: req.headers,
     });
-
 
     let telegramUserId = "";
     let title = "";
@@ -40,9 +37,7 @@ export default async function handler(req, res) {
     let videoFile = null;
     let thumbnailFile = null;
 
-
     busboy.on("field", (name, value) => {
-
       if (name === "telegramUserId") {
         telegramUserId = value;
       }
@@ -54,62 +49,43 @@ export default async function handler(req, res) {
       if (name === "category") {
         category = value;
       }
-
     });
 
+    busboy.on("file", (name, file, info) => {
+      const {
+        filename,
+        mimeType,
+      } = info;
 
-    busboy.on(
-      "file",
-      (name, file, info) => {
+      const chunks = [];
 
-        const {
-          filename,
-          mimeType
-        } = info;
+      file.on("data", (chunk) => {
+        chunks.push(chunk);
+      });
 
-        const chunks = [];
+      file.on("end", () => {
+        const buffer = Buffer.concat(chunks);
 
-        file.on("data", chunk => {
-          chunks.push(chunk);
-        });
+        if (name === "video") {
+          videoFile = {
+            buffer,
+            filename,
+            mimeType,
+          };
+        }
 
-        file.on("end", () => {
-
-          const buffer =
-            Buffer.concat(chunks);
-
-
-          if (name === "video") {
-
-            videoFile = {
-              buffer,
-              filename,
-              mimeType
-            };
-
-          }
-
-
-          if (name === "thumbnail") {
-
-            thumbnailFile = {
-              buffer,
-              filename,
-              mimeType
-            };
-
-          }
-
-        });
-
-      }
-    );
-
+        if (name === "thumbnail") {
+          thumbnailFile = {
+            buffer,
+            filename,
+            mimeType,
+          };
+        }
+      });
+    });
 
     busboy.on("finish", async () => {
-
       try {
-
         /* =========================
            ADMIN SECURITY
         ========================= */
@@ -118,250 +94,299 @@ export default async function handler(req, res) {
           String(telegramUserId) !==
           "1395435702"
         ) {
-
           return res.status(403).json({
             success: false,
-            error: "Unauthorized"
+            error: "Unauthorized",
           });
-
         }
-
 
         /* =========================
            VIDEO REQUIRED
         ========================= */
 
         if (!videoFile) {
-
           return res.status(400).json({
             success: false,
-            error: "Video file is required"
+            error: "Video file is required",
           });
-
         }
-
 
         /* =========================
-           UPLOAD VIDEO TO TELEGRAM
+           FILE SIZE
         ========================= */
 
-        const videoForm =
-          new FormData();
-
-
-        videoForm.append(
-          "chat_id",
-          telegramUserId
-        );
-
-
-        const videoBlob =
-          new Blob(
-            [videoFile.buffer],
-            {
-              type:
-                videoFile.mimeType ||
-                "video/mp4"
-            }
-          );
-
-
-        videoForm.append(
-          "video",
-          videoBlob,
-          videoFile.filename
-        );
-
-
-        if (title) {
-
-          videoForm.append(
-            "caption",
-            title
-          );
-
-        }
-
-
-        const videoResponse =
-          await fetch(
-            `https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`,
-            {
-              method: "POST",
-              body: videoForm
-            }
-          );
-
-
-        const videoData =
-          await videoResponse.json();
-
+        const MAX_SIZE =
+          50 * 1024 * 1024;
 
         if (
-          !videoResponse.ok ||
-          !videoData.ok
+          videoFile.buffer.length >
+          MAX_SIZE
         ) {
-
           return res.status(400).json({
             success: false,
             error:
-              videoData.description ||
-              "Telegram video upload failed"
+              "Video must be 50 MB or smaller",
           });
-
         }
 
+        /* =========================
+           FILE NAMES
+        ========================= */
 
-        const telegramVideo =
-          videoData.result.video;
+        const timestamp =
+          Date.now();
 
+        const safeVideoName =
+          cleanFileName(
+            videoFile.filename
+          );
 
-        const videoFileId =
-          telegramVideo.file_id;
+        const videoPath =
+          `videos/${timestamp}-${safeVideoName}`;
 
+        let thumbnailPath = null;
+
+        if (thumbnailFile) {
+          const safeThumbnailName =
+            cleanFileName(
+              thumbnailFile.filename
+            );
+
+          thumbnailPath =
+            `thumbnails/${timestamp}-${safeThumbnailName}`;
+        }
+
+        /* =========================
+           UPLOAD VIDEO
+        ========================= */
+
+        const videoUpload =
+          await uploadToSupabase(
+            SUPABASE_URL,
+            SUPABASE_KEY,
+            videoPath,
+            videoFile.buffer,
+            videoFile.mimeType ||
+              "video/mp4"
+          );
+
+        if (!videoUpload.ok) {
+          throw new Error(
+            `Video upload failed: ${videoUpload.text}`
+          );
+        }
+
+        /* =========================
+           VIDEO PUBLIC URL
+        ========================= */
+
+        const videoUrl =
+          `${SUPABASE_URL}/storage/v1/object/public/desi-hub-videos/${encodeURI(videoPath)}`;
 
         /* =========================
            UPLOAD THUMBNAIL
         ========================= */
 
-        let thumbnailFileId = null;
-
+        let thumbnailUrl = null;
 
         if (thumbnailFile) {
-
-          const thumbnailForm =
-            new FormData();
-
-
-          thumbnailForm.append(
-            "chat_id",
-            telegramUserId
-          );
-
-
-          const thumbnailBlob =
-            new Blob(
-              [thumbnailFile.buffer],
-              {
-                type:
-                  thumbnailFile.mimeType ||
-                  "image/jpeg"
-              }
+          const thumbnailUpload =
+            await uploadToSupabase(
+              SUPABASE_URL,
+              SUPABASE_KEY,
+              thumbnailPath,
+              thumbnailFile.buffer,
+              thumbnailFile.mimeType ||
+                "image/jpeg"
             );
 
-
-          thumbnailForm.append(
-            "photo",
-            thumbnailBlob,
-            thumbnailFile.filename
-          );
-
-
-          const thumbnailResponse =
-            await fetch(
-              `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,
-              {
-                method: "POST",
-                body: thumbnailForm
-              }
+          if (!thumbnailUpload.ok) {
+            throw new Error(
+              `Thumbnail upload failed: ${thumbnailUpload.text}`
             );
-
-
-          const thumbnailData =
-            await thumbnailResponse.json();
-
-
-          if (
-            thumbnailResponse.ok &&
-            thumbnailData.ok
-          ) {
-
-            const photos =
-              thumbnailData.result.photo;
-
-
-            if (
-              Array.isArray(photos) &&
-              photos.length
-            ) {
-
-              thumbnailFileId =
-                photos[
-                  photos.length - 1
-                ].file_id;
-
-            }
-
           }
 
+          thumbnailUrl =
+            `${SUPABASE_URL}/storage/v1/object/public/desi-hub-videos/${encodeURI(thumbnailPath)}`;
         }
 
+        /* =========================
+           SAVE DATABASE
+        ========================= */
+
+        const databaseResponse =
+          await fetch(
+            `${SUPABASE_URL}/rest/v1/videos`,
+            {
+              method: "POST",
+
+              headers: {
+                apikey: SUPABASE_KEY,
+
+                Authorization:
+                  `Bearer ${SUPABASE_KEY}`,
+
+                "Content-Type":
+                  "application/json",
+
+                Prefer:
+                  "return=representation",
+              },
+
+              body: JSON.stringify({
+                title:
+                  title ||
+                  "Untitled Video",
+
+                category:
+                  category ||
+                  "Viral",
+
+                file_id:
+                  videoPath,
+
+                video_url:
+                  videoUrl,
+
+                thumbnail_url:
+                  thumbnailUrl,
+              }),
+            }
+          );
+
+        const databaseText =
+          await databaseResponse.text();
+
+        if (!databaseResponse.ok) {
+          throw new Error(
+            `Database save failed: ${databaseText}`
+          );
+        }
 
         /* =========================
            SUCCESS
         ========================= */
 
         return res.status(200).json({
-
           success: true,
 
-          title,
+          message:
+            "Video uploaded successfully",
 
-          category,
+          title:
+            title ||
+            "Untitled Video",
 
-          video_file_id:
-            videoFileId,
+          category:
+            category ||
+            "Viral",
 
-          thumbnail_file_id:
-            thumbnailFileId
+          video_url:
+            videoUrl,
 
+          thumbnail_url:
+            thumbnailUrl,
+
+          video_path:
+            videoPath,
+
+          thumbnail_path:
+            thumbnailPath,
         });
 
-
       } catch (error) {
-
         console.error(
-          "TELEGRAM UPLOAD ERROR:",
+          "SUPABASE UPLOAD ERROR:",
           error
         );
 
-
         return res.status(500).json({
-
           success: false,
-
           error:
             error.message ||
-            "Telegram upload failed"
-
+            "Upload failed",
         });
-
       }
-
     });
-
 
     req.pipe(busboy);
 
-
   } catch (error) {
-
     console.error(
       "UPLOAD HANDLER ERROR:",
       error
     );
 
-
     return res.status(500).json({
-
       success: false,
-
       error:
         error.message ||
-        "Server error"
-
+        "Server error",
     });
-
   }
+}
 
+
+/* =========================
+   SUPABASE STORAGE UPLOAD
+========================= */
+
+async function uploadToSupabase(
+  supabaseUrl,
+  supabaseKey,
+  path,
+  buffer,
+  mimeType
+) {
+  const response =
+    await fetch(
+      `${supabaseUrl}/storage/v1/object/desi-hub-videos/${encodeURI(path)}`,
+      {
+        method: "POST",
+
+        headers: {
+          Authorization:
+            `Bearer ${supabaseKey}`,
+
+          apikey:
+            supabaseKey,
+
+          "Content-Type":
+            mimeType,
+
+          "x-upsert":
+            "true",
+        },
+
+        body: buffer,
+      }
+    );
+
+  const text =
+    await response.text();
+
+  return {
+    ok:
+      response.ok,
+
+    text,
+  };
+}
+
+
+/* =========================
+   SAFE FILE NAME
+========================= */
+
+function cleanFileName(
+  filename
+) {
+  return String(
+    filename ||
+      "file"
+  )
+    .replace(
+      /[^a-zA-Z0-9._-]/g,
+      "_"
+    );
 }

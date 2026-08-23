@@ -2305,7 +2305,7 @@ function openAddModal(){
   "editId"
 ).value = "";
 
-no
+
 /* =========================
    EDIT MODAL
 ========================= */
@@ -2428,45 +2428,200 @@ document
 
 
       const editId =
-  document
-    .getElementById("editId")
-    .value;
+        document
+          .getElementById("editId")
+          .value;
 
 
-const title =
-  document
-    .getElementById("videoTitle")
-    .value
-    .trim();
+      const title =
+        document
+          .getElementById("videoTitle")
+          .value
+          .trim();
 
 
-const category =
-  document
-    .getElementById("videoCategory")
-    .value;
+      const category =
+        document
+          .getElementById("videoCategory")
+          .value;
 
 
-const videoFile =
-  document
-    .getElementById("videoFile")
-    .files[0];
+      const videoFile =
+        document
+          .getElementById("videoFile")
+          .files[0];
 
 
-const thumbnailFile =
-  document
-    .getElementById("thumbnailFile")
-    .files[0];
+      const thumbnailFile =
+        document
+          .getElementById("thumbnailFile")
+          .files[0];
 
 
-if(!title){
+      if(!title){
 
-  showToast(
-    "Video title is required"
+        showToast(
+          "Video title is required"
+        );
+
+        return;
+
+      }
+
+
+      /* =========================
+         VIDEO REQUIRED FOR NEW
+      ========================= */
+
+      if(!editId && !videoFile){
+
+        showToast(
+          "Please select a video"
+        );
+
+        return;
+
+      }
+
+
+      /* =========================
+         FILE SIZE CHECK
+      ========================= */
+
+      if(videoFile){
+
+        const maxSize =
+          50 * 1024 * 1024;
+
+
+        if(
+          videoFile.size >
+          maxSize
+        ){
+
+          showToast(
+            "Video must be 50 MB or smaller"
+          );
+
+          return;
+
+        }
+
+      }
+
+
+      /* =========================
+         UPLOAD
+      ========================= */
+
+      try{
+
+        showToast(
+          "Uploading video..."
+        );
+
+
+        const formData =
+          new FormData();
+
+
+        formData.append(
+          "telegramUserId",
+          userId
+        );
+
+
+        formData.append(
+          "title",
+          title
+        );
+
+
+        formData.append(
+          "category",
+          category
+        );
+
+
+        if(videoFile){
+
+          formData.append(
+            "video",
+            videoFile,
+            videoFile.name
+          );
+
+        }
+
+
+        if(thumbnailFile){
+
+          formData.append(
+            "thumbnail",
+            thumbnailFile,
+            thumbnailFile.name
+          );
+
+        }
+
+
+        const uploadResponse =
+          await fetch(
+            "/api/telegram-upload",
+            {
+              method:"POST",
+              body:formData
+            }
+          );
+
+
+        const uploadData =
+          await uploadResponse.json();
+
+
+        if(
+          !uploadResponse.ok ||
+          !uploadData.success
+        ){
+
+          throw new Error(
+            uploadData.error ||
+            "Video upload failed"
+          );
+
+        }
+
+
+        closeModal();
+
+
+        showToast(
+          "Video uploaded successfully"
+        );
+
+
+        await loadVideos();
+
+        renderAdmin();
+
+
+      }catch(error){
+
+        console.error(
+          "SAVE VIDEO ERROR:",
+          error
+        );
+
+
+        showToast(
+          error.message ||
+          "Failed to save video"
+        );
+
+      }
+
+    }
   );
-
-  return;
-
-}
 
 
 /* =========================

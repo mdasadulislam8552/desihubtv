@@ -716,7 +716,113 @@ let savedIds = new Set();
 let currentPage = "home";
 let selectedCategory = "All";
 let selectedVideo = null;
+/* =========================
+   REWARDED ADS SYSTEM V3.2
+========================= */
 
+let unlockedVideos = new Set();
+let adProgress = {};
+
+function getAdProgress(videoId){
+  return adProgress[videoId] || 0;
+}
+
+function watchAd(videoId){
+
+  const current = getAdProgress(videoId);
+
+  if(current >= 3){
+    unlockedVideos.add(Number(videoId));
+    renderDetails(selectedVideo);
+    return;
+  }
+
+  // Fake Rewarded Ad (10 seconds)
+  showRewardAd(videoId);
+}
+
+function showRewardAd(videoId){
+
+  const ad = document.createElement("div");
+
+  ad.className = "player";
+
+  ad.innerHTML = `
+    <div style="
+      width:90%;
+      max-width:360px;
+      background:#151821;
+      border-radius:24px;
+      padding:25px;
+      text-align:center;
+      color:white;
+      border:1px solid rgba(255,255,255,.08);
+    ">
+
+      <h2 style="margin-bottom:10px;">📺 Advertisement</h2>
+
+      <p style="color:#aaa;margin-bottom:20px;">
+        Watch this ad completely to unlock the video.
+      </p>
+
+      <div style="
+        height:10px;
+        background:#333;
+        border-radius:20px;
+        overflow:hidden;
+        margin-bottom:18px;
+      ">
+
+        <div id="adBar" style="
+          width:0%;
+          height:100%;
+          background:#2563EB;
+        "></div>
+
+      </div>
+
+      <div id="adCount" style="
+        font-size:15px;
+        color:#60A5FA;
+      ">
+        10
+      </div>
+
+    </div>
+  `;
+
+  document.body.appendChild(ad);
+
+  let sec = 10;
+
+  const timer = setInterval(()=>{
+
+    sec--;
+
+    document.getElementById("adCount").textContent = sec;
+
+    document.getElementById("adBar").style.width =
+      ((10-sec)*10)+"%";
+
+    if(sec===0){
+
+      clearInterval(timer);
+
+      ad.remove();
+
+      adProgress[videoId] = getAdProgress(videoId)+1;
+
+      if(adProgress[videoId] >= 3){
+        unlockedVideos.add(Number(videoId));
+      }
+
+      renderDetails(selectedVideo);
+
+    }
+
+  },1000);
+
+}
 
 /* TELEGRAM PROFILE */
 

@@ -1588,7 +1588,8 @@ function renderDetails(video){
 
   const isSaved =
   savedIds.has(id);
-
+const unlocked = unlockedVideos.has(id);
+const progress = getAdProgress(id);
   const thumbnail =
   video.thumbnail_file_id
     ? `/api/thumbnail?file_id=${encodeURIComponent(video.thumbnail_file_id)}`

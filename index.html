@@ -717,33 +717,73 @@ let currentPage = "home";
 let selectedCategory = "All";
 let selectedVideo = null;
 /* =========================
-   REWARDED ADS SYSTEM V3.2
+   REWARDED ADS SYSTEM V3.3
 ========================= */
 
-let unlockedVideos = new Set();
-let adProgress = {};
+let unlockedVideos = new Set(
+  JSON.parse(
+    localStorage.getItem("desiHubUnlockedVideos") || "[]"
+  ).map(Number)
+);
+
+let adProgress = JSON.parse(
+  localStorage.getItem("desiHubAdProgress") || "{}"
+);
+
 
 function getAdProgress(videoId){
-  return adProgress[videoId] || 0;
+
+  return Number(
+    adProgress[videoId] || 0
+  );
+
 }
+
+
+function saveAdData(){
+
+  localStorage.setItem(
+    "desiHubUnlockedVideos",
+    JSON.stringify([...unlockedVideos])
+  );
+
+  localStorage.setItem(
+    "desiHubAdProgress",
+    JSON.stringify(adProgress)
+  );
+
+}
+
 
 function watchAd(videoId){
 
-  const current = getAdProgress(videoId);
+  const id = Number(videoId);
+
+  const current =
+    getAdProgress(id);
 
   if(current >= 3){
-    unlockedVideos.add(Number(videoId));
+
+    unlockedVideos.add(id);
+
+    saveAdData();
+
     renderDetails(selectedVideo);
+
     return;
   }
 
-  // Fake Rewarded Ad (10 seconds)
-  showRewardAd(videoId);
+  showRewardAd(id);
+
 }
+
 
 function showRewardAd(videoId){
 
-  const ad = document.createElement("div");
+  const id = Number(videoId);
+
+  const ad =
+    document.createElement("div");
 
   ad.className = "player";
 
@@ -759,9 +799,16 @@ function showRewardAd(videoId){
       border:1px solid rgba(255,255,255,.08);
     ">
 
-      <h2 style="margin-bottom:10px;">📺 Advertisement</h2>
+      <h2 style="
+        margin-bottom:10px;
+      ">
+        📺 Advertisement
+      </h2>
 
-      <p style="color:#aaa;margin-bottom:20px;">
+      <p style="
+        color:#aaa;
+        margin-bottom:20px;
+      ">
         Watch this ad completely to unlock the video.
       </p>
 
@@ -773,18 +820,24 @@ function showRewardAd(videoId){
         margin-bottom:18px;
       ">
 
-        <div id="adBar" style="
-          width:0%;
-          height:100%;
-          background:#2563EB;
-        "></div>
+        <div
+          id="adBar"
+          style="
+            width:0%;
+            height:100%;
+            background:#2563EB;
+          "
+        ></div>
 
       </div>
 
-      <div id="adCount" style="
-        font-size:15px;
-        color:#60A5FA;
-      ">
+      <div
+        id="adCount"
+        style="
+          font-size:15px;
+          color:#60A5FA;
+        "
+      >
         10
       </div>
 
@@ -795,32 +848,59 @@ function showRewardAd(videoId){
 
   let sec = 10;
 
-  const timer = setInterval(()=>{
+  const timer =
+    setInterval(() => {
 
-    sec--;
+      sec--;
 
-    document.getElementById("adCount").textContent = sec;
+      const count =
+        document.getElementById("adCount");
 
-    document.getElementById("adBar").style.width =
-      ((10-sec)*10)+"%";
+      const bar =
+        document.getElementById("adBar");
 
-    if(sec===0){
+      if(count){
 
-      clearInterval(timer);
+        count.textContent =
+          sec;
 
-      ad.remove();
-
-      adProgress[videoId] = getAdProgress(videoId)+1;
-
-      if(adProgress[videoId] >= 3){
-        unlockedVideos.add(Number(videoId));
       }
 
-      renderDetails(selectedVideo);
+      if(bar){
 
-    }
+        bar.style.width =
+          ((10 - sec) * 10) + "%";
 
-  },1000);
+      }
+
+      if(sec <= 0){
+
+        clearInterval(timer);
+
+        ad.remove();
+
+        const current =
+          getAdProgress(id);
+
+        const next =
+          Math.min(current + 1, 3);
+
+        adProgress[id] =
+          next;
+
+        if(next >= 3){
+
+          unlockedVideos.add(id);
+
+        }
+
+        saveAdData();
+
+        renderDetails(selectedVideo);
+
+      }
+
+    },1000);
 
 }
 

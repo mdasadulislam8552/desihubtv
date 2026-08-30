@@ -1872,7 +1872,18 @@ function openAdminDashboard(){
 /* VIDEO PLAYER */
 
 function playVideo(fileId,videoId){
+function playVideo(fileId,videoId){
 
+  const id = Number(videoId);
+
+  if(!unlockedVideos.has(id)){
+
+    watchAd(id);
+
+    return;
+  }
+
+  
   addView(videoId);
 
   const url =

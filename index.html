@@ -720,15 +720,8 @@ let selectedVideo = null;
    REWARDED ADS SYSTEM V3.3
 ========================= */
 
-let unlockedVideos = new Set(
-  JSON.parse(
-    localStorage.getItem("desiHubUnlockedVideos") || "[]"
-  ).map(Number)
-);
-
-let adProgress = JSON.parse(
-  localStorage.getItem("desiHubAdProgress") || "{}"
-);
+let unlockedVideos = new Set();
+let adProgress = {};
 
 
 function getAdProgress(videoId){

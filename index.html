@@ -729,7 +729,113 @@ let unlockedVideos = new Set(
 let adProgress = JSON.parse(
   localStorage.getItem("dhAdProgress") || "{}"
 );
+/* =========================
+   V3.4 PERMANENT UNLOCK
+========================= */
 
+async function loadPermanentUnlocks(){
+
+  if(!userId){
+    console.log("No Telegram user ID. Unlock storage skipped.");
+    return;
+  }
+
+  try{
+
+    const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/video_unlocks?telegram_user_id=eq.${userId}&select=video_id`,
+      {
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":`Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
+
+    if(!response.ok)
+      throw new Error(await response.text());
+
+    const data =
+    await response.json();
+
+    data.forEach(item => {
+
+      unlockedVideos.add(
+        Number(item.video_id)
+      );
+
+    });
+
+    saveRewardData();
+
+    console.log(
+      "Permanent unlocks loaded:",
+      unlockedVideos.size
+    );
+
+  }catch(error){
+
+    console.error(
+      "PERMANENT UNLOCK LOAD ERROR:",
+      error
+    );
+
+  }
+}
+
+
+async function savePermanentUnlock(videoId){
+
+  if(!userId){
+    console.log(
+      "No Telegram user ID. Permanent unlock not saved."
+    );
+    return;
+  }
+
+  const id =
+    Number(videoId);
+
+  try{
+
+    const response =
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/video_unlocks`,
+      {
+        method:"POST",
+
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":`Bearer ${SUPABASE_KEY}`,
+          "Content-Type":"application/json",
+          "Prefer":"resolution=ignore-duplicates,return=minimal"
+        },
+
+        body:JSON.stringify({
+          telegram_user_id:String(userId),
+          video_id:String(id)
+        })
+      }
+    );
+
+    if(!response.ok)
+      throw new Error(await response.text());
+
+    console.log(
+      "Permanent unlock saved:",
+      id
+    );
+
+  }catch(error){
+
+    console.error(
+      "PERMANENT UNLOCK SAVE ERROR:",
+      error
+    );
+
+  }
+}
 function saveRewardData(){
 
   localStorage.setItem(

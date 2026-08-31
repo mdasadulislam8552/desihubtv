@@ -1010,13 +1010,15 @@ function showRewardAd(videoId){
 
         if(next >= 3){
 
-          unlockedVideos.add(id);
+  unlockedVideos.add(id);
 
-        }
+  await savePermanentUnlock(id);
 
-        saveAdData();
+}
 
-        renderDetails(selectedVideo);
+saveAdData();
+
+renderDetails(selectedVideo);
 
       }
 
